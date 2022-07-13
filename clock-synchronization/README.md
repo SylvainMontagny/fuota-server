@@ -40,6 +40,6 @@ Then the command is created. Finally, the user shall copy the command and past i
 
 
 ## In order to use this tool effectively...
-- ... check the video demonstrations. Available here: [https://www.youtube.com/watch?v=i_WMjN9jRvk]
+- ... check the video demonstrations. Available here: [https://www.youtube.com/playlist?list=PLZQkMBvJm9EIDVI_VpMRksb1GjXc08aiB]
 - ... check the **_LoRaWAN Advanced Features_** book. Available here: [https://www.univ-smb.fr/lorawan/en/free-book/]
 
