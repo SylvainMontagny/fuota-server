@@ -15,11 +15,11 @@ Here there are:
 * **multicast**
   - To send a single downlink frame to several end-devices at the same time.
 * **data-fragmentation**
-  - To send a large file over the LoRaWAN protocol
+  - To send a large file over the LoRaWAN protocol.
 * **fuota** (that is actualy the firmware management package)
   - To manage the images the end-device owns and trigger the firmware update with the new image.
 * **python-tool**
-  - To fragment files to send through fragmentation session
+  - To fragment files to send through fragmentation session.
 
 # Disclaimer
 Please note that all of these tools are not intended to be used in an industrial context. They are dedicated to understanding and tests.
