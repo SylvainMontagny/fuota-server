@@ -1,1 +1,1930 @@
-[{"id":"3dc32134008eac65","type":"tab","label":"Configuration dashboard","disabled":false,"info":"","env":[]},{"id":"bb32b3705303fb88","type":"tab","label":"TTN Dashboard","disabled":false,"info":"","env":[]},{"id":"f48663973273d0a3","type":"ui_group","name":"Multicast Session Generator","tab":"121f9e88659f1b47","order":1,"disp":true,"width":"10","collapse":false,"className":""},{"id":"6981c805a4790f2a","type":"ui_group","name":"McGroupSetupReq","tab":"121f9e88659f1b47","order":5,"disp":true,"width":11,"collapse":false,"className":""},{"id":"8be7a72d5783bb58","type":"ui_group","name":"McClassCSessionReq","tab":"121f9e88659f1b47","order":6,"disp":true,"width":10,"collapse":false,"className":""},{"id":"5c1b38e3407d4958","type":"ui_group","name":"Downlink","tab":"121f9e88659f1b47","order":7,"disp":true,"width":"8","collapse":false,"className":""},{"id":"ce10c98edc29ac62","type":"ui_group","name":"Last Uplink","tab":"121f9e88659f1b47","order":8,"disp":true,"width":"13","collapse":false,"className":""},{"id":"1f5263f560ceadfe","type":"ui_group","name":"PackageVersionReq","tab":"121f9e88659f1b47","order":2,"disp":true,"width":"7","collapse":false,"className":""},{"id":"f3fc4dc65da12719","type":"ui_group","name":"McGroupStatusReq","tab":"121f9e88659f1b47","order":3,"disp":true,"width":"7","collapse":false,"className":""},{"id":"773407c9ade4eb7e","type":"ui_group","name":"McGroupDeleteReq","tab":"121f9e88659f1b47","order":4,"disp":true,"width":"7","collapse":false,"className":""},{"id":"121f9e88659f1b47","type":"ui_tab","name":"Multicast","icon":"dashboard","order":9,"disabled":false,"hidden":false},{"id":"4a87ae6aae62f971","type":"ui_base","theme":{"name":"theme-light","lightTheme":{"default":"#0094CE","baseColor":"#0094CE","baseFont":"-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif","edited":true,"reset":false},"darkTheme":{"default":"#097479","baseColor":"#097479","baseFont":"-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif","edited":false},"customTheme":{"name":"Untitled Theme 1","default":"#4B7930","baseColor":"#4B7930","baseFont":"-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"},"themeState":{"base-color":{"default":"#0094CE","value":"#0094CE","edited":false},"page-titlebar-backgroundColor":{"value":"#0094CE","edited":false},"page-backgroundColor":{"value":"#fafafa","edited":false},"page-sidebar-backgroundColor":{"value":"#ffffff","edited":false},"group-textColor":{"value":"#1bbfff","edited":false},"group-borderColor":{"value":"#ffffff","edited":false},"group-backgroundColor":{"value":"#ffffff","edited":false},"widget-textColor":{"value":"#111111","edited":false},"widget-backgroundColor":{"value":"#0094ce","edited":false},"widget-borderColor":{"value":"#ffffff","edited":false},"base-font":{"value":"-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"}},"angularTheme":{"primary":"indigo","accents":"blue","warn":"red","background":"grey","palette":"light"}},"site":{"name":"Node-RED Dashboard","hideToolbar":"false","allowSwipe":"false","lockMenu":"false","allowTempTheme":"true","dateFormat":"DD/MM/YYYY","sizes":{"sx":48,"sy":48,"gx":6,"gy":6,"cx":6,"cy":6,"px":0,"py":0}}},{"id":"d1d930618963f13f","type":"mqtt-broker","name":"Broker","broker":"","port":"1883","clientid":"","autoConnect":false,"usetls":false,"protocolVersion":"4","keepalive":"60","cleansession":true,"birthTopic":"","birthQos":"0","birthPayload":"","birthMsg":{},"closeTopic":"","closeQos":"0","closePayload":"","closeMsg":{},"willTopic":"","willQos":"0","willPayload":"","willMsg":{},"sessionExpiry":""},{"id":"d68e7be3.88f088","type":"ui_group","name":"Forms Example","tab":"67ff17e9.83751","order":1,"disp":true,"width":"8","collapse":false},{"id":"54bca71e.4287f","type":"ui_group","name":"Form","tab":"67ff17e9.83751","order":2,"disp":true,"width":"8","collapse":false},{"id":"67ff17e9.83751","type":"ui_tab","name":"Forms Example ","icon":"home","order":2,"disabled":false,"hidden":false},{"id":"60ef1969079f6262","type":"inject","z":"3dc32134008eac65","name":"CLICK TO CONFIGURE","props":[{"p":"network_name","v":"ttn","vt":"str"},{"p":"network_server_URL","v":"","vt":"str"},{"p":"application_id_ttn","v":"","vt":"str"},{"p":"multicast_gateway","v":"","vt":"str"},{"p":"MQTT_topic_to_subscribe","v":"","vt":"str"},{"p":"MQTT_port","v":"","vt":"str"},{"p":"MQTT_username","v":"","vt":"str"},{"p":"MQTT_password","v":"","vt":"str"}],"repeat":"","crontab":"","once":true,"onceDelay":0.1,"topic":"","x":250,"y":220,"wires":[["e7b751a7c153f63c","0d4f733073cdbb10","87260ac2addf6e9a"]]},{"id":"e7b751a7c153f63c","type":"function","z":"3dc32134008eac65","name":"Save configuration","func":"var application_id_ttn = global.get('application_id_ttn') || 0;\napplication_id_ttn = msg.application_id_ttn;\nglobal.set('application_id_ttn',application_id_ttn);\n\nvar gateway = global.get('gateway') || 0;\ngateway = msg.multicast_gateway;\nglobal.set('gateway',gateway);\n\nvar network = global.get('network') || 0;\nnetwork = msg.network_name;\nglobal.set('network',network);\n\nvar network_server_URL = global.get('network_server_URL') || 0;\nnetwork_server_URL = msg.network_server_URL;\nglobal.set('network_server_URL',network_server_URL);\n\n\n\n\n\n","outputs":1,"noerr":0,"initialize":"","finalize":"","libs":[],"x":610,"y":220,"wires":[[]]},{"id":"87260ac2addf6e9a","type":"function","z":"3dc32134008eac65","name":"Topic configuration","func":"\n\n\n\n\n\nvar config_subscriber = {\n    action : \"subscribe\",\n    topic : msg.MQTT_topic_to_subscribe\n}\n\nreturn config_subscriber;\n\n\n","outputs":1,"noerr":0,"initialize":"","finalize":"","libs":[],"x":550,"y":300,"wires":[["728e4479a2eccdd2"]]},{"id":"0d4f733073cdbb10","type":"function","z":"3dc32134008eac65","name":"Broker configuration","func":"\n\n\n\nvar broker_configuration = {\n    action : \"connect\",\n    \n    broker : {\"broker\":msg.network_server_URL,\"port\":msg.MQTT_port,\"username\":msg.MQTT_username,\"password\":msg.MQTT_password},\n    \n   \n}\n\nreturn broker_configuration;\n\n\n","outputs":1,"noerr":0,"initialize":"","finalize":"","libs":[],"x":580,"y":260,"wires":[["728e4479a2eccdd2"]]},{"id":"728e4479a2eccdd2","type":"link out","z":"3dc32134008eac65","name":"MQTT configuration out","mode":"link","links":["e5b6a799c722988d"],"x":755,"y":280,"wires":[]},{"id":"eed236789393f540","type":"ui_dropdown","z":"3dc32134008eac65","name":"ClCK TO CONFIGURE","label":"Device-id","tooltip":"","place":"Select ","group":"5c1b38e3407d4958","order":1,"width":0,"height":0,"passthru":false,"multiple":false,"options":[{"label":"Enter_your_device_id_1","value":"Enter_your_device_id_1","type":"str"},{"label":"Enter_your_device_id_2","value":"Enter_your_device_id_2","type":"str"},{"label":"Enter_your_group_id_1","value":"Enter_your_group_id_1","type":"str"},{"label":"Enter_your_group_id_2","value":"Enter_your_group_id_2","type":"str"},{"label":"You can add as many as you want...","value":"You can add as many as you want...","type":"str"}],"payload":"","topic":"topic","topicType":"msg","className":"","x":420,"y":440,"wires":[["dbc2f5142f52b9f6"]]},{"id":"dbc2f5142f52b9f6","type":"function","z":"3dc32134008eac65","name":"Save device_id ","func":"var device_id_ttn = global.get('device_id_ttn') || 0;\n\ndevice_id_ttn = msg.payload;\n\nglobal.set('device_id_ttn',device_id_ttn);\n\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","libs":[],"x":660,"y":440,"wires":[[]]},{"id":"97e314b7406f5c64","type":"comment","z":"3dc32134008eac65","name":"Overall configuration","info":"","x":210,"y":180,"wires":[]},{"id":"f91cf5264dd193db","type":"inject","z":"3dc32134008eac65","name":"RAZ","props":[{"p":"payload"},{"p":"topic","vt":"str"}],"repeat":"","crontab":"","once":true,"onceDelay":0.1,"topic":"","payload":"","payloadType":"str","x":190,"y":440,"wires":[["eed236789393f540"]]},{"id":"f16d97b482c3afff","type":"comment","z":"3dc32134008eac65","name":"Devices and multicast Group configuration","info":"","x":280,"y":400,"wires":[]},{"id":"b362f16b3d6c8633","type":"comment","z":"3dc32134008eac65","name":"README FIRST","info":"You have to configure 2 nodes :\n\n1. One node in the \"Overall configuration\" section: Click on the node called \"CLICK TO CONFIGURE\" and enter all properties.\n\n2. One node in the \"Devices and multicast Group configuration\": Click on the node called \"CLICK TO CONFIGURE\" and enter all your devices identifiers (end-devices and mutlicast groups) you created on your Network Server. For each identifer, you need to click on \"add an option\" and enter the corresponding identifier.","x":570,"y":80,"wires":[]},{"id":"3d3b3a64d691f635","type":"ui_text","z":"bb32b3705303fb88","group":"f48663973273d0a3","order":4,"width":0,"height":0,"name":"","label":"McAddr (big endian, to set in NS side)","format":"{{msg.McAddrBE}}","layout":"row-spread","className":"","x":1150,"y":140,"wires":[]},{"id":"597acb4b84e08548","type":"ui_text","z":"bb32b3705303fb88","group":"f48663973273d0a3","order":5,"width":0,"height":0,"name":"","label":"McAddr (little endian, to set in command)","format":"{{msg.McAddrLE}}","layout":"row-spread","className":"","x":1160,"y":180,"wires":[]},{"id":"ec568f5ea7b1d1cf","type":"ui_text","z":"bb32b3705303fb88","group":"f48663973273d0a3","order":6,"width":0,"height":0,"name":"","label":"McKey_encrypted","format":"{{msg.McKey_ENC}}","layout":"row-spread","className":"","x":1090,"y":220,"wires":[]},{"id":"615a66b1ac8fce55","type":"function","z":"bb32b3705303fb88","name":"Key derivation","func":"/*\n* Title:    McKey_encrypted generator + McAddr_Generator\n* Autor:    Antoine AUGAGNEUR\n* Date:     march, 2022\n* Sources:  > randHex function from https://codepen.io/code_monk/pen/kaWvPL\n*\n*/\n\n//  random hex string generator\nvar randHex = function(len) {\n  var maxlen = 8,\n      min = Math.pow(16,Math.min(len,maxlen)-1) \n      max = Math.pow(16,Math.min(len,maxlen)) - 1,\n      n   = Math.floor( Math.random() * (max-min+1) ) + min,\n      r   = n.toString(16);\n  while ( r.length < len ) {\n     r = r + randHex( len - maxlen );\n  }\n  return r;\n};\n\n// randomly generated bigendian McKey_encrypted\nvar McKey_encrypted  = randHex(32);\n\n// randomly generated bigendian McAddr\nvar McAddr_be = randHex(8);\n\n// McAddr little endian conversion\nvar McAddr_le = McAddr_be[6]                            \n                    + McAddr_be[7]\n                    + McAddr_be[4]\n                    + McAddr_be[5]\n                    + McAddr_be[2]\n                    + McAddr_be[3]\n                    + McAddr_be[0]\n                    + McAddr_be[1];\n                    \n// ###############################################################################################################################################################\n\n/*\n* Title:    Keys derivation for LoRaWAN multicast session\n* Autor:    Antoine AUGAGNEUR\n* Date:     march, 2022\n* Sources:  > LoRaWAN Remote Multicast Setup Specification v1.0.0 (Lora Alliance)\n*           > Deciphering an EU868 LoRaWAN 1.0 OTAA Join Accept [online], available on:\n*             https://runkit.com/avbentem/deciphering-a-lorawan-otaa-join-accept           \n* \n* ## Definitions\n* Device has:   GenAppKey               ( = AppKey, according to LoRaWAN 1.1)\n* It receives:  McKey_encrypted         ( via McGroupSetupReq MAC command)\n*               McAddr                  ( via McGroupSetupReq MAC command)\n* Then,\n* McRootKey = aes128_encrypt(GenAppKey, 0x00 | pad16)\n* McKEKey = aes128_encrypt(McRootKey, 0x00 | pad16)\n* McKey = aes128_decrypt(McKey_encrypted,McKEKey)\n* And then,\n* McAppSKey = aes128_encrypt(McKey, 0x01 | McAddr | pad16)\n* McNetSKey = aes128_encrypt(McKey, 0x02 | McAddr | pad16)\n*\n* To be noted:\n* The octet order over the air for all multi-octet fields is little endian (Least significant byte is \n* sent first). As a consequence, send data used for crypto operations are in little endian too.\n* Howerver, logs device diplay them correctly.\n*\n*\n* Information:\n*           - inputs:   GenAppKey           (from node)                    \n*                       McAddr              (from node, it has to be in little endian)   \n*                       McKey_encrypted     (from node)\n*           - outputs:  McRootKey\n*                       McKEKey\n*                       McKey\n*                       McAppSKey         \n*                       McNetSKey         \n*                       \n*\n*/\n\n// Initialization vector is always zero\nvar LORA_IV = CryptoJS.enc.Hex.parse('00000000000000000000000000000000');\n\n// Encrypts the given buffer, returning another buffer.\nfunction encrypt(buffer, key) {\n    var ciphertext = CryptoJS.AES.encrypt(\n        CryptoJS.lib.WordArray.create(buffer),\n        CryptoJS.lib.WordArray.create(key),\n        {\n            mode: CryptoJS.mode.ECB,\n            iv: LORA_IV,\n            padding: CryptoJS.pad.NoPadding\n        }\n    ).ciphertext.toString(CryptoJS.enc.Hex);\n    return new Buffer(ciphertext, 'hex');\n}\n\n// ## Known data (set or generated) #########################################\n// GenAppKey (or AppKey) programmed in the device\n// var GenAppKey = 'F255B7748A00FF7C22344C3402F6356F';\nvar GenAppKey = msg.payload;\nGenAppKey = Buffer.from(GenAppKey.toString(16), 'hex');\n\n// McKey_encrypted\n// var McKey_encrypted = '6B46B8386CB3B7697B2674526E98209B';\nMcKey_encrypted = Buffer.from(McKey_encrypted.toString(16), 'hex');\n\n// McAdrr\n// var McAddr = 'F03D292B';\nMcAddr_le = Buffer.from(McAddr_le.toString(16), 'hex'); // normal address:F03D2928 --> little endian:28293DF0\n                                             \n// ## Key derivation to have McRootKey ######################################\n// McRootKey = aes128_encrypt(GenAppKey, 0x00 | pad16)\nvar sKey_root = Buffer.from('000000000000000000000000000000', 'hex');\nvar McRootKey = encrypt(Buffer.concat([Buffer.from('00','hex'),sKey_root]),GenAppKey);\n\n// ## Key derivation to have McKEKey\n// McKEKey = aes128_encrypt(McRootKey, 0x00 | pad16)\nvar sKey_ke = Buffer.from('000000000000000000000000000000', 'hex');\nvar McKEKey = encrypt(Buffer.concat([Buffer.from('00','hex'),sKey_ke]),McRootKey);\n\n// ## Key decryption to have McKey ##########################################\n// McKey = aes128_decrypt(McKey_encrypted,McKEKey)\nvar McKey = encrypt(McKey_encrypted,McKEKey);\n\n\n// ## Key derivation to have McAppsKey and McNetSKey ########################\n// McAppSKey = aes128_encrypt(McKey, 0x01 | McAddr | pad16)\nvar sKey_apps = Buffer.concat([\n                        McAddr_le,\n                        Buffer.from('00000000000000000000000', 'hex')\n                        ]);\nvar McAppSKey = encrypt(Buffer.concat([Buffer.from('01','hex'),sKey_apps]),McKey);\n\n// McNetSKey = aes128_encrypt(McKey, 0x02 | McAddr | pad16)\nvar sKey_nets = Buffer.concat([\n                        McAddr_le,\n                        Buffer.from('00000000000000000000000', 'hex')\n                        ]);\nvar McNetSKey = encrypt(Buffer.concat([Buffer.from('02','hex'),sKey_nets]),McKey);\n\n\n\n// output\n\nif (msg.payload.length == 32){\n    \n    msg.McAddrLE=McAddr_le.toString('hex');                // McAddr little endian\n    msg.McAddrBE=McAddr_be;                             // McAddr big endian\n    msg.McKey_ENC=McKey_encrypted.toString('hex');         // McKey_encrypted\n    msg.McRootKEY=McRootKey.toString('hex');               // McRootKey\n    msg.McKEKEY=McKEKey.toString('hex');                   // McKEKey\n    msg.McKEY=McKey.toString('hex');                   // McKey\n    msg.McAppSKEY=McAppSKey.toString('hex');               // McAppSKey\n    msg.McNetSKEY=McNetSKey.toString('hex');               // McNetSKey\n    \n    msg.state = \"1\";\n    \n    return msg;\n}\nelse\n{\n    msg.McAddrLE=McAddr_le.toString('hex');                // McAddr little endian\n    msg.McAddrBE=McAddr_be.toString('hex');                             // McAddr big endian\n    msg.McKey_ENC=McKey_encrypted.toString('hex');         // McKey_encrypted\n    msg.McRootKEY=\"Error. Check the GenAppKey length\";                              // McRootKey\n    msg.McKEKEY=\"Error. Check the GenAppKey length\";                                // McKEKey\n    msg.McKEY=\"Error. Check the GenAppKey length\";                   // McKey\n    msg.McAppSKEY=\"Error. Check the GenAppKey length\";                              // McAppSKey\n    msg.McNetSKEY=\"Error. Check the GenAppKey length\";                              // McNetSKey\n    msg.state = \"0\";\n    return msg;\n}","outputs":1,"noerr":0,"initialize":"","finalize":"","libs":[{"var":"reverse","module":"buffer-reverse"},{"var":"CryptoJS","module":"crypto-js"},{"var":"nodeAesCmac","module":"node-aes-cmac"}],"x":820,"y":140,"wires":[["e4766db5f814c4da","3d3b3a64d691f635","597acb4b84e08548","ec568f5ea7b1d1cf","62fa1ca49a55f1f5","d8af8ab212bf847a","baf59db38d118de2","7fb563b3586ed30b","0a087ad359f8a73e","a3613d7fcda16c70"]]},{"id":"e4766db5f814c4da","type":"debug","z":"bb32b3705303fb88","name":"","active":false,"tosidebar":true,"console":false,"tostatus":false,"complete":"true","targetType":"full","statusVal":"","statusType":"auto","x":1050,"y":100,"wires":[]},{"id":"62fa1ca49a55f1f5","type":"ui_text","z":"bb32b3705303fb88","group":"f48663973273d0a3","order":8,"width":0,"height":0,"name":"","label":"McRootKey","format":"{{msg.McRootKEY}}","layout":"row-spread","className":"","x":1070,"y":260,"wires":[]},{"id":"1bf3fca03ebd390d","type":"inject","z":"bb32b3705303fb88","name":"Init, empty string","props":[{"p":"payload"},{"p":"topic","vt":"str"}],"repeat":"","crontab":"","once":true,"onceDelay":0.1,"topic":"","payload":"f255b7748a00ff7c22344c3402f6356f","payloadType":"str","x":130,"y":140,"wires":[["dfad66844710b2e1"]]},{"id":"dfad66844710b2e1","type":"ui_text_input","z":"bb32b3705303fb88","name":"","label":"GenAppKey","tooltip":"","group":"f48663973273d0a3","order":1,"width":10,"height":2,"passthru":true,"mode":"text","delay":"100","topic":"payload","sendOnBlur":true,"className":"","topicType":"msg","x":310,"y":140,"wires":[["055f6b1fc5d7114e"]]},{"id":"4e2dee66079049d9","type":"ui_button","z":"bb32b3705303fb88","name":"","group":"f48663973273d0a3","order":2,"width":0,"height":0,"passthru":false,"label":"Generate","tooltip":"","color":"","bgcolor":"","className":"","icon":"","payload":"textInput","payloadType":"flow","topic":"","topicType":"str","x":660,"y":140,"wires":[["615a66b1ac8fce55"]]},{"id":"055f6b1fc5d7114e","type":"change","z":"bb32b3705303fb88","name":"","rules":[{"t":"set","p":"textInput","pt":"flow","to":"payload","tot":"msg"}],"action":"","property":"","from":"","to":"","reg":false,"x":490,"y":140,"wires":[["4e2dee66079049d9"]]},{"id":"d8af8ab212bf847a","type":"ui_text","z":"bb32b3705303fb88","group":"f48663973273d0a3","order":9,"width":0,"height":0,"name":"","label":"McKEKey","format":"{{msg.McKEKEY}}","layout":"row-spread","className":"","x":1060,"y":300,"wires":[]},{"id":"baf59db38d118de2","type":"ui_text","z":"bb32b3705303fb88","group":"f48663973273d0a3","order":11,"width":0,"height":0,"name":"","label":"McKey","format":"{{msg.McKEY}}","layout":"row-spread","className":"","x":1050,"y":340,"wires":[]},{"id":"7fb563b3586ed30b","type":"ui_text","z":"bb32b3705303fb88","group":"f48663973273d0a3","order":13,"width":0,"height":0,"name":"","label":"McAppsKey","format":"{{msg.McAppSKEY}}","layout":"row-spread","className":"","x":1070,"y":380,"wires":[]},{"id":"0a087ad359f8a73e","type":"ui_text","z":"bb32b3705303fb88","group":"f48663973273d0a3","order":14,"width":0,"height":0,"name":"","label":"McNetsKey","format":"{{msg.McNetSKEY}}","layout":"row-spread","className":"","x":1070,"y":420,"wires":[]},{"id":"03dca163acc7d1ed","type":"ui_text","z":"bb32b3705303fb88","group":"f48663973273d0a3","order":3,"width":0,"height":0,"name":"","label":"","format":"{{msg.payload}}","layout":"col-center","className":"","x":390,"y":300,"wires":[]},{"id":"dd8479ebebbbfa1b","type":"inject","z":"bb32b3705303fb88","name":"GENERATED KEYS ","props":[{"p":"payload"},{"p":"topic","vt":"str"}],"repeat":"","crontab":"","once":true,"onceDelay":0.1,"topic":"","payload":"GENERATED KEYS --------------------------------------------------------","payloadType":"str","x":160,"y":300,"wires":[["03dca163acc7d1ed"]]},{"id":"c84650deedc3a8a2","type":"ui_text","z":"bb32b3705303fb88","group":"f48663973273d0a3","order":7,"width":0,"height":0,"name":"","label":"","format":"{{msg.payload}}","layout":"row-left","className":"","x":390,"y":340,"wires":[]},{"id":"aa1d1b3b6653f1b1","type":"inject","z":"bb32b3705303fb88","name":"DERIVED KEYS","props":[{"p":"payload"},{"p":"topic","vt":"str"}],"repeat":"","crontab":"","once":true,"onceDelay":0.1,"topic":"","payload":"DERIVED KEYS ----------------------------------------------------------","payloadType":"str","x":150,"y":340,"wires":[["c84650deedc3a8a2"]]},{"id":"b2039b935ec0e3a0","type":"ui_text","z":"bb32b3705303fb88","group":"f48663973273d0a3","order":10,"width":0,"height":0,"name":"","label":"","format":"{{msg.payload}}","layout":"row-left","className":"","x":390,"y":380,"wires":[]},{"id":"c03b80aac320911a","type":"inject","z":"bb32b3705303fb88","name":"DECRYPTED KEYS","props":[{"p":"payload"},{"p":"topic","vt":"str"}],"repeat":"","crontab":"","once":true,"onceDelay":0.1,"topic":"","payload":"DECRYPTED KEYS --------------------------------------------------------","payloadType":"str","x":160,"y":380,"wires":[["b2039b935ec0e3a0"]]},{"id":"fdd254f54f8258ca","type":"ui_text","z":"bb32b3705303fb88","group":"f48663973273d0a3","order":12,"width":0,"height":0,"name":"","label":"","format":"{{msg.payload}}","layout":"row-left","className":"","x":390,"y":420,"wires":[]},{"id":"92dfc92db35adbb6","type":"inject","z":"bb32b3705303fb88","name":"MULTICAST SESSION KEYS","props":[{"p":"payload"},{"p":"topic","vt":"str"}],"repeat":"","crontab":"","once":true,"onceDelay":0.1,"topic":"","payload":"MULTICAST SESSION KEYS ----------------------------------------------","payloadType":"str","x":190,"y":420,"wires":[["fdd254f54f8258ca"]]},{"id":"9a0ce56203764d8d","type":"comment","z":"bb32b3705303fb88","name":"For Dashboard","info":"","x":120,"y":260,"wires":[]},{"id":"995d4d7ddf123e77","type":"comment","z":"bb32b3705303fb88","name":"Multicast session generator","info":"","x":150,"y":100,"wires":[]},{"id":"46a21d7bc927e956","type":"comment","z":"bb32b3705303fb88","name":"McGroupSetupReq (0x02)","info":"","x":150,"y":840,"wires":[]},{"id":"b55b5e85a5bfa22d","type":"ui_form","z":"bb32b3705303fb88","name":"McGroupSetupReq","label":"","group":"6981c805a4790f2a","order":1,"width":11,"height":1,"options":[{"label":"McGroupID (0 to 3)","value":"McGroupID","type":"text","required":true,"rows":null},{"label":"McAddr","value":"McAddr","type":"text","required":true,"rows":null},{"label":"McKey_encrypted","value":"McKey_encrypted","type":"text","required":true,"rows":null},{"label":"minMcFCount (hex, 4 bytes)","value":"minMcFCount","type":"text","required":true,"rows":null},{"label":"maxMcFCount (hex, 4 bytes)","value":"maxMcFCount","type":"text","required":true,"rows":null}],"formValue":{"McGroupID":"","McAddr":"","McKey_encrypted":"","minMcFCount":"","maxMcFCount":""},"payload":"","submit":"Create command","cancel":"Cancel","topic":"topic","topicType":"msg","splitLayout":true,"className":"","x":130,"y":880,"wires":[["842929fb3b21c9d2"]]},{"id":"842929fb3b21c9d2","type":"function","z":"bb32b3705303fb88","name":"McGroupSetupReq","func":"/*\n* Title:    Mc LoRaWAN command: McGroupSetupReq\n* Autor:    Antoine AUGAGNEUR\n* Date:     march, 2022\n* Sources:  > LoRaWAN Application Layer Clock Synchronization Specification v1.0.0 (Lora Alliance)\n*           > LoRaWAN Remote Multicast Setup Specification v1.0.0 (Lora Alliance)\n*\n* McGroupSetupReq payload:\n*          | McGroupIDHeader  | McAddr    | McKey_encrypted   | minMcFCount   | maxMcFCount   | \n*          | 1 byte           | 4 bytes   | 16 bytes          | 4 bytes       | 4 bytes       |\n*\n* McGroupSetupReq command CID: 0x02\n*\n* Information:\n*           - inputs:   McGroupID                    \n*                       McAddr              (from node, it has to be in little endian)    \n*                       McKey_encrypted     (from node)\n*                       minMcFCount\n*                       maxMcFCount\n*           - outputs:  McGroupSetupReq\n*                       minMcFCount (dec format)\n*                       maxMcFCount (dec format)\n*                       \n*                                          \n*/\n\n// McGroupIDHeader (1 byte) / 6-bits RFU + 2-bits McGroupID\nvar RFU = '0';\n// var McGroupID = '1'; // 0, 1, 2, or 3\nvar McGroupID = msg.payload.McGroupID;\nvar McGroupIDHeader = Buffer.from(RFU + McGroupID, 'hex');\n\n// McAddr (4 byte)\n// var McAddr = 'F03D292B';\nvar McAddr = msg.payload.McAddr;\nMcAddr = Buffer.from(McAddr, 'hex');\n\n// McKey_encrypted (16 bytes)\n// var McKey_encrypted = '6B46B8386CB3B7697B2674526E98209B';\nvar McKey_encrypted = msg.payload.McKey_encrypted;\nMcKey_encrypted = Buffer.from(McKey_encrypted, 'hex');\n\n// minMcFCount (4 bytes)\n// var minMcFCount = '00000000';\nvar minMcFCount = msg.payload.minMcFCount;\nminMcFCount = minMcFCount.toString(16);\nvar minMcFCount_le = minMcFCount[6]                             // little endian conversion\n                    + minMcFCount[7]\n                    + minMcFCount[4]\n                    + minMcFCount[5]\n                    + minMcFCount[2]\n                    + minMcFCount[3]\n                    + minMcFCount[0]\n                    + minMcFCount[1];\nminMcFCount_le = Buffer.from(minMcFCount_le, 'hex');\nvar minMcFCount_dec = parseInt(minMcFCount,16);                 // passage en decimal\n\n// maxMcFCount (4 bytes)\n// var maxMcFCount = '0000000A'\nvar maxMcFCount = msg.payload.maxMcFCount;\nmaxMcFCount = maxMcFCount.toString(16);\nvar maxMcFCount_le = maxMcFCount[6]                             // little endian conversion\n                    + maxMcFCount[7]\n                    + maxMcFCount[4]\n                    + maxMcFCount[5]\n                    + maxMcFCount[2]\n                    + maxMcFCount[3]\n                    + maxMcFCount[0]\n                    + maxMcFCount[1];\nmaxMcFCount_le = Buffer.from(maxMcFCount_le, 'hex');\nvar maxMcFCount_dec = parseInt(maxMcFCount,16);                 // passage en decimal\n\n\n// McGroupSetupReq\nvar Command_02 = Buffer.from('02', 'hex');\nvar McGroupSetupReq = Buffer.concat([\n                        Command_02,\n                        McGroupIDHeader,\n                        McAddr,\n                        McKey_encrypted,\n                        minMcFCount_le,\n                        maxMcFCount_le                        \n                        ]);\n\n// ############################################################################\n\n\n//msg.mcaddrlittle = McAddr.toString('hex');\n//msg.mckeyencrypted = McKey_encrypted.toString('hex');\nmsg.McGroupSetupReq = McGroupSetupReq.toString('hex');\n\n\n\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","libs":[],"x":350,"y":880,"wires":[["15835c29705d6cd1"]]},{"id":"15835c29705d6cd1","type":"ui_text","z":"bb32b3705303fb88","group":"6981c805a4790f2a","order":2,"width":11,"height":1,"name":"","label":"McGroupSetupReq command","format":"{{msg.McGroupSetupReq}}","layout":"col-center","className":"","x":630,"y":880,"wires":[]},{"id":"a43f2f12145dd71b","type":"comment","z":"bb32b3705303fb88","name":"McClassCSessionReq (0x04)","info":"","x":160,"y":980,"wires":[]},{"id":"f45068960799ca69","type":"ui_form","z":"bb32b3705303fb88","name":"McClassCSessionReq ","label":"","group":"8be7a72d5783bb58","order":1,"width":10,"height":1,"options":[{"label":"McGroupID (0 to 3)","value":"McGroupID","type":"text","required":true,"rows":null},{"label":"SessionTime (date)","value":"SessionTime_date","type":"date","required":true,"rows":null},{"label":"SessionTime (time)","value":"SessionTime_time","type":"time","required":true,"rows":null},{"label":"TimeOut (0 to 15)","value":"TimeOut","type":"text","required":true,"rows":null},{"label":"Downlink Frequency in Hz (e.g.: 869525000)","value":"DLFreq","type":"text","required":true,"rows":null},{"label":"DataRate (e.g.: 3)","value":"DR","type":"text","required":true,"rows":null}],"formValue":{"McGroupID":"","SessionTime_date":"","SessionTime_time":"","TimeOut":"","DLFreq":"","DR":""},"payload":"","submit":"Create command","cancel":"Cancel","topic":"topic","topicType":"msg","splitLayout":true,"className":"","x":140,"y":1020,"wires":[["f7e2c4db026753f9"]]},{"id":"f7e2c4db026753f9","type":"function","z":"bb32b3705303fb88","name":"McClassCSessionReq","func":"/*\n* Title:    Mc LoRaWAN command: McClassCSessionReq\n* Autor:    Antoine AUGAGNEUR\n* Date:     march, 2022\n* Sources:  > LoRaWAN Application Layer Clock Synchronization Specification v1.0.0 (Lora Alliance)\n*           > LoRaWAN Remote Multicast Setup Specification v1.0.0 (Lora Alliance)\n*\n* McClassCSessionReq payload:\n*          | McGroupIDHeader  | SessionTime     | SessionTimeOut    | DLFrequ   | DR        | \n*          | 1 byte           | 4 bytes         | 1 byte            | 3 bytes   | 1 byte    |\n*\n* McClassCSessionReq command CID: 0x04\n*\n* Information:\n*           - inputs:   McGroupID           \n*                       SessionTime (Y,M,D,H,M,S)              \n*                       TimeOut\n*                       DLFreq\n*                       DR\n*           - outputs:  McClassCSessionReq\n*                       Session Time (date format)\n*                       SessionTimeOut (date format)\n*                                          \n*/\n\n//  ## Date calculation\n// GPS origin\nvar Origin = new Date('1980-01-06 00:00:00');\n// Desired date\nvar Desired_date = Date.parse(msg.payload.SessionTime_date);        // Y, M, D // \"parse\" turns the date into the number of ms passed since 1970-01-01.\nvar Desired_time = Date.parse(msg.payload.SessionTime_time);        // H, M\n\n// Difference calculation\nvar offset_time = Date.parse('1970-01-01 00:00:00');\nvar Desired = Desired_date + Desired_time - offset_time - Origin;   // time ( = hours and minuts) is set with an offset of 1970-01-01. So, I take the offset away.\nDesired=Desired+7200000;    // 2 hours are added to synch with our time (UTC+01). Added twice because there are a Date(Y,M,D) setup AND a time (H,M) setup.\nvar Diff = Desired/1000;      // difference in seconds\n\n// RFU (multiple use)\nvar RFU = '0';\n\n\n// ## McClassCSessionReq definition -------------------------------------------------------------\n// McGroupIDHeader (1 byte)\nvar McGroupID = msg.payload.McGroupID;                                              // To set ! (0,1,2 or 3)\nvar McGroupIDHeader = Buffer.from(RFU + McGroupID.toString(10), 'hex');\n\n// Session Time (4 bytes)\nvar SessionTime = Diff.toString(16);       // hex to string conversion\nvar SessionTime_le = SessionTime[6]        // little endian conversion\n                    + SessionTime[7]\n                    + SessionTime[4]\n                    + SessionTime[5]\n                    + SessionTime[2]\n                    + SessionTime[3]\n                    + SessionTime[0]\n                    + SessionTime[1];\nSessionTime_le = Buffer.from(SessionTime_le, 'hex');\n\n// SessionTimeOut \nvar TimeOut_r = msg.payload.TimeOut;                                                     // To set ! (0 --> 15)\nvar TimeOut = parseInt(TimeOut_r,10);   \nvar TimeOut_hex = parseInt(TimeOut.toString(16), 16);\nvar TimeOutSec = 2**TimeOut; // 2^TimeOut\nvar SessionTimeOut = Buffer.from(RFU + TimeOut_hex.toString(16), 'hex');\n\n// DLFreq (3 bytes)\nvar freq_r = msg.payload.DLFreq;\nvar freq = parseInt(freq_r,10);                                               // To set ! \nvar freq_hex = parseInt((freq/100).toString(16), 16);       // dec to hex conversion\nvar freq_hex_str = freq_hex.toString(16);                   // hex to string conversion\nvar freq_hex_str_le = freq_hex_str[4]                       // little endian conversion\n                    + freq_hex_str[5]\n                    + freq_hex_str[2]\n                    + freq_hex_str[3]\n                    + freq_hex_str[0]\n                    + freq_hex_str[1];\nfreq_hex_str_le = Buffer.from(freq_hex_str_le, 'hex');\n\n// DR (1 byte)\nvar DR_r = msg.payload.DR;                                                         // To set ! \nvar DR = parseInt(DR_r,10);\nvar DR_hex = parseInt(DR.toString(16), 16);                         // dec to hex conversion\nvar DR_hex_str = Buffer.from('0' + DR_hex.toString(16), 'hex');     // hex to string conversion\nDR_hex_str = Buffer.from(DR_hex_str, 'hex');\n\n// McClassCSessionReq\nvar Command_04 = Buffer.from('04', 'hex');\n// var McClassCSessionReq = Command + McGroupIDHeader + SessionTime_le + SessionTimeOut + freq_hex_str_le + DR_hex_str;\n\nvar McClassCSessionReq = Buffer.concat([\n                        Command_04,\n                        McGroupIDHeader,\n                        SessionTime_le,\n                        SessionTimeOut,\n                        freq_hex_str_le,\n                        DR_hex_str                        \n                        ]);\n                        \n                        \n\n\n\n\nmsg.desiredtime = Diff;\nmsg.McClassCSessionReq_command = McClassCSessionReq.toString('hex');\n\n\nreturn msg;\n\n\n","outputs":1,"noerr":0,"initialize":"","finalize":"","libs":[],"x":360,"y":1020,"wires":[["e3d318d73537cfa7"]]},{"id":"e3d318d73537cfa7","type":"ui_text","z":"bb32b3705303fb88","group":"8be7a72d5783bb58","order":2,"width":10,"height":1,"name":"","label":"McClassCSessionReq command","format":"{{msg.McClassCSessionReq_command}}","layout":"col-center","className":"","x":620,"y":1020,"wires":[]},{"id":"a3613d7fcda16c70","type":"ui_text","z":"bb32b3705303fb88","group":"f48663973273d0a3","order":15,"width":0,"height":0,"name":"","label":"McAddr ( = DevAddr of the multicast group)","format":"{{msg.McAddrBE}}","layout":"row-spread","className":"","x":1170,"y":460,"wires":[]},{"id":"9aaf131c11fc1412","type":"mqtt out","z":"bb32b3705303fb88","name":"MQTT Publisher","topic":"","qos":"2","retain":"","respTopic":"","contentType":"","userProps":"","correl":"","expiry":"","broker":"d1d930618963f13f","x":500,"y":1520,"wires":[]},{"id":"deb4fb310f74aec9","type":"function","z":"bb32b3705303fb88","name":"Downlink","func":"\nvar topic_actility = \"mqtt/things/\" + deveui + \"/downlink\";  \n\nvar network = global.get('network');\nvar gateway = global.get('gateway');\nvar application_id_ttn = global.get('application_id_ttn');\nvar device_id_ttn = global.get('device_id_ttn');\nvar topic_ttn_downlink_device = \"v3/\" + application_id_ttn + \"/devices/\" + device_id_ttn + \"/down/replace\";  \nvar topic_ttn_downlink_multicast = \"v3/\" + application_id_ttn + \"/devices/\" + device_id_ttn + \"/down/replace\";\n\n\n\n// McGroupIDHeader (1 byte)\nvar command = hexToBase64(msg.payload.thepayload);   \nvar deveui = msg.payload.deveui;\nvar port = msg.payload.port;\nvar multicast = msg.payload.multicast;\n\n\nfunction hexToBase64(hexString) {\n  // Conversion de la chaîne hexadécimale en un tableau d'octets\n  const bytes = Buffer.from(hexString, 'hex');\n\n  // Conversion des octets en base64\n  const base64String = bytes.toString('base64');\n\n  return base64String;\n}\n\n\n\n\n\n\n\nif (network == \"ttn\"){\n    if (multicast == false){\n       /**** Downlink to a device ***/\n        msg = \n        {\n            topic : topic_ttn_downlink_device,\n            \n            payload : {   \n                'downlinks': [{\n                    \"f_port\": port,\n                \t\"frm_payload\": command,\n                \t\"priority\": \"NORMAL\"\n                }]\n            }\n        }  \n    }\n    else{\n        /**** Downlink to a Multicast a Group ***/\n         msg = \n        {\n            topic : topic_ttn_downlink_multicast,\n            \n            payload : {\n                \"downlinks\": [\n                    {\n                        \"f_port\": port,\n                        \"frm_payload\": command,\n                        \"priority\": \"NORMAL\",\n                        \"class_b_c\": {\n                            \"gateways\": [\n                                {\n                                    \"gateway_ids\": {\n                                        \"gateway_id\": gateway\n                                    }\n                                }\n                            ]\n                        }\n                    }\n                ]\n            }\n        }\n    }\n}\n\nif (network == \"actility\"){\n      msg = \n      {\n        payload : {\n            \"DevEUI_downlink\": {\n     \t\t\"DevEUI\": deveui,\n     \t\t\"FPort\": port,\n     \t\t\"payload_hex\": command,\n    \t\t\"Confirmed\": \"0\", \t\t\n    \t\t\"FlushDownlinkQueue\": \"1\"    \n\t        }\n        }\n      }\n}\n\nreturn msg;\n\n/* ou \n{\n    \"downlinks\": [\n        {\n            \"f_port\": 15,\n            \"frm_payload\": \"AQ==\",\n            \"priority\": \"NORMAL\",\n            \"class_b_c\": {\n                \"gateways\": [\n                    {\n                        \"gateway_ids\": {\n                            \"gateway_id\": \"strataggem-ecosignal-03\"\n                        }\n                    }\n                ]\n            }\n        }\n    ]\n}\n*/\n\n\n\n\n\n\n\n\n\n\n","outputs":1,"noerr":0,"initialize":"","finalize":"","libs":[],"x":280,"y":1520,"wires":[["9aaf131c11fc1412"]]},{"id":"f62ea5e55023b2a4","type":"ui_form","z":"bb32b3705303fb88","name":"Downlink","label":"","group":"5c1b38e3407d4958","order":4,"width":8,"height":1,"options":[{"label":"Port","value":"port","type":"number","required":true,"rows":null},{"label":"Payload","value":"thepayload","type":"text","required":true,"rows":null},{"label":"Send data to a Multicast group","value":"multicast","type":"checkbox","required":false,"rows":null}],"formValue":{"port":"","thepayload":"","multicast":false},"payload":"","submit":"SEND","cancel":"cancel","topic":"topic","topicType":"msg","splitLayout":"","className":"","x":100,"y":1520,"wires":[["deb4fb310f74aec9"]]},{"id":"d36fc6108f7c2399","type":"comment","z":"bb32b3705303fb88","name":"Downlink","info":"","x":100,"y":1480,"wires":[]},{"id":"77c726c70638ce24","type":"mqtt in","z":"bb32b3705303fb88","name":"MQTT Subscriber","topic":"","qos":"2","datatype":"json","broker":"d1d930618963f13f","nl":false,"rap":false,"inputs":1,"x":420,"y":1160,"wires":[["d35cfaf0866116b7","d1c48b673610b603","9bd08230a8470556","36b51d52b403c279","2933061fc991045c"]]},{"id":"a63eebb598d70dee","type":"comment","z":"bb32b3705303fb88","name":"Uplink","info":"","x":90,"y":1120,"wires":[]},{"id":"d35cfaf0866116b7","type":"function","z":"bb32b3705303fb88","name":"Uplink analyser","func":"/*\n* Title:    Multicast - Uplink analyzer\n* Autor:    Antoine AUGAGNEUR\n* Date:     march, 2022\n*\n*/\n\n\nfunction base64ToHex(base64String) {\n  // Conversion de la chaîne Base64 en un objet Buffer\n  const buffer = Buffer.from(base64String, 'base64');\n\n  // Conversion du buffer en une chaîne hexadécimale\n  const hexString = buffer.toString('hex');\n\n  return hexString;\n}\n\n\nvar upport = msg.payload.uplink_message.f_port;                     \nvar message = base64ToHex(msg.payload.uplink_message.frm_payload);              \nmsg.payload.uplink_message.frm_payload = base64ToHex(msg.payload.uplink_message.frm_payload);  \n\n\n\n// Multicast command analysis\nif (upport == \"200\"){\n    \n    message = message.toString('hex');\n\n    if (message[1] == \"0\"){\n        msg.commandtype = \"PackageVersionAns \";\n        msg.analysis = \"Pack.ID: \" + message[2] + message[3] + \" / \" + \"Pack.Ver: \" + message[4] + message[5];\n    }\n    else if(message[1] == \"1\"){\n        msg.commandtype = \"McGroupStatusAns\";\n        var buf = \"--\";\n        if (message.length > 4){buf = message[3];}\n        if (message.length > 15){buf += \"-\" + message[15];}\n        if (message.length > 27){buf += \"-\" + message[27];}\n        if (message.length > 38){buf += \"-\" + message[38];}\n        msg.analysis = \"Nb.Group: \" + message[2] + \" / \" + \"Group defined: \" + buf;\n    }\n    else if(message[1] == \"2\"){\n        msg.commandtype = \"McGroupSetupAns \";\n        var grp = parseInt(message[3].toString(16),16);\n        if (grp>3){ // bit IDerror == 1\n            msg.analysis = \"Setup group \" + grp-4 + \" aborted\";\n        }\n        else{\n            msg.analysis = \"Setup group \" + grp + \" successful\";\n        }\n    }\n    else if(message[1] == \"3\"){\n        msg.commandtype = \"McGroupDeleteAns \";\n        var grpb = parseInt(message[3].toString(16),16);\n        if (grpb>3){ // bit IDerror == 1\n            msg.analysis = \"Delete group \" + grpb-4 + \" failed\";\n        }\n        else{\n            msg.analysis = \"Delete group \" + grpb + \" successful\";\n        }\n    }\n    else if(message[1] == \"4\"){\n        msg.commandtype = \"McClassCSessionAns \";\n        var grpc = parseInt(message[3].toString(16),16);\n        if(grpc>10){\n            msg.analysis = \"Request aborted\";\n        }\n        else{\n            //var tps = message[8]+message[9]+message[6]+message[7]+message[4]+message[5];\n            //var tps_dec =  parseInt(message[1].toString(16),16); // sec\n            msg.analysis = \"C session setup group \" +  message[3];\n        }\n    }\n\n    else{\n        msg.commandtype = \"...\";\n        msg.analysis = \"...\";\n    }\n    \n}\nelse{\n    msg.commandtype = \"...\";\n    msg.analysis = \"...\";\n}\n\n\nreturn msg;\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n","outputs":1,"noerr":0,"initialize":"","finalize":"","libs":[],"x":680,"y":1340,"wires":[["866bc869c85cfbbf","6cc214a59230888c","36b51d52b403c279"]]},{"id":"d1c48b673610b603","type":"ui_text","z":"bb32b3705303fb88","group":"ce10c98edc29ac62","order":4,"width":6,"height":1,"name":"","label":"Port","format":"{{payload.uplink_message.f_port}}","layout":"row-spread","className":"","x":910,"y":1140,"wires":[]},{"id":"9bd08230a8470556","type":"ui_text","z":"bb32b3705303fb88","group":"ce10c98edc29ac62","order":3,"width":6,"height":1,"name":"","label":"Fcnt","format":"{{payload.uplink_message.f_cnt}}","layout":"row-spread","className":"","x":910,"y":1180,"wires":[]},{"id":"866bc869c85cfbbf","type":"ui_text","z":"bb32b3705303fb88","group":"ce10c98edc29ac62","order":2,"width":7,"height":2,"name":"","label":"Multicast Command type","format":"{{msg.commandtype}}","layout":"col-center","className":"","x":970,"y":1320,"wires":[]},{"id":"6cc214a59230888c","type":"ui_text","z":"bb32b3705303fb88","group":"ce10c98edc29ac62","order":5,"width":7,"height":2,"name":"","label":"Multicast Command analysis","format":"{{msg.analysis}}","layout":"col-center","className":"","x":980,"y":1360,"wires":[]},{"id":"36b51d52b403c279","type":"ui_text","z":"bb32b3705303fb88","group":"ce10c98edc29ac62","order":6,"width":6,"height":1,"name":"","label":"Payload","format":"{{payload.uplink_message.frm_payload}}","layout":"row-spread","className":"","x":920,"y":1220,"wires":[]},{"id":"9686a692b857a8df","type":"comment","z":"bb32b3705303fb88","name":"PackageVersionReq  command (0x00)","info":"","x":190,"y":520,"wires":[]},{"id":"0a8c4ae09c4e28ca","type":"ui_text","z":"bb32b3705303fb88","d":true,"group":"1f5263f560ceadfe","order":2,"width":0,"height":0,"name":"","label":"Command","format":"{{msg.payload}}","layout":"col-center","className":"","x":450,"y":560,"wires":[]},{"id":"a20f1480d3e6b8ed","type":"ui_template","z":"bb32b3705303fb88","d":true,"group":"1f5263f560ceadfe","name":"Info","order":1,"width":0,"height":0,"format":"<!DOCTYPE html>\n<html>\n<!--<head>-->\n<!--\t<title>Hello</title>-->\n\n<!--\t<h1>Hello World</h1>-->\n<!--</head>-->\n<body>\n    \n<p><em>Payload is fixed</em></p>\n\n</body>\n</html>\n","storeOutMessages":false,"fwdInMessages":false,"resendOnRefresh":false,"templateScope":"local","className":"","x":90,"y":560,"wires":[[]]},{"id":"bc4aa44e863fcbea","type":"inject","z":"bb32b3705303fb88","name":"00","props":[{"p":"payload"}],"repeat":"","crontab":"","once":true,"onceDelay":0.1,"topic":"","payload":"00","payloadType":"str","x":250,"y":560,"wires":[["0a8c4ae09c4e28ca"]]},{"id":"3fadc044612357eb","type":"comment","z":"bb32b3705303fb88","name":"McGroupStatusReq  command (0x01)","info":"","x":190,"y":620,"wires":[]},{"id":"86e700f641c64695","type":"ui_text","z":"bb32b3705303fb88","d":true,"group":"f3fc4dc65da12719","order":2,"width":0,"height":0,"name":"","label":"Command","format":"{{msg.payload}}","layout":"col-center","className":"","x":450,"y":660,"wires":[]},{"id":"99637a6971ac7997","type":"comment","z":"bb32b3705303fb88","name":"McGroupDeleteReq command (0x03)","info":"","x":190,"y":720,"wires":[]},{"id":"4581df807be40ef1","type":"ui_text","z":"bb32b3705303fb88","d":true,"group":"773407c9ade4eb7e","order":2,"width":0,"height":0,"name":"","label":"Command","format":"{{msg.payload}}","layout":"col-center","className":"","x":450,"y":760,"wires":[]},{"id":"b1c5bfd0557524dd","type":"ui_dropdown","z":"bb32b3705303fb88","d":true,"name":"","label":"Group","tooltip":"","place":"Select option","group":"f3fc4dc65da12719","order":1,"width":0,"height":0,"passthru":true,"multiple":false,"options":[{"label":"0","value":"0101","type":"str"},{"label":"1","value":"0102","type":"str"},{"label":"0-1","value":"0103","type":"str"},{"label":"2","value":"0104","type":"str"},{"label":"0-2","value":"0105","type":"str"},{"label":"1-2","value":"0106","type":"str"},{"label":"0-1-2","value":"0107","type":"str"},{"label":"3","value":"0108","type":"str"},{"label":"0-3","value":"0109","type":"str"},{"label":"1-3","value":"010A","type":"str"},{"label":"0-1-3","value":"010B","type":"str"},{"label":"2-3","value":"010C","type":"str"},{"label":"0-2-3","value":"010D","type":"str"},{"label":"1-2-3","value":"010E","type":"str"},{"label":"0-1-2-3","value":"010F","type":"str"}],"payload":"","topic":"topic","topicType":"msg","className":"","x":90,"y":660,"wires":[["86e700f641c64695"]]},{"id":"ecfeea7171b4fcad","type":"ui_dropdown","z":"bb32b3705303fb88","d":true,"name":"","label":"Group","tooltip":"","place":"Select option","group":"773407c9ade4eb7e","order":1,"width":0,"height":0,"passthru":true,"multiple":false,"options":[{"label":"0","value":"0300","type":"str"},{"label":"1","value":"0301","type":"str"},{"label":"2","value":"0302","type":"str"},{"label":"3","value":"0303","type":"str"}],"payload":"","topic":"topic","topicType":"msg","className":"","x":90,"y":760,"wires":[["4581df807be40ef1"]]},{"id":"e3f80a285a1a1f18","type":"inject","z":"bb32b3705303fb88","name":"RAZ","props":[{"p":"payload"},{"p":"topic","vt":"str"}],"repeat":"","crontab":"","once":false,"onceDelay":0.1,"topic":"","payload":"","payloadType":"str","x":770,"y":280,"wires":[["3d3b3a64d691f635","597acb4b84e08548","ec568f5ea7b1d1cf","62fa1ca49a55f1f5","baf59db38d118de2","a3613d7fcda16c70","bf4fcefd6bea97a7","d8af8ab212bf847a","7fb563b3586ed30b","0a087ad359f8a73e"]]},{"id":"bf4fcefd6bea97a7","type":"link out","z":"bb32b3705303fb88","name":"","mode":"link","links":["43002e7cf47fbef0"],"x":835,"y":380,"wires":[]},{"id":"2933061fc991045c","type":"ui_text","z":"bb32b3705303fb88","group":"ce10c98edc29ac62","order":1,"width":6,"height":1,"name":"","label":"Device ID","format":"{{payload.end_device_ids.device_id}}","layout":"row-spread","className":"","x":920,"y":1100,"wires":[]},{"id":"58182744df5a6dbf","type":"inject","z":"bb32b3705303fb88","name":"RAZ","props":[{"p":"payload"},{"p":"topic","vt":"str"}],"repeat":"","crontab":"","once":true,"onceDelay":0.1,"topic":"","payload":"","payloadType":"str","x":710,"y":1240,"wires":[["d1c48b673610b603","9bd08230a8470556","866bc869c85cfbbf","6cc214a59230888c","2933061fc991045c"]]},{"id":"e5b6a799c722988d","type":"link in","z":"bb32b3705303fb88","name":"MQTT configuration in","links":["728e4479a2eccdd2"],"x":235,"y":1160,"wires":[["77c726c70638ce24"]]}]
+[
+    {
+        "id": "3dc32134008eac65",
+        "type": "tab",
+        "label": "Dashboard configuration",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "bb32b3705303fb88",
+        "type": "tab",
+        "label": "Mutlicast dashboard (TTN)",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "f48663973273d0a3",
+        "type": "ui_group",
+        "name": "Multicast Session Generator",
+        "tab": "121f9e88659f1b47",
+        "order": 1,
+        "disp": true,
+        "width": "10",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "6981c805a4790f2a",
+        "type": "ui_group",
+        "name": "McGroupSetupReq",
+        "tab": "121f9e88659f1b47",
+        "order": 5,
+        "disp": true,
+        "width": 11,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "8be7a72d5783bb58",
+        "type": "ui_group",
+        "name": "McClassCSessionReq",
+        "tab": "121f9e88659f1b47",
+        "order": 6,
+        "disp": true,
+        "width": 10,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "5c1b38e3407d4958",
+        "type": "ui_group",
+        "name": "Downlink",
+        "tab": "121f9e88659f1b47",
+        "order": 7,
+        "disp": true,
+        "width": "8",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "ce10c98edc29ac62",
+        "type": "ui_group",
+        "name": "Last Uplink",
+        "tab": "121f9e88659f1b47",
+        "order": 8,
+        "disp": true,
+        "width": "13",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "1f5263f560ceadfe",
+        "type": "ui_group",
+        "name": "PackageVersionReq",
+        "tab": "121f9e88659f1b47",
+        "order": 2,
+        "disp": true,
+        "width": "7",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "f3fc4dc65da12719",
+        "type": "ui_group",
+        "name": "McGroupStatusReq",
+        "tab": "121f9e88659f1b47",
+        "order": 3,
+        "disp": true,
+        "width": "7",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "773407c9ade4eb7e",
+        "type": "ui_group",
+        "name": "McGroupDeleteReq",
+        "tab": "121f9e88659f1b47",
+        "order": 4,
+        "disp": true,
+        "width": "7",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "121f9e88659f1b47",
+        "type": "ui_tab",
+        "name": "Multicast",
+        "icon": "dashboard",
+        "order": 9,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "4a87ae6aae62f971",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-light",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0094CE",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#0094CE",
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#fafafa",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#1bbfff",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#0094ce",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "base-font": {
+                    "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+                }
+            },
+            "angularTheme": {
+                "primary": "indigo",
+                "accents": "blue",
+                "warn": "red",
+                "background": "grey",
+                "palette": "light"
+            }
+        },
+        "site": {
+            "name": "Node-RED Dashboard",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "lockMenu": "false",
+            "allowTempTheme": "true",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "d1d930618963f13f",
+        "type": "mqtt-broker",
+        "name": "Broker",
+        "broker": "",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": false,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    },
+    {
+        "id": "d68e7be3.88f088",
+        "type": "ui_group",
+        "name": "Forms Example",
+        "tab": "67ff17e9.83751",
+        "order": 1,
+        "disp": true,
+        "width": "8",
+        "collapse": false
+    },
+    {
+        "id": "54bca71e.4287f",
+        "type": "ui_group",
+        "name": "Form",
+        "tab": "67ff17e9.83751",
+        "order": 2,
+        "disp": true,
+        "width": "8",
+        "collapse": false
+    },
+    {
+        "id": "67ff17e9.83751",
+        "type": "ui_tab",
+        "name": "Forms Example ",
+        "icon": "home",
+        "order": 2,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "60ef1969079f6262",
+        "type": "inject",
+        "z": "3dc32134008eac65",
+        "name": "CLICK TO CONFIGURE",
+        "props": [
+            {
+                "p": "network_name",
+                "v": "ttn",
+                "vt": "str"
+            },
+            {
+                "p": "application_id_ttn",
+                "v": "",
+                "vt": "str"
+            },
+            {
+                "p": "multicast_gateway",
+                "v": "",
+                "vt": "str"
+            },
+            {
+                "p": "MQTT_broker_url",
+                "v": "",
+                "vt": "str"
+            },
+            {
+                "p": "MQTT_port",
+                "v": "1883",
+                "vt": "str"
+            },
+            {
+                "p": "MQTT_username",
+                "v": "",
+                "vt": "str"
+            },
+            {
+                "p": "MQTT_password",
+                "v": "",
+                "vt": "str"
+            },
+            {
+                "p": "MQTT_topic_to_subscribe",
+                "v": "",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 250,
+        "y": 220,
+        "wires": [
+            [
+                "e7b751a7c153f63c",
+                "0d4f733073cdbb10",
+                "87260ac2addf6e9a"
+            ]
+        ]
+    },
+    {
+        "id": "e7b751a7c153f63c",
+        "type": "function",
+        "z": "3dc32134008eac65",
+        "name": "Save configuration",
+        "func": "var application_id_ttn = global.get('application_id_ttn') || 0;\napplication_id_ttn = msg.application_id_ttn;\nglobal.set('application_id_ttn',application_id_ttn);\n\nvar gateway = global.get('gateway') || 0;\ngateway = msg.multicast_gateway;\nglobal.set('gateway',gateway);\n\nvar network = global.get('network') || 0;\nnetwork = msg.network_name;\nglobal.set('network',network);\n\nvar network_server_URL = global.get('MQTT_broker_url') || 0;\nMQTT_broker_url = msg.MQTT_broker_url;\nglobal.set('MQTT_broker_url',MQTT_broker_url);\n\n\n\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 610,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "87260ac2addf6e9a",
+        "type": "function",
+        "z": "3dc32134008eac65",
+        "name": "Topic configuration",
+        "func": "\n\n\n\n\n\nvar config_subscriber = {\n    action : \"subscribe\",\n    topic : msg.MQTT_topic_to_subscribe\n}\n\nreturn config_subscriber;\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 550,
+        "y": 300,
+        "wires": [
+            [
+                "728e4479a2eccdd2"
+            ]
+        ]
+    },
+    {
+        "id": "0d4f733073cdbb10",
+        "type": "function",
+        "z": "3dc32134008eac65",
+        "name": "Broker configuration",
+        "func": "\n\n\n\nvar broker_configuration = {\n    action : \"connect\",\n    \n    broker : {\"broker\":msg.MQTT_broker_url,\"port\":msg.MQTT_port,\"username\":msg.MQTT_username,\"password\":msg.MQTT_password},\n    \n   \n}\n\nreturn broker_configuration;\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 260,
+        "wires": [
+            [
+                "728e4479a2eccdd2"
+            ]
+        ]
+    },
+    {
+        "id": "728e4479a2eccdd2",
+        "type": "link out",
+        "z": "3dc32134008eac65",
+        "name": "MQTT configuration out",
+        "mode": "link",
+        "links": [
+            "e5b6a799c722988d"
+        ],
+        "x": 755,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "eed236789393f540",
+        "type": "ui_dropdown",
+        "z": "3dc32134008eac65",
+        "name": "CLlCK TO CONFIGURE",
+        "label": "Device-id",
+        "tooltip": "",
+        "place": "Select ",
+        "group": "5c1b38e3407d4958",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "multiple": false,
+        "options": [
+            {
+                "label": "stm32wl-multicast-1",
+                "value": "stm32wl-multicast-1",
+                "type": "str"
+            },
+            {
+                "label": "stm32wl-multicast-2",
+                "value": "stm32wl-multicast-2",
+                "type": "str"
+            },
+            {
+                "label": "Enter_your_group_id_1",
+                "value": "Enter_your_group_id_1",
+                "type": "str"
+            },
+            {
+                "label": "Enter_your_group_id_2",
+                "value": "Enter_your_group_id_2",
+                "type": "str"
+            },
+            {
+                "label": "You can add as many as you want...",
+                "value": "You can add as many as you want...",
+                "type": "str"
+            }
+        ],
+        "payload": "",
+        "topic": "topic",
+        "topicType": "msg",
+        "className": "",
+        "x": 430,
+        "y": 440,
+        "wires": [
+            [
+                "dbc2f5142f52b9f6"
+            ]
+        ]
+    },
+    {
+        "id": "dbc2f5142f52b9f6",
+        "type": "function",
+        "z": "3dc32134008eac65",
+        "name": "Save device_id ",
+        "func": "var device_id_ttn = global.get('device_id_ttn') || 0;\n\ndevice_id_ttn = msg.payload;\n\nglobal.set('device_id_ttn',device_id_ttn);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 660,
+        "y": 440,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "97e314b7406f5c64",
+        "type": "comment",
+        "z": "3dc32134008eac65",
+        "name": "Overall configuration",
+        "info": "",
+        "x": 210,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "f91cf5264dd193db",
+        "type": "inject",
+        "z": "3dc32134008eac65",
+        "name": "RAZ",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "str",
+        "x": 190,
+        "y": 440,
+        "wires": [
+            [
+                "eed236789393f540"
+            ]
+        ]
+    },
+    {
+        "id": "f16d97b482c3afff",
+        "type": "comment",
+        "z": "3dc32134008eac65",
+        "name": "Devices and multicast Groups configuration",
+        "info": "",
+        "x": 280,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "b362f16b3d6c8633",
+        "type": "comment",
+        "z": "3dc32134008eac65",
+        "name": "README FIRST",
+        "info": "You have to configure 2 nodes :\n\n1. One node in the \"Overall configuration\" section: Click on the node called \"CLICK TO CONFIGURE\" and enter all properties.\n\n2. One node in the \"Devices and multicast Groups configuration\": Click on the node called \"CLICK TO CONFIGURE\" and enter all your devices identifiers (end-devices and mutlicast groups) you created on your Network Server. For each identifer, you need to click on \"add an option\" and enter the corresponding identifier.",
+        "x": 570,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "3d3b3a64d691f635",
+        "type": "ui_text",
+        "z": "bb32b3705303fb88",
+        "group": "f48663973273d0a3",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "McAddr (big endian, to set in NS side)",
+        "format": "{{msg.McAddrBE}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1150,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "597acb4b84e08548",
+        "type": "ui_text",
+        "z": "bb32b3705303fb88",
+        "group": "f48663973273d0a3",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "McAddr (little endian, to set in command)",
+        "format": "{{msg.McAddrLE}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1160,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "ec568f5ea7b1d1cf",
+        "type": "ui_text",
+        "z": "bb32b3705303fb88",
+        "group": "f48663973273d0a3",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "McKey_encrypted",
+        "format": "{{msg.McKey_ENC}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1090,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "615a66b1ac8fce55",
+        "type": "function",
+        "z": "bb32b3705303fb88",
+        "name": "Key derivation",
+        "func": "/*\n* Title:    McKey_encrypted generator + McAddr_Generator\n* Autor:    Antoine AUGAGNEUR\n* Date:     march, 2022\n* Sources:  > randHex function from https://codepen.io/code_monk/pen/kaWvPL\n*\n*/\n\n//  random hex string generator\nvar randHex = function(len) {\n  var maxlen = 8,\n      min = Math.pow(16,Math.min(len,maxlen)-1) \n      max = Math.pow(16,Math.min(len,maxlen)) - 1,\n      n   = Math.floor( Math.random() * (max-min+1) ) + min,\n      r   = n.toString(16);\n  while ( r.length < len ) {\n     r = r + randHex( len - maxlen );\n  }\n  return r;\n};\n\n// randomly generated bigendian McKey_encrypted\nvar McKey_encrypted  = randHex(32);\n\n// randomly generated bigendian McAddr\nvar McAddr_be = randHex(8);\n\n// McAddr little endian conversion\nvar McAddr_le = McAddr_be[6]                            \n                    + McAddr_be[7]\n                    + McAddr_be[4]\n                    + McAddr_be[5]\n                    + McAddr_be[2]\n                    + McAddr_be[3]\n                    + McAddr_be[0]\n                    + McAddr_be[1];\n                    \n// ###############################################################################################################################################################\n\n/*\n* Title:    Keys derivation for LoRaWAN multicast session\n* Autor:    Antoine AUGAGNEUR\n* Date:     march, 2022\n* Sources:  > LoRaWAN Remote Multicast Setup Specification v1.0.0 (Lora Alliance)\n*           > Deciphering an EU868 LoRaWAN 1.0 OTAA Join Accept [online], available on:\n*             https://runkit.com/avbentem/deciphering-a-lorawan-otaa-join-accept           \n* \n* ## Definitions\n* Device has:   GenAppKey               ( = AppKey, according to LoRaWAN 1.1)\n* It receives:  McKey_encrypted         ( via McGroupSetupReq MAC command)\n*               McAddr                  ( via McGroupSetupReq MAC command)\n* Then,\n* McRootKey = aes128_encrypt(GenAppKey, 0x00 | pad16)\n* McKEKey = aes128_encrypt(McRootKey, 0x00 | pad16)\n* McKey = aes128_decrypt(McKey_encrypted,McKEKey)\n* And then,\n* McAppSKey = aes128_encrypt(McKey, 0x01 | McAddr | pad16)\n* McNetSKey = aes128_encrypt(McKey, 0x02 | McAddr | pad16)\n*\n* To be noted:\n* The octet order over the air for all multi-octet fields is little endian (Least significant byte is \n* sent first). As a consequence, send data used for crypto operations are in little endian too.\n* Howerver, logs device diplay them correctly.\n*\n*\n* Information:\n*           - inputs:   GenAppKey           (from node)                    \n*                       McAddr              (from node, it has to be in little endian)   \n*                       McKey_encrypted     (from node)\n*           - outputs:  McRootKey\n*                       McKEKey\n*                       McKey\n*                       McAppSKey         \n*                       McNetSKey         \n*                       \n*\n*/\n\n// Initialization vector is always zero\nvar LORA_IV = CryptoJS.enc.Hex.parse('00000000000000000000000000000000');\n\n// Encrypts the given buffer, returning another buffer.\nfunction encrypt(buffer, key) {\n    var ciphertext = CryptoJS.AES.encrypt(\n        CryptoJS.lib.WordArray.create(buffer),\n        CryptoJS.lib.WordArray.create(key),\n        {\n            mode: CryptoJS.mode.ECB,\n            iv: LORA_IV,\n            padding: CryptoJS.pad.NoPadding\n        }\n    ).ciphertext.toString(CryptoJS.enc.Hex);\n    return new Buffer(ciphertext, 'hex');\n}\n\n// ## Known data (set or generated) #########################################\n// GenAppKey (or AppKey) programmed in the device\n// var GenAppKey = 'F255B7748A00FF7C22344C3402F6356F';\nvar GenAppKey = msg.payload;\nGenAppKey = Buffer.from(GenAppKey.toString(16), 'hex');\n\n// McKey_encrypted\n// var McKey_encrypted = '6B46B8386CB3B7697B2674526E98209B';\nMcKey_encrypted = Buffer.from(McKey_encrypted.toString(16), 'hex');\n\n// McAdrr\n// var McAddr = 'F03D292B';\nMcAddr_le = Buffer.from(McAddr_le.toString(16), 'hex'); // normal address:F03D2928 --> little endian:28293DF0\n                                             \n// ## Key derivation to have McRootKey ######################################\n// McRootKey = aes128_encrypt(GenAppKey, 0x00 | pad16)\nvar sKey_root = Buffer.from('000000000000000000000000000000', 'hex');\nvar McRootKey = encrypt(Buffer.concat([Buffer.from('00','hex'),sKey_root]),GenAppKey);\n\n// ## Key derivation to have McKEKey\n// McKEKey = aes128_encrypt(McRootKey, 0x00 | pad16)\nvar sKey_ke = Buffer.from('000000000000000000000000000000', 'hex');\nvar McKEKey = encrypt(Buffer.concat([Buffer.from('00','hex'),sKey_ke]),McRootKey);\n\n// ## Key decryption to have McKey ##########################################\n// McKey = aes128_decrypt(McKey_encrypted,McKEKey)\nvar McKey = encrypt(McKey_encrypted,McKEKey);\n\n\n// ## Key derivation to have McAppsKey and McNetSKey ########################\n// McAppSKey = aes128_encrypt(McKey, 0x01 | McAddr | pad16)\nvar sKey_apps = Buffer.concat([\n                        McAddr_le,\n                        Buffer.from('00000000000000000000000', 'hex')\n                        ]);\nvar McAppSKey = encrypt(Buffer.concat([Buffer.from('01','hex'),sKey_apps]),McKey);\n\n// McNetSKey = aes128_encrypt(McKey, 0x02 | McAddr | pad16)\nvar sKey_nets = Buffer.concat([\n                        McAddr_le,\n                        Buffer.from('00000000000000000000000', 'hex')\n                        ]);\nvar McNetSKey = encrypt(Buffer.concat([Buffer.from('02','hex'),sKey_nets]),McKey);\n\n\n\n// output\n\nif (msg.payload.length == 32){\n    \n    msg.McAddrLE=McAddr_le.toString('hex');                // McAddr little endian\n    msg.McAddrBE=McAddr_be;                             // McAddr big endian\n    msg.McKey_ENC=McKey_encrypted.toString('hex');         // McKey_encrypted\n    msg.McRootKEY=McRootKey.toString('hex');               // McRootKey\n    msg.McKEKEY=McKEKey.toString('hex');                   // McKEKey\n    msg.McKEY=McKey.toString('hex');                   // McKey\n    msg.McAppSKEY=McAppSKey.toString('hex');               // McAppSKey\n    msg.McNetSKEY=McNetSKey.toString('hex');               // McNetSKey\n    \n    msg.state = \"1\";\n    \n    return msg;\n}\nelse\n{\n    msg.McAddrLE=McAddr_le.toString('hex');                // McAddr little endian\n    msg.McAddrBE=McAddr_be.toString('hex');                             // McAddr big endian\n    msg.McKey_ENC=McKey_encrypted.toString('hex');         // McKey_encrypted\n    msg.McRootKEY=\"Error. Check the GenAppKey length\";                              // McRootKey\n    msg.McKEKEY=\"Error. Check the GenAppKey length\";                                // McKEKey\n    msg.McKEY=\"Error. Check the GenAppKey length\";                   // McKey\n    msg.McAppSKEY=\"Error. Check the GenAppKey length\";                              // McAppSKey\n    msg.McNetSKEY=\"Error. Check the GenAppKey length\";                              // McNetSKey\n    msg.state = \"0\";\n    return msg;\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [
+            {
+                "var": "reverse",
+                "module": "buffer-reverse"
+            },
+            {
+                "var": "CryptoJS",
+                "module": "crypto-js"
+            },
+            {
+                "var": "nodeAesCmac",
+                "module": "node-aes-cmac"
+            }
+        ],
+        "x": 820,
+        "y": 140,
+        "wires": [
+            [
+                "e4766db5f814c4da",
+                "3d3b3a64d691f635",
+                "597acb4b84e08548",
+                "ec568f5ea7b1d1cf",
+                "62fa1ca49a55f1f5",
+                "d8af8ab212bf847a",
+                "baf59db38d118de2",
+                "7fb563b3586ed30b",
+                "0a087ad359f8a73e",
+                "a3613d7fcda16c70"
+            ]
+        ]
+    },
+    {
+        "id": "e4766db5f814c4da",
+        "type": "debug",
+        "z": "bb32b3705303fb88",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1050,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "62fa1ca49a55f1f5",
+        "type": "ui_text",
+        "z": "bb32b3705303fb88",
+        "group": "f48663973273d0a3",
+        "order": 8,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "McRootKey",
+        "format": "{{msg.McRootKEY}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1070,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "1bf3fca03ebd390d",
+        "type": "inject",
+        "z": "bb32b3705303fb88",
+        "name": "Init, empty string",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "f255b7748a00ff7c22344c3402f6356f",
+        "payloadType": "str",
+        "x": 130,
+        "y": 140,
+        "wires": [
+            [
+                "dfad66844710b2e1"
+            ]
+        ]
+    },
+    {
+        "id": "dfad66844710b2e1",
+        "type": "ui_text_input",
+        "z": "bb32b3705303fb88",
+        "name": "",
+        "label": "GenAppKey",
+        "tooltip": "",
+        "group": "f48663973273d0a3",
+        "order": 1,
+        "width": 10,
+        "height": 2,
+        "passthru": true,
+        "mode": "text",
+        "delay": "100",
+        "topic": "payload",
+        "sendOnBlur": true,
+        "className": "",
+        "topicType": "msg",
+        "x": 310,
+        "y": 140,
+        "wires": [
+            [
+                "055f6b1fc5d7114e"
+            ]
+        ]
+    },
+    {
+        "id": "4e2dee66079049d9",
+        "type": "ui_button",
+        "z": "bb32b3705303fb88",
+        "name": "",
+        "group": "f48663973273d0a3",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Generate",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "textInput",
+        "payloadType": "flow",
+        "topic": "",
+        "topicType": "str",
+        "x": 660,
+        "y": 140,
+        "wires": [
+            [
+                "615a66b1ac8fce55"
+            ]
+        ]
+    },
+    {
+        "id": "055f6b1fc5d7114e",
+        "type": "change",
+        "z": "bb32b3705303fb88",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "textInput",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 490,
+        "y": 140,
+        "wires": [
+            [
+                "4e2dee66079049d9"
+            ]
+        ]
+    },
+    {
+        "id": "d8af8ab212bf847a",
+        "type": "ui_text",
+        "z": "bb32b3705303fb88",
+        "group": "f48663973273d0a3",
+        "order": 9,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "McKEKey",
+        "format": "{{msg.McKEKEY}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1060,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "baf59db38d118de2",
+        "type": "ui_text",
+        "z": "bb32b3705303fb88",
+        "group": "f48663973273d0a3",
+        "order": 11,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "McKey",
+        "format": "{{msg.McKEY}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1050,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "7fb563b3586ed30b",
+        "type": "ui_text",
+        "z": "bb32b3705303fb88",
+        "group": "f48663973273d0a3",
+        "order": 13,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "McAppsKey",
+        "format": "{{msg.McAppSKEY}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1070,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "0a087ad359f8a73e",
+        "type": "ui_text",
+        "z": "bb32b3705303fb88",
+        "group": "f48663973273d0a3",
+        "order": 14,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "McNetsKey",
+        "format": "{{msg.McNetSKEY}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1070,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "03dca163acc7d1ed",
+        "type": "ui_text",
+        "z": "bb32b3705303fb88",
+        "group": "f48663973273d0a3",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 390,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "dd8479ebebbbfa1b",
+        "type": "inject",
+        "z": "bb32b3705303fb88",
+        "name": "GENERATED KEYS ",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "GENERATED KEYS --------------------------------------------------------",
+        "payloadType": "str",
+        "x": 160,
+        "y": 300,
+        "wires": [
+            [
+                "03dca163acc7d1ed"
+            ]
+        ]
+    },
+    {
+        "id": "c84650deedc3a8a2",
+        "type": "ui_text",
+        "z": "bb32b3705303fb88",
+        "group": "f48663973273d0a3",
+        "order": 7,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "className": "",
+        "x": 390,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "aa1d1b3b6653f1b1",
+        "type": "inject",
+        "z": "bb32b3705303fb88",
+        "name": "DERIVED KEYS",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "DERIVED KEYS ----------------------------------------------------------",
+        "payloadType": "str",
+        "x": 150,
+        "y": 340,
+        "wires": [
+            [
+                "c84650deedc3a8a2"
+            ]
+        ]
+    },
+    {
+        "id": "b2039b935ec0e3a0",
+        "type": "ui_text",
+        "z": "bb32b3705303fb88",
+        "group": "f48663973273d0a3",
+        "order": 10,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "className": "",
+        "x": 390,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "c03b80aac320911a",
+        "type": "inject",
+        "z": "bb32b3705303fb88",
+        "name": "DECRYPTED KEYS",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "DECRYPTED KEYS --------------------------------------------------------",
+        "payloadType": "str",
+        "x": 160,
+        "y": 380,
+        "wires": [
+            [
+                "b2039b935ec0e3a0"
+            ]
+        ]
+    },
+    {
+        "id": "fdd254f54f8258ca",
+        "type": "ui_text",
+        "z": "bb32b3705303fb88",
+        "group": "f48663973273d0a3",
+        "order": 12,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "className": "",
+        "x": 390,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "92dfc92db35adbb6",
+        "type": "inject",
+        "z": "bb32b3705303fb88",
+        "name": "MULTICAST SESSION KEYS",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "MULTICAST SESSION KEYS ----------------------------------------------",
+        "payloadType": "str",
+        "x": 190,
+        "y": 420,
+        "wires": [
+            [
+                "fdd254f54f8258ca"
+            ]
+        ]
+    },
+    {
+        "id": "9a0ce56203764d8d",
+        "type": "comment",
+        "z": "bb32b3705303fb88",
+        "name": "For Dashboard",
+        "info": "",
+        "x": 120,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "995d4d7ddf123e77",
+        "type": "comment",
+        "z": "bb32b3705303fb88",
+        "name": "Multicast session generator",
+        "info": "",
+        "x": 150,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "46a21d7bc927e956",
+        "type": "comment",
+        "z": "bb32b3705303fb88",
+        "name": "McGroupSetupReq (0x02)",
+        "info": "",
+        "x": 150,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "b55b5e85a5bfa22d",
+        "type": "ui_form",
+        "z": "bb32b3705303fb88",
+        "name": "McGroupSetupReq",
+        "label": "",
+        "group": "6981c805a4790f2a",
+        "order": 1,
+        "width": 11,
+        "height": 1,
+        "options": [
+            {
+                "label": "McGroupID (0 to 3)",
+                "value": "McGroupID",
+                "type": "text",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "McAddr",
+                "value": "McAddr",
+                "type": "text",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "McKey_encrypted",
+                "value": "McKey_encrypted",
+                "type": "text",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "minMcFCount (hex, 4 bytes)",
+                "value": "minMcFCount",
+                "type": "text",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "maxMcFCount (hex, 4 bytes)",
+                "value": "maxMcFCount",
+                "type": "text",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "McGroupID": "",
+            "McAddr": "",
+            "McKey_encrypted": "",
+            "minMcFCount": "",
+            "maxMcFCount": ""
+        },
+        "payload": "",
+        "submit": "Create command",
+        "cancel": "Cancel",
+        "topic": "topic",
+        "topicType": "msg",
+        "splitLayout": true,
+        "className": "",
+        "x": 130,
+        "y": 880,
+        "wires": [
+            [
+                "842929fb3b21c9d2"
+            ]
+        ]
+    },
+    {
+        "id": "842929fb3b21c9d2",
+        "type": "function",
+        "z": "bb32b3705303fb88",
+        "name": "McGroupSetupReq",
+        "func": "/*\n* Title:    Mc LoRaWAN command: McGroupSetupReq\n* Autor:    Antoine AUGAGNEUR\n* Date:     march, 2022\n* Sources:  > LoRaWAN Application Layer Clock Synchronization Specification v1.0.0 (Lora Alliance)\n*           > LoRaWAN Remote Multicast Setup Specification v1.0.0 (Lora Alliance)\n*\n* McGroupSetupReq payload:\n*          | McGroupIDHeader  | McAddr    | McKey_encrypted   | minMcFCount   | maxMcFCount   | \n*          | 1 byte           | 4 bytes   | 16 bytes          | 4 bytes       | 4 bytes       |\n*\n* McGroupSetupReq command CID: 0x02\n*\n* Information:\n*           - inputs:   McGroupID                    \n*                       McAddr              (from node, it has to be in little endian)    \n*                       McKey_encrypted     (from node)\n*                       minMcFCount\n*                       maxMcFCount\n*           - outputs:  McGroupSetupReq\n*                       minMcFCount (dec format)\n*                       maxMcFCount (dec format)\n*                       \n*                                          \n*/\n\n// McGroupIDHeader (1 byte) / 6-bits RFU + 2-bits McGroupID\nvar RFU = '0';\n// var McGroupID = '1'; // 0, 1, 2, or 3\nvar McGroupID = msg.payload.McGroupID;\nvar McGroupIDHeader = Buffer.from(RFU + McGroupID, 'hex');\n\n// McAddr (4 byte)\n// var McAddr = 'F03D292B';\nvar McAddr = msg.payload.McAddr;\nMcAddr = Buffer.from(McAddr, 'hex');\n\n// McKey_encrypted (16 bytes)\n// var McKey_encrypted = '6B46B8386CB3B7697B2674526E98209B';\nvar McKey_encrypted = msg.payload.McKey_encrypted;\nMcKey_encrypted = Buffer.from(McKey_encrypted, 'hex');\n\n// minMcFCount (4 bytes)\n// var minMcFCount = '00000000';\nvar minMcFCount = msg.payload.minMcFCount;\nminMcFCount = minMcFCount.toString(16);\nvar minMcFCount_le = minMcFCount[6]                             // little endian conversion\n                    + minMcFCount[7]\n                    + minMcFCount[4]\n                    + minMcFCount[5]\n                    + minMcFCount[2]\n                    + minMcFCount[3]\n                    + minMcFCount[0]\n                    + minMcFCount[1];\nminMcFCount_le = Buffer.from(minMcFCount_le, 'hex');\nvar minMcFCount_dec = parseInt(minMcFCount,16);                 // passage en decimal\n\n// maxMcFCount (4 bytes)\n// var maxMcFCount = '0000000A'\nvar maxMcFCount = msg.payload.maxMcFCount;\nmaxMcFCount = maxMcFCount.toString(16);\nvar maxMcFCount_le = maxMcFCount[6]                             // little endian conversion\n                    + maxMcFCount[7]\n                    + maxMcFCount[4]\n                    + maxMcFCount[5]\n                    + maxMcFCount[2]\n                    + maxMcFCount[3]\n                    + maxMcFCount[0]\n                    + maxMcFCount[1];\nmaxMcFCount_le = Buffer.from(maxMcFCount_le, 'hex');\nvar maxMcFCount_dec = parseInt(maxMcFCount,16);                 // passage en decimal\n\n\n// McGroupSetupReq\nvar Command_02 = Buffer.from('02', 'hex');\nvar McGroupSetupReq = Buffer.concat([\n                        Command_02,\n                        McGroupIDHeader,\n                        McAddr,\n                        McKey_encrypted,\n                        minMcFCount_le,\n                        maxMcFCount_le                        \n                        ]);\n\n// ############################################################################\n\n\n//msg.mcaddrlittle = McAddr.toString('hex');\n//msg.mckeyencrypted = McKey_encrypted.toString('hex');\nmsg.McGroupSetupReq = McGroupSetupReq.toString('hex');\n\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 880,
+        "wires": [
+            [
+                "15835c29705d6cd1"
+            ]
+        ]
+    },
+    {
+        "id": "15835c29705d6cd1",
+        "type": "ui_text",
+        "z": "bb32b3705303fb88",
+        "group": "6981c805a4790f2a",
+        "order": 2,
+        "width": 11,
+        "height": 1,
+        "name": "",
+        "label": "McGroupSetupReq command",
+        "format": "{{msg.McGroupSetupReq}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 630,
+        "y": 880,
+        "wires": []
+    },
+    {
+        "id": "a43f2f12145dd71b",
+        "type": "comment",
+        "z": "bb32b3705303fb88",
+        "name": "McClassCSessionReq (0x04)",
+        "info": "",
+        "x": 160,
+        "y": 980,
+        "wires": []
+    },
+    {
+        "id": "f45068960799ca69",
+        "type": "ui_form",
+        "z": "bb32b3705303fb88",
+        "name": "McClassCSessionReq ",
+        "label": "",
+        "group": "8be7a72d5783bb58",
+        "order": 1,
+        "width": 10,
+        "height": 1,
+        "options": [
+            {
+                "label": "McGroupID (0 to 3)",
+                "value": "McGroupID",
+                "type": "text",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "SessionTime (date)",
+                "value": "SessionTime_date",
+                "type": "date",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "SessionTime (time)",
+                "value": "SessionTime_time",
+                "type": "time",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "TimeOut (0 to 15)",
+                "value": "TimeOut",
+                "type": "text",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Downlink Frequency in Hz (e.g.: 869525000)",
+                "value": "DLFreq",
+                "type": "text",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "DataRate (e.g.: 3)",
+                "value": "DR",
+                "type": "text",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "McGroupID": "",
+            "SessionTime_date": "",
+            "SessionTime_time": "",
+            "TimeOut": "",
+            "DLFreq": "",
+            "DR": ""
+        },
+        "payload": "",
+        "submit": "Create command",
+        "cancel": "Cancel",
+        "topic": "topic",
+        "topicType": "msg",
+        "splitLayout": true,
+        "className": "",
+        "x": 140,
+        "y": 1020,
+        "wires": [
+            [
+                "f7e2c4db026753f9"
+            ]
+        ]
+    },
+    {
+        "id": "f7e2c4db026753f9",
+        "type": "function",
+        "z": "bb32b3705303fb88",
+        "name": "McClassCSessionReq",
+        "func": "/*\n* Title:    Mc LoRaWAN command: McClassCSessionReq\n* Autor:    Antoine AUGAGNEUR\n* Date:     march, 2022\n* Sources:  > LoRaWAN Application Layer Clock Synchronization Specification v1.0.0 (Lora Alliance)\n*           > LoRaWAN Remote Multicast Setup Specification v1.0.0 (Lora Alliance)\n*\n* McClassCSessionReq payload:\n*          | McGroupIDHeader  | SessionTime     | SessionTimeOut    | DLFrequ   | DR        | \n*          | 1 byte           | 4 bytes         | 1 byte            | 3 bytes   | 1 byte    |\n*\n* McClassCSessionReq command CID: 0x04\n*\n* Information:\n*           - inputs:   McGroupID           \n*                       SessionTime (Y,M,D,H,M,S)              \n*                       TimeOut\n*                       DLFreq\n*                       DR\n*           - outputs:  McClassCSessionReq\n*                       Session Time (date format)\n*                       SessionTimeOut (date format)\n*                                          \n*/\n\n//  ## Date calculation\n// GPS origin\nvar Origin = new Date('1980-01-06 00:00:00');\n// Desired date\nvar Desired_date = Date.parse(msg.payload.SessionTime_date);        // Y, M, D // \"parse\" turns the date into the number of ms passed since 1970-01-01.\nvar Desired_time = Date.parse(msg.payload.SessionTime_time);        // H, M\n\n// Difference calculation\nvar offset_time = Date.parse('1970-01-01 00:00:00');\nvar Desired = Desired_date + Desired_time - offset_time - Origin;   // time ( = hours and minuts) is set with an offset of 1970-01-01. So, I take the offset away.\nDesired=Desired+7200000;    // 2 hours are added to synch with our time (UTC+01). Added twice because there are a Date(Y,M,D) setup AND a time (H,M) setup.\nvar Diff = Desired/1000;      // difference in seconds\n\n// RFU (multiple use)\nvar RFU = '0';\n\n\n// ## McClassCSessionReq definition -------------------------------------------------------------\n// McGroupIDHeader (1 byte)\nvar McGroupID = msg.payload.McGroupID;                                              // To set ! (0,1,2 or 3)\nvar McGroupIDHeader = Buffer.from(RFU + McGroupID.toString(10), 'hex');\n\n// Session Time (4 bytes)\nvar SessionTime = Diff.toString(16);       // hex to string conversion\nvar SessionTime_le = SessionTime[6]        // little endian conversion\n                    + SessionTime[7]\n                    + SessionTime[4]\n                    + SessionTime[5]\n                    + SessionTime[2]\n                    + SessionTime[3]\n                    + SessionTime[0]\n                    + SessionTime[1];\nSessionTime_le = Buffer.from(SessionTime_le, 'hex');\n\n// SessionTimeOut \nvar TimeOut_r = msg.payload.TimeOut;                                                     // To set ! (0 --> 15)\nvar TimeOut = parseInt(TimeOut_r,10);   \nvar TimeOut_hex = parseInt(TimeOut.toString(16), 16);\nvar TimeOutSec = 2**TimeOut; // 2^TimeOut\nvar SessionTimeOut = Buffer.from(RFU + TimeOut_hex.toString(16), 'hex');\n\n// DLFreq (3 bytes)\nvar freq_r = msg.payload.DLFreq;\nvar freq = parseInt(freq_r,10);                                               // To set ! \nvar freq_hex = parseInt((freq/100).toString(16), 16);       // dec to hex conversion\nvar freq_hex_str = freq_hex.toString(16);                   // hex to string conversion\nvar freq_hex_str_le = freq_hex_str[4]                       // little endian conversion\n                    + freq_hex_str[5]\n                    + freq_hex_str[2]\n                    + freq_hex_str[3]\n                    + freq_hex_str[0]\n                    + freq_hex_str[1];\nfreq_hex_str_le = Buffer.from(freq_hex_str_le, 'hex');\n\n// DR (1 byte)\nvar DR_r = msg.payload.DR;                                                         // To set ! \nvar DR = parseInt(DR_r,10);\nvar DR_hex = parseInt(DR.toString(16), 16);                         // dec to hex conversion\nvar DR_hex_str = Buffer.from('0' + DR_hex.toString(16), 'hex');     // hex to string conversion\nDR_hex_str = Buffer.from(DR_hex_str, 'hex');\n\n// McClassCSessionReq\nvar Command_04 = Buffer.from('04', 'hex');\n// var McClassCSessionReq = Command + McGroupIDHeader + SessionTime_le + SessionTimeOut + freq_hex_str_le + DR_hex_str;\n\nvar McClassCSessionReq = Buffer.concat([\n                        Command_04,\n                        McGroupIDHeader,\n                        SessionTime_le,\n                        SessionTimeOut,\n                        freq_hex_str_le,\n                        DR_hex_str                        \n                        ]);\n                        \n                        \n\n\n\n\nmsg.desiredtime = Diff;\nmsg.McClassCSessionReq_command = McClassCSessionReq.toString('hex');\n\n\nreturn msg;\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 1020,
+        "wires": [
+            [
+                "e3d318d73537cfa7"
+            ]
+        ]
+    },
+    {
+        "id": "e3d318d73537cfa7",
+        "type": "ui_text",
+        "z": "bb32b3705303fb88",
+        "group": "8be7a72d5783bb58",
+        "order": 2,
+        "width": 10,
+        "height": 1,
+        "name": "",
+        "label": "McClassCSessionReq command",
+        "format": "{{msg.McClassCSessionReq_command}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 620,
+        "y": 1020,
+        "wires": []
+    },
+    {
+        "id": "a3613d7fcda16c70",
+        "type": "ui_text",
+        "z": "bb32b3705303fb88",
+        "group": "f48663973273d0a3",
+        "order": 15,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "McAddr ( = DevAddr of the multicast group)",
+        "format": "{{msg.McAddrBE}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1170,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "9aaf131c11fc1412",
+        "type": "mqtt out",
+        "z": "bb32b3705303fb88",
+        "name": "MQTT Publisher",
+        "topic": "",
+        "qos": "2",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "d1d930618963f13f",
+        "x": 500,
+        "y": 1520,
+        "wires": []
+    },
+    {
+        "id": "deb4fb310f74aec9",
+        "type": "function",
+        "z": "bb32b3705303fb88",
+        "name": "Downlink",
+        "func": "\nvar topic_actility = \"mqtt/things/\" + deveui + \"/downlink\";  \n\nvar network = global.get('network');\nvar gateway = global.get('gateway');\nvar application_id_ttn = global.get('application_id_ttn');\nvar device_id_ttn = global.get('device_id_ttn');\nvar topic_ttn_downlink_device = \"v3/\" + application_id_ttn + \"/devices/\" + device_id_ttn + \"/down/replace\";  \nvar topic_ttn_downlink_multicast = \"v3/\" + application_id_ttn + \"/devices/\" + device_id_ttn + \"/down/replace\";\n\n\n\n// McGroupIDHeader (1 byte)\nvar command = hexToBase64(msg.payload.thepayload);   \nvar deveui = msg.payload.deveui;\nvar port = msg.payload.port;\nvar multicast = msg.payload.multicast;\n\n\nfunction hexToBase64(hexString) {\n  // Conversion de la chaîne hexadécimale en un tableau d'octets\n  const bytes = Buffer.from(hexString, 'hex');\n\n  // Conversion des octets en base64\n  const base64String = bytes.toString('base64');\n\n  return base64String;\n}\n\n\n\n\n\n\n\nif (network == \"ttn\"){\n    if (multicast == false){\n       /**** Downlink to a device ***/\n        msg = \n        {\n            topic : topic_ttn_downlink_device,\n            \n            payload : {   \n                'downlinks': [{\n                    \"f_port\": port,\n                \t\"frm_payload\": command,\n                \t\"priority\": \"NORMAL\"\n                }]\n            }\n        }  \n    }\n    else{\n        /**** Downlink to a Multicast a Group ***/\n         msg = \n        {\n            topic : topic_ttn_downlink_multicast,\n            \n            payload : {\n                \"downlinks\": [\n                    {\n                        \"f_port\": port,\n                        \"frm_payload\": command,\n                        \"priority\": \"NORMAL\",\n                        \"class_b_c\": {\n                            \"gateways\": [\n                                {\n                                    \"gateway_ids\": {\n                                        \"gateway_id\": gateway\n                                    }\n                                }\n                            ]\n                        }\n                    }\n                ]\n            }\n        }\n    }\n}\n\nif (network == \"actility\"){\n      msg = \n      {\n        payload : {\n            \"DevEUI_downlink\": {\n     \t\t\"DevEUI\": deveui,\n     \t\t\"FPort\": port,\n     \t\t\"payload_hex\": command,\n    \t\t\"Confirmed\": \"0\", \t\t\n    \t\t\"FlushDownlinkQueue\": \"1\"    \n\t        }\n        }\n      }\n}\n\nreturn msg;\n\n/* ou \n{\n    \"downlinks\": [\n        {\n            \"f_port\": 15,\n            \"frm_payload\": \"AQ==\",\n            \"priority\": \"NORMAL\",\n            \"class_b_c\": {\n                \"gateways\": [\n                    {\n                        \"gateway_ids\": {\n                            \"gateway_id\": \"strataggem-ecosignal-03\"\n                        }\n                    }\n                ]\n            }\n        }\n    ]\n}\n*/\n\n\n\n\n\n\n\n\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 1520,
+        "wires": [
+            [
+                "9aaf131c11fc1412"
+            ]
+        ]
+    },
+    {
+        "id": "f62ea5e55023b2a4",
+        "type": "ui_form",
+        "z": "bb32b3705303fb88",
+        "name": "Downlink",
+        "label": "",
+        "group": "5c1b38e3407d4958",
+        "order": 4,
+        "width": 8,
+        "height": 1,
+        "options": [
+            {
+                "label": "Port",
+                "value": "port",
+                "type": "number",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Payload",
+                "value": "thepayload",
+                "type": "text",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Send data to a Multicast group",
+                "value": "multicast",
+                "type": "checkbox",
+                "required": false,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "port": "",
+            "thepayload": "",
+            "multicast": false
+        },
+        "payload": "",
+        "submit": "SEND",
+        "cancel": "cancel",
+        "topic": "topic",
+        "topicType": "msg",
+        "splitLayout": "",
+        "className": "",
+        "x": 100,
+        "y": 1520,
+        "wires": [
+            [
+                "deb4fb310f74aec9"
+            ]
+        ]
+    },
+    {
+        "id": "d36fc6108f7c2399",
+        "type": "comment",
+        "z": "bb32b3705303fb88",
+        "name": "Downlink",
+        "info": "",
+        "x": 100,
+        "y": 1480,
+        "wires": []
+    },
+    {
+        "id": "77c726c70638ce24",
+        "type": "mqtt in",
+        "z": "bb32b3705303fb88",
+        "name": "MQTT Subscriber",
+        "topic": "",
+        "qos": "2",
+        "datatype": "json",
+        "broker": "d1d930618963f13f",
+        "nl": false,
+        "rap": false,
+        "inputs": 1,
+        "x": 420,
+        "y": 1160,
+        "wires": [
+            [
+                "d35cfaf0866116b7",
+                "d1c48b673610b603",
+                "9bd08230a8470556",
+                "36b51d52b403c279",
+                "2933061fc991045c"
+            ]
+        ]
+    },
+    {
+        "id": "a63eebb598d70dee",
+        "type": "comment",
+        "z": "bb32b3705303fb88",
+        "name": "Uplink",
+        "info": "",
+        "x": 90,
+        "y": 1120,
+        "wires": []
+    },
+    {
+        "id": "d35cfaf0866116b7",
+        "type": "function",
+        "z": "bb32b3705303fb88",
+        "name": "Uplink analyser",
+        "func": "/*\n* Title:    Multicast - Uplink analyzer\n* Autor:    Antoine AUGAGNEUR\n* Date:     march, 2022\n*\n*/\n\n\nfunction base64ToHex(base64String) {\n  // Conversion de la chaîne Base64 en un objet Buffer\n  const buffer = Buffer.from(base64String, 'base64');\n\n  // Conversion du buffer en une chaîne hexadécimale\n  const hexString = buffer.toString('hex');\n\n  return hexString;\n}\n\n\nvar upport = msg.payload.uplink_message.f_port;                     \nvar message = base64ToHex(msg.payload.uplink_message.frm_payload);              \nmsg.payload.uplink_message.frm_payload = base64ToHex(msg.payload.uplink_message.frm_payload);  \n\n\n\n// Multicast command analysis\nif (upport == \"200\"){\n    \n    message = message.toString('hex');\n\n    if (message[1] == \"0\"){\n        msg.commandtype = \"PackageVersionAns \";\n        msg.analysis = \"Pack.ID: \" + message[2] + message[3] + \" / \" + \"Pack.Ver: \" + message[4] + message[5];\n    }\n    else if(message[1] == \"1\"){\n        msg.commandtype = \"McGroupStatusAns\";\n        var buf = \"--\";\n        if (message.length > 4){buf = message[3];}\n        if (message.length > 15){buf += \"-\" + message[15];}\n        if (message.length > 27){buf += \"-\" + message[27];}\n        if (message.length > 38){buf += \"-\" + message[38];}\n        msg.analysis = \"Nb.Group: \" + message[2] + \" / \" + \"Group defined: \" + buf;\n    }\n    else if(message[1] == \"2\"){\n        msg.commandtype = \"McGroupSetupAns \";\n        var grp = parseInt(message[3].toString(16),16);\n        if (grp>3){ // bit IDerror == 1\n            msg.analysis = \"Setup group \" + grp-4 + \" aborted\";\n        }\n        else{\n            msg.analysis = \"Setup group \" + grp + \" successful\";\n        }\n    }\n    else if(message[1] == \"3\"){\n        msg.commandtype = \"McGroupDeleteAns \";\n        var grpb = parseInt(message[3].toString(16),16);\n        if (grpb>3){ // bit IDerror == 1\n            msg.analysis = \"Delete group \" + grpb-4 + \" failed\";\n        }\n        else{\n            msg.analysis = \"Delete group \" + grpb + \" successful\";\n        }\n    }\n    else if(message[1] == \"4\"){\n        msg.commandtype = \"McClassCSessionAns \";\n        var grpc = parseInt(message[3].toString(16),16);\n        if(grpc>10){\n            msg.analysis = \"Request aborted\";\n        }\n        else{\n            //var tps = message[8]+message[9]+message[6]+message[7]+message[4]+message[5];\n            //var tps_dec =  parseInt(message[1].toString(16),16); // sec\n            msg.analysis = \"C session setup group \" +  message[3];\n        }\n    }\n\n    else{\n        msg.commandtype = \"...\";\n        msg.analysis = \"...\";\n    }\n    \n}\nelse{\n    msg.commandtype = \"...\";\n    msg.analysis = \"...\";\n}\n\n\nreturn msg;\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 680,
+        "y": 1340,
+        "wires": [
+            [
+                "866bc869c85cfbbf",
+                "6cc214a59230888c",
+                "36b51d52b403c279"
+            ]
+        ]
+    },
+    {
+        "id": "d1c48b673610b603",
+        "type": "ui_text",
+        "z": "bb32b3705303fb88",
+        "group": "ce10c98edc29ac62",
+        "order": 4,
+        "width": 6,
+        "height": 1,
+        "name": "",
+        "label": "Port",
+        "format": "{{payload.uplink_message.f_port}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 910,
+        "y": 1140,
+        "wires": []
+    },
+    {
+        "id": "9bd08230a8470556",
+        "type": "ui_text",
+        "z": "bb32b3705303fb88",
+        "group": "ce10c98edc29ac62",
+        "order": 3,
+        "width": 6,
+        "height": 1,
+        "name": "",
+        "label": "Fcnt",
+        "format": "{{payload.uplink_message.f_cnt}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 910,
+        "y": 1180,
+        "wires": []
+    },
+    {
+        "id": "866bc869c85cfbbf",
+        "type": "ui_text",
+        "z": "bb32b3705303fb88",
+        "group": "ce10c98edc29ac62",
+        "order": 2,
+        "width": 7,
+        "height": 2,
+        "name": "",
+        "label": "Multicast Command type",
+        "format": "{{msg.commandtype}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 970,
+        "y": 1320,
+        "wires": []
+    },
+    {
+        "id": "6cc214a59230888c",
+        "type": "ui_text",
+        "z": "bb32b3705303fb88",
+        "group": "ce10c98edc29ac62",
+        "order": 5,
+        "width": 7,
+        "height": 2,
+        "name": "",
+        "label": "Multicast Command analysis",
+        "format": "{{msg.analysis}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 980,
+        "y": 1360,
+        "wires": []
+    },
+    {
+        "id": "36b51d52b403c279",
+        "type": "ui_text",
+        "z": "bb32b3705303fb88",
+        "group": "ce10c98edc29ac62",
+        "order": 6,
+        "width": 6,
+        "height": 1,
+        "name": "",
+        "label": "Payload",
+        "format": "{{payload.uplink_message.frm_payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 920,
+        "y": 1220,
+        "wires": []
+    },
+    {
+        "id": "9686a692b857a8df",
+        "type": "comment",
+        "z": "bb32b3705303fb88",
+        "name": "PackageVersionReq  command (0x00)",
+        "info": "",
+        "x": 190,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "0a8c4ae09c4e28ca",
+        "type": "ui_text",
+        "z": "bb32b3705303fb88",
+        "d": true,
+        "group": "1f5263f560ceadfe",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Command",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 450,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "a20f1480d3e6b8ed",
+        "type": "ui_template",
+        "z": "bb32b3705303fb88",
+        "d": true,
+        "group": "1f5263f560ceadfe",
+        "name": "Info",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "format": "<!DOCTYPE html>\n<html>\n<!--<head>-->\n<!--\t<title>Hello</title>-->\n\n<!--\t<h1>Hello World</h1>-->\n<!--</head>-->\n<body>\n    \n<p><em>Payload is fixed</em></p>\n\n</body>\n</html>\n",
+        "storeOutMessages": false,
+        "fwdInMessages": false,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "className": "",
+        "x": 90,
+        "y": 560,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "bc4aa44e863fcbea",
+        "type": "inject",
+        "z": "bb32b3705303fb88",
+        "name": "00",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "00",
+        "payloadType": "str",
+        "x": 250,
+        "y": 560,
+        "wires": [
+            [
+                "0a8c4ae09c4e28ca"
+            ]
+        ]
+    },
+    {
+        "id": "3fadc044612357eb",
+        "type": "comment",
+        "z": "bb32b3705303fb88",
+        "name": "McGroupStatusReq  command (0x01)",
+        "info": "",
+        "x": 190,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "86e700f641c64695",
+        "type": "ui_text",
+        "z": "bb32b3705303fb88",
+        "d": true,
+        "group": "f3fc4dc65da12719",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Command",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 450,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "99637a6971ac7997",
+        "type": "comment",
+        "z": "bb32b3705303fb88",
+        "name": "McGroupDeleteReq command (0x03)",
+        "info": "",
+        "x": 190,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "4581df807be40ef1",
+        "type": "ui_text",
+        "z": "bb32b3705303fb88",
+        "d": true,
+        "group": "773407c9ade4eb7e",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Command",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 450,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "b1c5bfd0557524dd",
+        "type": "ui_dropdown",
+        "z": "bb32b3705303fb88",
+        "d": true,
+        "name": "",
+        "label": "Group",
+        "tooltip": "",
+        "place": "Select option",
+        "group": "f3fc4dc65da12719",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "multiple": false,
+        "options": [
+            {
+                "label": "0",
+                "value": "0101",
+                "type": "str"
+            },
+            {
+                "label": "1",
+                "value": "0102",
+                "type": "str"
+            },
+            {
+                "label": "0-1",
+                "value": "0103",
+                "type": "str"
+            },
+            {
+                "label": "2",
+                "value": "0104",
+                "type": "str"
+            },
+            {
+                "label": "0-2",
+                "value": "0105",
+                "type": "str"
+            },
+            {
+                "label": "1-2",
+                "value": "0106",
+                "type": "str"
+            },
+            {
+                "label": "0-1-2",
+                "value": "0107",
+                "type": "str"
+            },
+            {
+                "label": "3",
+                "value": "0108",
+                "type": "str"
+            },
+            {
+                "label": "0-3",
+                "value": "0109",
+                "type": "str"
+            },
+            {
+                "label": "1-3",
+                "value": "010A",
+                "type": "str"
+            },
+            {
+                "label": "0-1-3",
+                "value": "010B",
+                "type": "str"
+            },
+            {
+                "label": "2-3",
+                "value": "010C",
+                "type": "str"
+            },
+            {
+                "label": "0-2-3",
+                "value": "010D",
+                "type": "str"
+            },
+            {
+                "label": "1-2-3",
+                "value": "010E",
+                "type": "str"
+            },
+            {
+                "label": "0-1-2-3",
+                "value": "010F",
+                "type": "str"
+            }
+        ],
+        "payload": "",
+        "topic": "topic",
+        "topicType": "msg",
+        "className": "",
+        "x": 90,
+        "y": 660,
+        "wires": [
+            [
+                "86e700f641c64695"
+            ]
+        ]
+    },
+    {
+        "id": "ecfeea7171b4fcad",
+        "type": "ui_dropdown",
+        "z": "bb32b3705303fb88",
+        "d": true,
+        "name": "",
+        "label": "Group",
+        "tooltip": "",
+        "place": "Select option",
+        "group": "773407c9ade4eb7e",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "multiple": false,
+        "options": [
+            {
+                "label": "0",
+                "value": "0300",
+                "type": "str"
+            },
+            {
+                "label": "1",
+                "value": "0301",
+                "type": "str"
+            },
+            {
+                "label": "2",
+                "value": "0302",
+                "type": "str"
+            },
+            {
+                "label": "3",
+                "value": "0303",
+                "type": "str"
+            }
+        ],
+        "payload": "",
+        "topic": "topic",
+        "topicType": "msg",
+        "className": "",
+        "x": 90,
+        "y": 760,
+        "wires": [
+            [
+                "4581df807be40ef1"
+            ]
+        ]
+    },
+    {
+        "id": "e3f80a285a1a1f18",
+        "type": "inject",
+        "z": "bb32b3705303fb88",
+        "name": "RAZ",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "str",
+        "x": 770,
+        "y": 280,
+        "wires": [
+            [
+                "3d3b3a64d691f635",
+                "597acb4b84e08548",
+                "ec568f5ea7b1d1cf",
+                "62fa1ca49a55f1f5",
+                "baf59db38d118de2",
+                "a3613d7fcda16c70",
+                "bf4fcefd6bea97a7",
+                "d8af8ab212bf847a",
+                "7fb563b3586ed30b",
+                "0a087ad359f8a73e"
+            ]
+        ]
+    },
+    {
+        "id": "bf4fcefd6bea97a7",
+        "type": "link out",
+        "z": "bb32b3705303fb88",
+        "name": "",
+        "mode": "link",
+        "links": [
+            "43002e7cf47fbef0"
+        ],
+        "x": 835,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "2933061fc991045c",
+        "type": "ui_text",
+        "z": "bb32b3705303fb88",
+        "group": "ce10c98edc29ac62",
+        "order": 1,
+        "width": 6,
+        "height": 1,
+        "name": "",
+        "label": "Device ID",
+        "format": "{{payload.end_device_ids.device_id}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 920,
+        "y": 1100,
+        "wires": []
+    },
+    {
+        "id": "58182744df5a6dbf",
+        "type": "inject",
+        "z": "bb32b3705303fb88",
+        "name": "RAZ",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "str",
+        "x": 710,
+        "y": 1240,
+        "wires": [
+            [
+                "d1c48b673610b603",
+                "9bd08230a8470556",
+                "866bc869c85cfbbf",
+                "6cc214a59230888c",
+                "2933061fc991045c"
+            ]
+        ]
+    },
+    {
+        "id": "e5b6a799c722988d",
+        "type": "link in",
+        "z": "bb32b3705303fb88",
+        "name": "MQTT configuration in",
+        "links": [
+            "728e4479a2eccdd2"
+        ],
+        "x": 235,
+        "y": 1160,
+        "wires": [
+            [
+                "77c726c70638ce24"
+            ]
+        ]
+    }
+]
