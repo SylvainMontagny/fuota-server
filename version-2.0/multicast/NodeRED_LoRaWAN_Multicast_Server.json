@@ -1,527 +1,11 @@
 [
     {
-        "id": "3dc32134008eac65",
-        "type": "tab",
-        "label": "Dashboard configuration",
-        "disabled": false,
-        "info": "",
-        "env": []
-    },
-    {
         "id": "bb32b3705303fb88",
         "type": "tab",
-        "label": "Mutlicast dashboard (TTN)",
+        "label": "Multicast dashboard (TTN)",
         "disabled": false,
         "info": "",
         "env": []
-    },
-    {
-        "id": "f48663973273d0a3",
-        "type": "ui_group",
-        "name": "Multicast Session Generator",
-        "tab": "121f9e88659f1b47",
-        "order": 1,
-        "disp": true,
-        "width": "10",
-        "collapse": false,
-        "className": ""
-    },
-    {
-        "id": "6981c805a4790f2a",
-        "type": "ui_group",
-        "name": "McGroupSetupReq",
-        "tab": "121f9e88659f1b47",
-        "order": 5,
-        "disp": true,
-        "width": 11,
-        "collapse": false,
-        "className": ""
-    },
-    {
-        "id": "8be7a72d5783bb58",
-        "type": "ui_group",
-        "name": "McClassCSessionReq",
-        "tab": "121f9e88659f1b47",
-        "order": 6,
-        "disp": true,
-        "width": 10,
-        "collapse": false,
-        "className": ""
-    },
-    {
-        "id": "5c1b38e3407d4958",
-        "type": "ui_group",
-        "name": "Downlink",
-        "tab": "121f9e88659f1b47",
-        "order": 7,
-        "disp": true,
-        "width": "8",
-        "collapse": false,
-        "className": ""
-    },
-    {
-        "id": "ce10c98edc29ac62",
-        "type": "ui_group",
-        "name": "Last Uplink",
-        "tab": "121f9e88659f1b47",
-        "order": 8,
-        "disp": true,
-        "width": "13",
-        "collapse": false,
-        "className": ""
-    },
-    {
-        "id": "1f5263f560ceadfe",
-        "type": "ui_group",
-        "name": "PackageVersionReq",
-        "tab": "121f9e88659f1b47",
-        "order": 2,
-        "disp": true,
-        "width": "7",
-        "collapse": false,
-        "className": ""
-    },
-    {
-        "id": "f3fc4dc65da12719",
-        "type": "ui_group",
-        "name": "McGroupStatusReq",
-        "tab": "121f9e88659f1b47",
-        "order": 3,
-        "disp": true,
-        "width": "7",
-        "collapse": false,
-        "className": ""
-    },
-    {
-        "id": "773407c9ade4eb7e",
-        "type": "ui_group",
-        "name": "McGroupDeleteReq",
-        "tab": "121f9e88659f1b47",
-        "order": 4,
-        "disp": true,
-        "width": "7",
-        "collapse": false,
-        "className": ""
-    },
-    {
-        "id": "121f9e88659f1b47",
-        "type": "ui_tab",
-        "name": "Multicast",
-        "icon": "dashboard",
-        "order": 9,
-        "disabled": false,
-        "hidden": false
-    },
-    {
-        "id": "4a87ae6aae62f971",
-        "type": "ui_base",
-        "theme": {
-            "name": "theme-light",
-            "lightTheme": {
-                "default": "#0094CE",
-                "baseColor": "#0094CE",
-                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
-                "edited": true,
-                "reset": false
-            },
-            "darkTheme": {
-                "default": "#097479",
-                "baseColor": "#097479",
-                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
-                "edited": false
-            },
-            "customTheme": {
-                "name": "Untitled Theme 1",
-                "default": "#4B7930",
-                "baseColor": "#4B7930",
-                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
-            },
-            "themeState": {
-                "base-color": {
-                    "default": "#0094CE",
-                    "value": "#0094CE",
-                    "edited": false
-                },
-                "page-titlebar-backgroundColor": {
-                    "value": "#0094CE",
-                    "edited": false
-                },
-                "page-backgroundColor": {
-                    "value": "#fafafa",
-                    "edited": false
-                },
-                "page-sidebar-backgroundColor": {
-                    "value": "#ffffff",
-                    "edited": false
-                },
-                "group-textColor": {
-                    "value": "#1bbfff",
-                    "edited": false
-                },
-                "group-borderColor": {
-                    "value": "#ffffff",
-                    "edited": false
-                },
-                "group-backgroundColor": {
-                    "value": "#ffffff",
-                    "edited": false
-                },
-                "widget-textColor": {
-                    "value": "#111111",
-                    "edited": false
-                },
-                "widget-backgroundColor": {
-                    "value": "#0094ce",
-                    "edited": false
-                },
-                "widget-borderColor": {
-                    "value": "#ffffff",
-                    "edited": false
-                },
-                "base-font": {
-                    "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
-                }
-            },
-            "angularTheme": {
-                "primary": "indigo",
-                "accents": "blue",
-                "warn": "red",
-                "background": "grey",
-                "palette": "light"
-            }
-        },
-        "site": {
-            "name": "Node-RED Dashboard",
-            "hideToolbar": "false",
-            "allowSwipe": "false",
-            "lockMenu": "false",
-            "allowTempTheme": "true",
-            "dateFormat": "DD/MM/YYYY",
-            "sizes": {
-                "sx": 48,
-                "sy": 48,
-                "gx": 6,
-                "gy": 6,
-                "cx": 6,
-                "cy": 6,
-                "px": 0,
-                "py": 0
-            }
-        }
-    },
-    {
-        "id": "d1d930618963f13f",
-        "type": "mqtt-broker",
-        "name": "Broker",
-        "broker": "",
-        "port": "1883",
-        "clientid": "",
-        "autoConnect": false,
-        "usetls": false,
-        "protocolVersion": "4",
-        "keepalive": "60",
-        "cleansession": true,
-        "birthTopic": "",
-        "birthQos": "0",
-        "birthPayload": "",
-        "birthMsg": {},
-        "closeTopic": "",
-        "closeQos": "0",
-        "closePayload": "",
-        "closeMsg": {},
-        "willTopic": "",
-        "willQos": "0",
-        "willPayload": "",
-        "willMsg": {},
-        "sessionExpiry": ""
-    },
-    {
-        "id": "d68e7be3.88f088",
-        "type": "ui_group",
-        "name": "Forms Example",
-        "tab": "67ff17e9.83751",
-        "order": 1,
-        "disp": true,
-        "width": "8",
-        "collapse": false
-    },
-    {
-        "id": "54bca71e.4287f",
-        "type": "ui_group",
-        "name": "Form",
-        "tab": "67ff17e9.83751",
-        "order": 2,
-        "disp": true,
-        "width": "8",
-        "collapse": false
-    },
-    {
-        "id": "67ff17e9.83751",
-        "type": "ui_tab",
-        "name": "Forms Example ",
-        "icon": "home",
-        "order": 2,
-        "disabled": false,
-        "hidden": false
-    },
-    {
-        "id": "60ef1969079f6262",
-        "type": "inject",
-        "z": "3dc32134008eac65",
-        "name": "CLICK TO CONFIGURE",
-        "props": [
-            {
-                "p": "network_name",
-                "v": "ttn",
-                "vt": "str"
-            },
-            {
-                "p": "application_id_ttn",
-                "v": "",
-                "vt": "str"
-            },
-            {
-                "p": "multicast_gateway",
-                "v": "",
-                "vt": "str"
-            },
-            {
-                "p": "MQTT_broker_url",
-                "v": "",
-                "vt": "str"
-            },
-            {
-                "p": "MQTT_port",
-                "v": "1883",
-                "vt": "str"
-            },
-            {
-                "p": "MQTT_username",
-                "v": "",
-                "vt": "str"
-            },
-            {
-                "p": "MQTT_password",
-                "v": "",
-                "vt": "str"
-            },
-            {
-                "p": "MQTT_topic_to_subscribe",
-                "v": "",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": true,
-        "onceDelay": 0.1,
-        "topic": "",
-        "x": 250,
-        "y": 220,
-        "wires": [
-            [
-                "e7b751a7c153f63c",
-                "0d4f733073cdbb10",
-                "87260ac2addf6e9a"
-            ]
-        ]
-    },
-    {
-        "id": "e7b751a7c153f63c",
-        "type": "function",
-        "z": "3dc32134008eac65",
-        "name": "Save configuration",
-        "func": "var application_id_ttn = global.get('application_id_ttn') || 0;\napplication_id_ttn = msg.application_id_ttn;\nglobal.set('application_id_ttn',application_id_ttn);\n\nvar gateway = global.get('gateway') || 0;\ngateway = msg.multicast_gateway;\nglobal.set('gateway',gateway);\n\nvar network = global.get('network') || 0;\nnetwork = msg.network_name;\nglobal.set('network',network);\n\nvar network_server_URL = global.get('MQTT_broker_url') || 0;\nMQTT_broker_url = msg.MQTT_broker_url;\nglobal.set('MQTT_broker_url',MQTT_broker_url);\n\n\n\n\n\n",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 610,
-        "y": 220,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "87260ac2addf6e9a",
-        "type": "function",
-        "z": "3dc32134008eac65",
-        "name": "Topic configuration",
-        "func": "\n\n\n\n\n\nvar config_subscriber = {\n    action : \"subscribe\",\n    topic : msg.MQTT_topic_to_subscribe\n}\n\nreturn config_subscriber;\n\n\n",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 550,
-        "y": 300,
-        "wires": [
-            [
-                "728e4479a2eccdd2"
-            ]
-        ]
-    },
-    {
-        "id": "0d4f733073cdbb10",
-        "type": "function",
-        "z": "3dc32134008eac65",
-        "name": "Broker configuration",
-        "func": "\n\n\n\nvar broker_configuration = {\n    action : \"connect\",\n    \n    broker : {\"broker\":msg.MQTT_broker_url,\"port\":msg.MQTT_port,\"username\":msg.MQTT_username,\"password\":msg.MQTT_password},\n    \n   \n}\n\nreturn broker_configuration;\n\n\n",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 580,
-        "y": 260,
-        "wires": [
-            [
-                "728e4479a2eccdd2"
-            ]
-        ]
-    },
-    {
-        "id": "728e4479a2eccdd2",
-        "type": "link out",
-        "z": "3dc32134008eac65",
-        "name": "MQTT configuration out",
-        "mode": "link",
-        "links": [
-            "e5b6a799c722988d"
-        ],
-        "x": 755,
-        "y": 280,
-        "wires": []
-    },
-    {
-        "id": "eed236789393f540",
-        "type": "ui_dropdown",
-        "z": "3dc32134008eac65",
-        "name": "CLlCK TO CONFIGURE",
-        "label": "Device-id",
-        "tooltip": "",
-        "place": "Select ",
-        "group": "5c1b38e3407d4958",
-        "order": 1,
-        "width": 0,
-        "height": 0,
-        "passthru": false,
-        "multiple": false,
-        "options": [
-            {
-                "label": "stm32wl-multicast-1",
-                "value": "stm32wl-multicast-1",
-                "type": "str"
-            },
-            {
-                "label": "stm32wl-multicast-2",
-                "value": "stm32wl-multicast-2",
-                "type": "str"
-            },
-            {
-                "label": "Enter_your_group_id_1",
-                "value": "Enter_your_group_id_1",
-                "type": "str"
-            },
-            {
-                "label": "Enter_your_group_id_2",
-                "value": "Enter_your_group_id_2",
-                "type": "str"
-            },
-            {
-                "label": "You can add as many as you want...",
-                "value": "You can add as many as you want...",
-                "type": "str"
-            }
-        ],
-        "payload": "",
-        "topic": "topic",
-        "topicType": "msg",
-        "className": "",
-        "x": 430,
-        "y": 440,
-        "wires": [
-            [
-                "dbc2f5142f52b9f6"
-            ]
-        ]
-    },
-    {
-        "id": "dbc2f5142f52b9f6",
-        "type": "function",
-        "z": "3dc32134008eac65",
-        "name": "Save device_id ",
-        "func": "var device_id_ttn = global.get('device_id_ttn') || 0;\n\ndevice_id_ttn = msg.payload;\n\nglobal.set('device_id_ttn',device_id_ttn);\n\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 660,
-        "y": 440,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "97e314b7406f5c64",
-        "type": "comment",
-        "z": "3dc32134008eac65",
-        "name": "Overall configuration",
-        "info": "",
-        "x": 210,
-        "y": 180,
-        "wires": []
-    },
-    {
-        "id": "f91cf5264dd193db",
-        "type": "inject",
-        "z": "3dc32134008eac65",
-        "name": "RAZ",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": true,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "str",
-        "x": 190,
-        "y": 440,
-        "wires": [
-            [
-                "eed236789393f540"
-            ]
-        ]
-    },
-    {
-        "id": "f16d97b482c3afff",
-        "type": "comment",
-        "z": "3dc32134008eac65",
-        "name": "Devices and multicast Groups configuration",
-        "info": "",
-        "x": 280,
-        "y": 400,
-        "wires": []
-    },
-    {
-        "id": "b362f16b3d6c8633",
-        "type": "comment",
-        "z": "3dc32134008eac65",
-        "name": "README FIRST",
-        "info": "You have to configure 2 nodes :\n\n1. One node in the \"Overall configuration\" section: Click on the node called \"CLICK TO CONFIGURE\" and enter all properties.\n\n2. One node in the \"Devices and multicast Groups configuration\": Click on the node called \"CLICK TO CONFIGURE\" and enter all your devices identifiers (end-devices and mutlicast groups) you created on your Network Server. For each identifer, you need to click on \"add an option\" and enter the corresponding identifier.",
-        "x": 570,
-        "y": 80,
-        "wires": []
     },
     {
         "id": "3d3b3a64d691f635",
@@ -536,7 +20,7 @@
         "format": "{{msg.McAddrBE}}",
         "layout": "row-spread",
         "className": "",
-        "x": 1150,
+        "x": 1310,
         "y": 140,
         "wires": []
     },
@@ -553,7 +37,7 @@
         "format": "{{msg.McAddrLE}}",
         "layout": "row-spread",
         "className": "",
-        "x": 1160,
+        "x": 1320,
         "y": 180,
         "wires": []
     },
@@ -570,7 +54,7 @@
         "format": "{{msg.McKey_ENC}}",
         "layout": "row-spread",
         "className": "",
-        "x": 1090,
+        "x": 1250,
         "y": 220,
         "wires": []
     },
@@ -598,7 +82,7 @@
                 "module": "node-aes-cmac"
             }
         ],
-        "x": 820,
+        "x": 980,
         "y": 140,
         "wires": [
             [
@@ -628,7 +112,7 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1050,
+        "x": 1210,
         "y": 100,
         "wires": []
     },
@@ -645,7 +129,7 @@
         "format": "{{msg.McRootKEY}}",
         "layout": "row-spread",
         "className": "",
-        "x": 1070,
+        "x": 1230,
         "y": 260,
         "wires": []
     },
@@ -714,7 +198,7 @@
         "width": 0,
         "height": 0,
         "passthru": false,
-        "label": "Generate",
+        "label": "Generate Multicast Keys",
         "tooltip": "",
         "color": "",
         "bgcolor": "",
@@ -724,7 +208,7 @@
         "payloadType": "flow",
         "topic": "",
         "topicType": "str",
-        "x": 660,
+        "x": 750,
         "y": 140,
         "wires": [
             [
@@ -772,7 +256,7 @@
         "format": "{{msg.McKEKEY}}",
         "layout": "row-spread",
         "className": "",
-        "x": 1060,
+        "x": 1220,
         "y": 300,
         "wires": []
     },
@@ -789,7 +273,7 @@
         "format": "{{msg.McKEY}}",
         "layout": "row-spread",
         "className": "",
-        "x": 1050,
+        "x": 1210,
         "y": 340,
         "wires": []
     },
@@ -806,7 +290,7 @@
         "format": "{{msg.McAppSKEY}}",
         "layout": "row-spread",
         "className": "",
-        "x": 1070,
+        "x": 1230,
         "y": 380,
         "wires": []
     },
@@ -823,7 +307,7 @@
         "format": "{{msg.McNetSKEY}}",
         "layout": "row-spread",
         "className": "",
-        "x": 1070,
+        "x": 1230,
         "y": 420,
         "wires": []
     },
@@ -1282,7 +766,7 @@
         "format": "{{msg.McAddrBE}}",
         "layout": "row-spread",
         "className": "",
-        "x": 1170,
+        "x": 1330,
         "y": 460,
         "wires": []
     },
@@ -1309,7 +793,7 @@
         "type": "function",
         "z": "bb32b3705303fb88",
         "name": "Downlink",
-        "func": "\nvar topic_actility = \"mqtt/things/\" + deveui + \"/downlink\";  \n\nvar network = global.get('network');\nvar gateway = global.get('gateway');\nvar application_id_ttn = global.get('application_id_ttn');\nvar device_id_ttn = global.get('device_id_ttn');\nvar topic_ttn_downlink_device = \"v3/\" + application_id_ttn + \"/devices/\" + device_id_ttn + \"/down/replace\";  \nvar topic_ttn_downlink_multicast = \"v3/\" + application_id_ttn + \"/devices/\" + device_id_ttn + \"/down/replace\";\n\n\n\n// McGroupIDHeader (1 byte)\nvar command = hexToBase64(msg.payload.thepayload);   \nvar deveui = msg.payload.deveui;\nvar port = msg.payload.port;\nvar multicast = msg.payload.multicast;\n\n\nfunction hexToBase64(hexString) {\n  // Conversion de la chaîne hexadécimale en un tableau d'octets\n  const bytes = Buffer.from(hexString, 'hex');\n\n  // Conversion des octets en base64\n  const base64String = bytes.toString('base64');\n\n  return base64String;\n}\n\n\n\n\n\n\n\nif (network == \"ttn\"){\n    if (multicast == false){\n       /**** Downlink to a device ***/\n        msg = \n        {\n            topic : topic_ttn_downlink_device,\n            \n            payload : {   \n                'downlinks': [{\n                    \"f_port\": port,\n                \t\"frm_payload\": command,\n                \t\"priority\": \"NORMAL\"\n                }]\n            }\n        }  \n    }\n    else{\n        /**** Downlink to a Multicast a Group ***/\n         msg = \n        {\n            topic : topic_ttn_downlink_multicast,\n            \n            payload : {\n                \"downlinks\": [\n                    {\n                        \"f_port\": port,\n                        \"frm_payload\": command,\n                        \"priority\": \"NORMAL\",\n                        \"class_b_c\": {\n                            \"gateways\": [\n                                {\n                                    \"gateway_ids\": {\n                                        \"gateway_id\": gateway\n                                    }\n                                }\n                            ]\n                        }\n                    }\n                ]\n            }\n        }\n    }\n}\n\nif (network == \"actility\"){\n      msg = \n      {\n        payload : {\n            \"DevEUI_downlink\": {\n     \t\t\"DevEUI\": deveui,\n     \t\t\"FPort\": port,\n     \t\t\"payload_hex\": command,\n    \t\t\"Confirmed\": \"0\", \t\t\n    \t\t\"FlushDownlinkQueue\": \"1\"    \n\t        }\n        }\n      }\n}\n\nreturn msg;\n\n/* ou \n{\n    \"downlinks\": [\n        {\n            \"f_port\": 15,\n            \"frm_payload\": \"AQ==\",\n            \"priority\": \"NORMAL\",\n            \"class_b_c\": {\n                \"gateways\": [\n                    {\n                        \"gateway_ids\": {\n                            \"gateway_id\": \"strataggem-ecosignal-03\"\n                        }\n                    }\n                ]\n            }\n        }\n    ]\n}\n*/\n\n\n\n\n\n\n\n\n\n\n",
+        "func": "\nvar topic_actility = \"mqtt/things/\" + deveui + \"/downlink\";  \n\nvar network = global.get('network');\nvar gateway = global.get('gateway');\nvar application_id_ttn = global.get('application_id_ttn');\nvar device_id_ttn = global.get('device_id_ttn');\nvar topic_ttn_downlink_device = \"v3/\" + application_id_ttn + \"/devices/\" + device_id_ttn + \"/down/replace\";  \nvar topic_ttn_downlink_multicast = \"v3/\" + application_id_ttn + \"/devices/\" + device_id_ttn + \"/down/replace\";\n\n\n\n// McGroupIDHeader (1 byte)\nvar command = hexToBase64(msg.payload.thepayload);   \nvar deveui = msg.payload.deveui;\nvar port = msg.payload.port;\nvar multicast = msg.payload.multicast;\n\n\nfunction hexToBase64(hexString) {\n  // Conversion de la chaîne hexadécimale en un tableau d'octets\n  const bytes = Buffer.from(hexString, 'hex');\n\n  // Conversion des octets en base64\n  const base64String = bytes.toString('base64');\n\n  return base64String;\n}\n\n\n\n\n\n\n\nif (network == \"ttn\"){\n    if (multicast == false){\n       /**** Downlink to a device ***/\n        msg = \n        {\n            topic : topic_ttn_downlink_device,\n            \n            payload : {   \n                'downlinks': [{\n                    \"f_port\": port,\n                \t\"frm_payload\": command,\n                \t\"priority\": \"NORMAL\"\n                }]\n            }\n        }  \n    }\n    else{\n        /**** Downlink to a Multicast a Group ***/\n         msg = \n        {\n            topic : topic_ttn_downlink_multicast,\n            \n            payload : {\n                \"downlinks\": [\n                    {\n                        \"f_port\": port,\n                        \"frm_payload\": command,\n                        \"priority\": \"NORMAL\",\n                        \"class_b_c\": {\n                            \"gateways\": [\n                                {\n                                    \"gateway_ids\": {\n                                        \"gateway_id\": gateway\n                                    }\n                                }\n                            ]\n                        }\n                    }\n                ]\n            }\n        }\n    }\n}\n\nif (network == \"actility\"){\n      msg = \n      {\n        payload : {\n            \"DevEUI_downlink\": {\n     \t\t\"DevEUI\": deveui,\n     \t\t\"FPort\": port,\n     \t\t\"payload_hex\": command,\n    \t\t\"Confirmed\": \"0\", \t\t\n    \t\t\"FlushDownlinkQueue\": \"1\"    \n\t        }\n        }\n      }\n}\n\nreturn msg;\n\n\n\n\n\n\n\n\n\n\n\n\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -1831,7 +1315,7 @@
         "topic": "",
         "payload": "",
         "payloadType": "str",
-        "x": 770,
+        "x": 930,
         "y": 280,
         "wires": [
             [
@@ -1841,25 +1325,11 @@
                 "62fa1ca49a55f1f5",
                 "baf59db38d118de2",
                 "a3613d7fcda16c70",
-                "bf4fcefd6bea97a7",
                 "d8af8ab212bf847a",
                 "7fb563b3586ed30b",
                 "0a087ad359f8a73e"
             ]
         ]
-    },
-    {
-        "id": "bf4fcefd6bea97a7",
-        "type": "link out",
-        "z": "bb32b3705303fb88",
-        "name": "",
-        "mode": "link",
-        "links": [
-            "43002e7cf47fbef0"
-        ],
-        "x": 835,
-        "y": 380,
-        "wires": []
     },
     {
         "id": "2933061fc991045c",
@@ -1926,5 +1396,128 @@
                 "77c726c70638ce24"
             ]
         ]
+    },
+    {
+        "id": "f48663973273d0a3",
+        "type": "ui_group",
+        "name": "Multicast Session Generator",
+        "tab": "121f9e88659f1b47",
+        "order": 1,
+        "disp": true,
+        "width": "10",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "6981c805a4790f2a",
+        "type": "ui_group",
+        "name": "McGroupSetupReq",
+        "tab": "121f9e88659f1b47",
+        "order": 5,
+        "disp": true,
+        "width": 11,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "8be7a72d5783bb58",
+        "type": "ui_group",
+        "name": "McClassCSessionReq",
+        "tab": "121f9e88659f1b47",
+        "order": 6,
+        "disp": true,
+        "width": 10,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "d1d930618963f13f",
+        "type": "mqtt-broker",
+        "name": "Broker",
+        "broker": "",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": false,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    },
+    {
+        "id": "5c1b38e3407d4958",
+        "type": "ui_group",
+        "name": "Downlink",
+        "tab": "121f9e88659f1b47",
+        "order": 7,
+        "disp": true,
+        "width": "8",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "ce10c98edc29ac62",
+        "type": "ui_group",
+        "name": "Last Uplink",
+        "tab": "121f9e88659f1b47",
+        "order": 8,
+        "disp": true,
+        "width": "13",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "1f5263f560ceadfe",
+        "type": "ui_group",
+        "name": "PackageVersionReq",
+        "tab": "121f9e88659f1b47",
+        "order": 2,
+        "disp": true,
+        "width": "7",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "f3fc4dc65da12719",
+        "type": "ui_group",
+        "name": "McGroupStatusReq",
+        "tab": "121f9e88659f1b47",
+        "order": 3,
+        "disp": true,
+        "width": "7",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "773407c9ade4eb7e",
+        "type": "ui_group",
+        "name": "McGroupDeleteReq",
+        "tab": "121f9e88659f1b47",
+        "order": 4,
+        "disp": true,
+        "width": "7",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "121f9e88659f1b47",
+        "type": "ui_tab",
+        "name": "Multicast",
+        "icon": "dashboard",
+        "order": 9,
+        "disabled": false,
+        "hidden": false
     }
 ]
