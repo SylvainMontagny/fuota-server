@@ -1,16 +1,16 @@
 [
     {
-        "id": "e6da9eeacc410150",
+        "id": "878c1b610dbcdd8a",
         "type": "tab",
-        "label": "Clock Synchronisation Dashboard (TTN)",
+        "label": "Clock Synchronization Dashboard (TTN)",
         "disabled": false,
         "info": "",
         "env": []
     },
     {
-        "id": "56c31739f397e6ed",
+        "id": "83a5ba14b10ffc6f",
         "type": "comment",
-        "z": "e6da9eeacc410150",
+        "z": "878c1b610dbcdd8a",
         "name": "ForceDeviceResyncReq command (0x0301)",
         "info": "",
         "x": 270,
@@ -18,10 +18,11 @@
         "wires": []
     },
     {
-        "id": "640ebb681b47e89f",
+        "id": "a4c775366a5a7e7e",
         "type": "ui_template",
-        "z": "e6da9eeacc410150",
-        "group": "55a4fad94780cc60",
+        "z": "878c1b610dbcdd8a",
+        "d": true,
+        "group": "f14e6dc3cafbf683",
         "name": "Info",
         "order": 1,
         "width": 10,
@@ -39,9 +40,9 @@
         ]
     },
     {
-        "id": "16ebeb6c20b9bff3",
+        "id": "6e254f8ee5ead968",
         "type": "comment",
-        "z": "e6da9eeacc410150",
+        "z": "878c1b610dbcdd8a",
         "name": "PackageVersionReq  command (0x00)",
         "info": "",
         "x": 250,
@@ -49,9 +50,9 @@
         "wires": []
     },
     {
-        "id": "d5878b4b59479c88",
+        "id": "81a8dbda8f06e117",
         "type": "comment",
-        "z": "e6da9eeacc410150",
+        "z": "878c1b610dbcdd8a",
         "name": "DeviceAppTimePeriodicityReq  command (0x02..)",
         "info": "",
         "x": 280,
@@ -59,9 +60,9 @@
         "wires": []
     },
     {
-        "id": "8e7dbd6b84ad6819",
+        "id": "990c23644ddd6ada",
         "type": "mqtt out",
-        "z": "e6da9eeacc410150",
+        "z": "878c1b610dbcdd8a",
         "name": "Publisher",
         "topic": "",
         "qos": "2",
@@ -71,15 +72,15 @@
         "userProps": "",
         "correl": "",
         "expiry": "",
-        "broker": "d1d930618963f13f",
+        "broker": "5cc03a24c554a8a0",
         "x": 620,
         "y": 540,
         "wires": []
     },
     {
-        "id": "a0c0f7d674da2c69",
+        "id": "c23ee9626c839cb6",
         "type": "function",
-        "z": "e6da9eeacc410150",
+        "z": "878c1b610dbcdd8a",
         "name": "JSON downlink setup",
         "func": "/*\n* Title:    Clock Synchronization - Downlink Setup\n* Autor:    Anthony Biard\n* Date:     may, 2023\n* Sources:  --\n*\n*/\n\nvar topic_actility = \"mqtt/things/\" + deveui + \"/downlink\";\n\nvar network = global.get('network');\nvar gateway = global.get('gateway');\nvar application_id_ttn = global.get('application_id_ttn');\nvar device_id_ttn = global.get('device_id_ttn');\nvar topic_ttn_downlink_device = \"v3/\" + application_id_ttn + \"/devices/\" + device_id_ttn + \"/down/replace\";\nvar topic_ttn_downlink_multicast = \"v3/\" + application_id_ttn + \"/devices/\" + device_id_ttn + \"/down/replace\";\n\n\n// Get values of the form\nvar command = hexToBase64(msg.payload.thepayload);                           \nvar deveui = msg.payload.deveui;                                \nvar port = msg.payload.port;                                 \n\nfunction hexToBase64(hexString) {\n    // Conversion de la chaîne hexadécimale en un tableau d'octets\n    const bytes = Buffer.from(hexString, 'hex');\n\n    // Conversion des octets en base64\n    const base64String = bytes.toString('base64');\n\n    return base64String;\n}\n\nif (network == \"ttn\") {\n        /**** Downlink to a device ***/\n        msg =\n        {\n            topic: topic_ttn_downlink_device,\n\n            payload: {\n                'downlinks': [{\n                    \"f_port\": port,\n                    \"frm_payload\": command,\n                    \"priority\": \"NORMAL\"\n                }]\n            }\n        }\n}\n\n\nif (network == \"actility\") {\n    msg =\n    {\n        payload: {\n            \"DevEUI_downlink\": {\n                \"DevEUI\": deveui,\n                \"FPort\": port,\n                \"payload_hex\": command,\n                \"Confirmed\": \"0\",\n                \"FlushDownlinkQueue\": \"1\"\n            }\n        }\n    }\n}\n\nreturn msg;\n\n\n\n\n\n\n\n\n\n\n\n",
         "outputs": 1,
@@ -91,14 +92,14 @@
         "y": 540,
         "wires": [
             [
-                "8e7dbd6b84ad6819"
+                "990c23644ddd6ada"
             ]
         ]
     },
     {
-        "id": "42992fbc3f57edca",
+        "id": "c2db9d56b0c12069",
         "type": "ui_form",
-        "z": "e6da9eeacc410150",
+        "z": "878c1b610dbcdd8a",
         "name": "Downlink",
         "label": "",
         "group": "04058b639f2e0be9",
@@ -136,15 +137,15 @@
         "y": 540,
         "wires": [
             [
-                "a0c0f7d674da2c69",
-                "9b086ff38048ce3d"
+                "c23ee9626c839cb6",
+                "7975e68f990f6a5a"
             ]
         ]
     },
     {
-        "id": "b3fa3e8a6ca6b60b",
+        "id": "80a4ea592eb6fa47",
         "type": "comment",
-        "z": "e6da9eeacc410150",
+        "z": "878c1b610dbcdd8a",
         "name": "Downlink",
         "info": "",
         "x": 160,
@@ -152,10 +153,10 @@
         "wires": []
     },
     {
-        "id": "0936bc689ff96175",
+        "id": "f196c914275a8365",
         "type": "ui_text",
-        "z": "e6da9eeacc410150",
-        "group": "8587c176f0ea610c",
+        "z": "878c1b610dbcdd8a",
+        "group": "ff96af57077bef54",
         "order": 2,
         "width": 0,
         "height": 0,
@@ -169,10 +170,10 @@
         "wires": []
     },
     {
-        "id": "cbff501057d3e126",
+        "id": "708dd09af2c1a2cb",
         "type": "ui_text",
-        "z": "e6da9eeacc410150",
-        "group": "e5cf4e76627e4f2c",
+        "z": "878c1b610dbcdd8a",
+        "group": "c08e65067aa920d3",
         "order": 2,
         "width": 0,
         "height": 0,
@@ -181,19 +182,19 @@
         "format": "{{msg.payload}}",
         "layout": "col-center",
         "className": "",
-        "x": 510,
+        "x": 530,
         "y": 420,
         "wires": []
     },
     {
-        "id": "21eaa20c8956f13f",
+        "id": "f6b7dfee76e9424d",
         "type": "ui_dropdown",
-        "z": "e6da9eeacc410150",
+        "z": "878c1b610dbcdd8a",
         "name": "",
         "label": "Period",
         "tooltip": "",
         "place": "Select option",
-        "group": "54aa349efca64ade",
+        "group": "37be4983fabb0fb2",
         "order": 1,
         "width": 0,
         "height": 0,
@@ -289,15 +290,15 @@
         "y": 300,
         "wires": [
             [
-                "a24c97122327ab5b"
+                "6401aba847672a3e"
             ]
         ]
     },
     {
-        "id": "a24c97122327ab5b",
+        "id": "6401aba847672a3e",
         "type": "ui_text",
-        "z": "e6da9eeacc410150",
-        "group": "54aa349efca64ade",
+        "z": "878c1b610dbcdd8a",
+        "group": "37be4983fabb0fb2",
         "order": 2,
         "width": 0,
         "height": 0,
@@ -311,10 +312,10 @@
         "wires": []
     },
     {
-        "id": "3d712d6a650f9343",
+        "id": "822375f4bf21a1fb",
         "type": "ui_template",
-        "z": "e6da9eeacc410150",
-        "group": "8587c176f0ea610c",
+        "z": "878c1b610dbcdd8a",
+        "group": "ff96af57077bef54",
         "name": "Info",
         "order": 1,
         "width": 0,
@@ -332,9 +333,9 @@
         ]
     },
     {
-        "id": "4922a26f562068a6",
+        "id": "8637c59d730aff9e",
         "type": "inject",
-        "z": "e6da9eeacc410150",
+        "z": "878c1b610dbcdd8a",
         "name": "00",
         "props": [
             {
@@ -352,15 +353,15 @@
         "y": 180,
         "wires": [
             [
-                "0936bc689ff96175"
+                "f196c914275a8365"
             ]
         ]
     },
     {
-        "id": "ee04e00be055a034",
+        "id": "2648916b9b665386",
         "type": "ui_template",
-        "z": "e6da9eeacc410150",
-        "group": "e5cf4e76627e4f2c",
+        "z": "878c1b610dbcdd8a",
+        "group": "c08e65067aa920d3",
         "name": "Info",
         "order": 1,
         "width": 0,
@@ -378,9 +379,9 @@
         ]
     },
     {
-        "id": "5f96e65910963637",
+        "id": "87722584894678ba",
         "type": "inject",
-        "z": "e6da9eeacc410150",
+        "z": "878c1b610dbcdd8a",
         "name": "0301",
         "props": [
             {
@@ -398,19 +399,19 @@
         "y": 420,
         "wires": [
             [
-                "cbff501057d3e126"
+                "708dd09af2c1a2cb"
             ]
         ]
     },
     {
-        "id": "70325e6185bb61d9",
+        "id": "07922ae6580e8b30",
         "type": "mqtt in",
-        "z": "e6da9eeacc410150",
+        "z": "878c1b610dbcdd8a",
         "name": "Subscriber",
         "topic": "",
         "qos": "2",
         "datatype": "json",
-        "broker": "d1d930618963f13f",
+        "broker": "5cc03a24c554a8a0",
         "nl": false,
         "rap": false,
         "inputs": 1,
@@ -418,14 +419,14 @@
         "y": 760,
         "wires": [
             [
-                "d92728c54cd1cfc6"
+                "e0373a3fc7cd9836"
             ]
         ]
     },
     {
-        "id": "4f97884e66670c56",
+        "id": "a109de17ddb613a3",
         "type": "comment",
-        "z": "e6da9eeacc410150",
+        "z": "878c1b610dbcdd8a",
         "name": "Uplink listening",
         "info": "",
         "x": 180,
@@ -433,34 +434,34 @@
         "wires": []
     },
     {
-        "id": "d92728c54cd1cfc6",
+        "id": "e0373a3fc7cd9836",
         "type": "function",
-        "z": "e6da9eeacc410150",
-        "name": "Uplink study",
+        "z": "878c1b610dbcdd8a",
+        "name": "Uplink analyser",
         "func": "\n\nfunction base64ToHex(base64String) {\n    // Conversion de la chaîne Base64 en un objet Buffer\n    const buffer = Buffer.from(base64String, 'base64');\n\n    // Conversion du buffer en une chaîne hexadécimale\n    const hexString = buffer.toString('hex');\n\n    return hexString;\n}\n\n\nvar upport = msg.payload.uplink_message.f_port;\nvar message = base64ToHex(msg.payload.uplink_message.frm_payload);\nmsg.payload.uplink_message.frm_payload = base64ToHex(msg.payload.uplink_message.frm_payload);\n\n\nif (upport == \"202\") {\n\n    message = message.toString('hex');\n\n    if (message[1] == \"0\") {\n        msg.commandtype = \"PackageVersionAns \";\n        msg.analysis = \"Pack.ID: \" + message[2] + message[3] + \" / \" + \"Pack.Ver: \" + message[4] + message[5];\n    }\n    else if (message[1] == \"2\") {\n        msg.commandtype = \"DeviceAppTimePeriodicityAns \";\n        var thedate2 = SecToDate_2(message);\n        msg.analysis = thedate2;\n    }\n    else if (message[1] == \"1\") {\n        msg.commandtype = \"AppTimeReq\";\n        var thedate1 = SecToDate_1(message);\n        msg.analysis = thedate1;\n    }\n    else {\n        msg.commandtype = \"...\";\n        msg.analysis = \"...\";\n    }\n\n}\nelse {\n    msg.commandtype = \"...\";\n    msg.analysis = \"...\";\n}\n\nreturn msg;\n\n\n// Get time and convert it into date format\nfunction SecToDate_1(message) {\n\n\n    var DeviceTime = message[8]\n        + message[9]\n        + message[6]\n        + message[7]\n        + message[4]\n        + message[5]\n        + message[2]\n        + message[3];\n    var DeviceTime_hex = DeviceTime.toString('hex');\n    var DeviceTime_dec = parseInt(DeviceTime_hex, 16);  // sec passed since 06-janv-1980\n    var DeviceTime_date = new Date(1980, 0, 6);                        // Epoch\n    DeviceTime_date.setSeconds(DeviceTime_dec);\n    let DeviceTime_date_format = DeviceTime_date.toLocaleString('fr-FR', {\n        weekday: 'long',\n        year: 'numeric',\n        month: 'long',\n        day: 'numeric',\n        hour: 'numeric',\n        minute: 'numeric',\n        second: 'numeric'\n    });\n\n    DeviceTime_date_format += \" (UTC+0)\";\n\n    return DeviceTime_date_format;\n\n}\n\n// Get time and convert it into date format\nfunction SecToDate_2(message) {\n\n\n    var DeviceTime = message[10]\n        + message[11]\n        + message[8]\n        + message[9]\n        + message[6]\n        + message[7]\n        + message[4]\n        + message[5];\n    var DeviceTime_hex = DeviceTime.toString('hex');\n    var DeviceTime_dec = parseInt(DeviceTime_hex, 16);  // sec passed since 06-janv-1980\n    var DeviceTime_date = new Date(1980, 0, 6);                        // Epoch\n    DeviceTime_date.setSeconds(DeviceTime_dec);\n    let DeviceTime_date_format = DeviceTime_date.toLocaleString('fr-FR', {\n        weekday: 'long',\n        year: 'numeric',\n        month: 'long',\n        day: 'numeric',\n        hour: 'numeric',\n        minute: 'numeric',\n        second: 'numeric'\n    });\n\n    DeviceTime_date_format += \" (UTC+0)\";\n\n    return DeviceTime_date_format;\n\n}",
         "outputs": 1,
-        "noerr": 4,
+        "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 450,
+        "x": 460,
         "y": 760,
         "wires": [
             [
-                "874ade2c35688980",
-                "4077d8c5358f11d0",
-                "e8bb77747ba14ec9",
-                "687b84fe432d0ae8",
-                "9f4da13373b28552",
-                "6759b948a2b6b34b"
+                "e0b72d5f7328d274",
+                "2126cb92b5797d55",
+                "0414e7138db483d5",
+                "24e3fce73b4b6b19",
+                "4933ed74c1337939",
+                "3774c5746c786918"
             ]
         ]
     },
     {
-        "id": "687b84fe432d0ae8",
+        "id": "24e3fce73b4b6b19",
         "type": "ui_text",
-        "z": "e6da9eeacc410150",
-        "group": "bc771ac0b0681610",
+        "z": "878c1b610dbcdd8a",
+        "group": "f2638f8872d9a71f",
         "order": 1,
         "width": "4",
         "height": "2",
@@ -474,10 +475,10 @@
         "wires": []
     },
     {
-        "id": "9f4da13373b28552",
+        "id": "4933ed74c1337939",
         "type": "ui_text",
-        "z": "e6da9eeacc410150",
-        "group": "bc771ac0b0681610",
+        "z": "878c1b610dbcdd8a",
+        "group": "f2638f8872d9a71f",
         "order": 4,
         "width": "4",
         "height": "2",
@@ -491,10 +492,10 @@
         "wires": []
     },
     {
-        "id": "6759b948a2b6b34b",
+        "id": "3774c5746c786918",
         "type": "ui_text",
-        "z": "e6da9eeacc410150",
-        "group": "bc771ac0b0681610",
+        "z": "878c1b610dbcdd8a",
+        "group": "f2638f8872d9a71f",
         "order": 3,
         "width": "4",
         "height": "2",
@@ -508,10 +509,10 @@
         "wires": []
     },
     {
-        "id": "874ade2c35688980",
+        "id": "e0b72d5f7328d274",
         "type": "ui_text",
-        "z": "e6da9eeacc410150",
-        "group": "bc771ac0b0681610",
+        "z": "878c1b610dbcdd8a",
+        "group": "f2638f8872d9a71f",
         "order": 2,
         "width": "4",
         "height": 2,
@@ -525,10 +526,10 @@
         "wires": []
     },
     {
-        "id": "4077d8c5358f11d0",
+        "id": "2126cb92b5797d55",
         "type": "ui_text",
-        "z": "e6da9eeacc410150",
-        "group": "bc771ac0b0681610",
+        "z": "878c1b610dbcdd8a",
+        "group": "f2638f8872d9a71f",
         "order": 5,
         "width": "4",
         "height": 2,
@@ -542,10 +543,10 @@
         "wires": []
     },
     {
-        "id": "e8bb77747ba14ec9",
+        "id": "0414e7138db483d5",
         "type": "ui_text",
-        "z": "e6da9eeacc410150",
-        "group": "bc771ac0b0681610",
+        "z": "878c1b610dbcdd8a",
+        "group": "f2638f8872d9a71f",
         "order": 6,
         "width": "4",
         "height": "2",
@@ -559,9 +560,9 @@
         "wires": []
     },
     {
-        "id": "8083ba4fad0e293e",
+        "id": "557c8da136d1e656",
         "type": "inject",
-        "z": "e6da9eeacc410150",
+        "z": "878c1b610dbcdd8a",
         "name": "RAZ",
         "props": [
             {
@@ -582,29 +583,20 @@
         "y": 860,
         "wires": [
             [
-                "687b84fe432d0ae8",
-                "9f4da13373b28552",
-                "6759b948a2b6b34b",
-                "874ade2c35688980",
-                "4077d8c5358f11d0",
-                "e8bb77747ba14ec9"
+                "24e3fce73b4b6b19",
+                "4933ed74c1337939",
+                "3774c5746c786918",
+                "e0b72d5f7328d274",
+                "2126cb92b5797d55",
+                "0414e7138db483d5"
             ]
         ]
     },
     {
-        "id": "176b47534630f608",
+        "id": "a6ef42d28c7a1950",
         "type": "comment",
-        "z": "e6da9eeacc410150",
-        "name": "!!! READ ME BEFORE USE !!!",
-        "info": "There is nothing to configure in this tab, because all the configuration is done in the \"Dashaboard Configuration\" file. ",
-        "x": 820,
-        "y": 380,
-        "wires": []
-    },
-    {
-        "id": "1b551610ef76bdb5",
-        "type": "comment",
-        "z": "e6da9eeacc410150",
+        "z": "878c1b610dbcdd8a",
+        "d": true,
         "name": "Clock Synchronization management tool - USMB",
         "info": "",
         "x": 280,
@@ -612,9 +604,9 @@
         "wires": []
     },
     {
-        "id": "64821fe57569535b",
+        "id": "01c6fabed3e8518d",
         "type": "link in",
-        "z": "e6da9eeacc410150",
+        "z": "878c1b610dbcdd8a",
         "name": "MQTT configuration in",
         "links": [
             "728e4479a2eccdd2",
@@ -624,31 +616,31 @@
         "y": 760,
         "wires": [
             [
-                "70325e6185bb61d9"
+                "07922ae6580e8b30"
             ]
         ]
     },
     {
-        "id": "9b086ff38048ce3d",
+        "id": "7975e68f990f6a5a",
         "type": "function",
-        "z": "e6da9eeacc410150",
-        "name": "function 1",
+        "z": "878c1b610dbcdd8a",
+        "name": "Persistance",
         "func": "return msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 160,
-        "y": 600,
+        "x": 170,
+        "y": 580,
         "wires": [
             [
-                "42992fbc3f57edca"
+                "c2db9d56b0c12069"
             ]
         ]
     },
     {
-        "id": "55a4fad94780cc60",
+        "id": "f14e6dc3cafbf683",
         "type": "ui_group",
         "name": "Application Layer Clock Synchronization",
         "tab": "809d5550849b871e",
@@ -659,7 +651,7 @@
         "className": ""
     },
     {
-        "id": "d1d930618963f13f",
+        "id": "5cc03a24c554a8a0",
         "type": "mqtt-broker",
         "name": "Broker",
         "broker": "",
@@ -696,7 +688,7 @@
         "className": ""
     },
     {
-        "id": "8587c176f0ea610c",
+        "id": "ff96af57077bef54",
         "type": "ui_group",
         "name": "PackageVersionReq",
         "tab": "809d5550849b871e",
@@ -707,7 +699,7 @@
         "className": ""
     },
     {
-        "id": "e5cf4e76627e4f2c",
+        "id": "c08e65067aa920d3",
         "type": "ui_group",
         "name": "ForceDeviceResyncReq",
         "tab": "809d5550849b871e",
@@ -718,7 +710,7 @@
         "className": ""
     },
     {
-        "id": "54aa349efca64ade",
+        "id": "37be4983fabb0fb2",
         "type": "ui_group",
         "name": "DeviceAppTimePeriodicityReq ",
         "tab": "809d5550849b871e",
@@ -729,9 +721,9 @@
         "className": ""
     },
     {
-        "id": "bc771ac0b0681610",
+        "id": "f2638f8872d9a71f",
         "type": "ui_group",
-        "name": "Uplink",
+        "name": "Last Uplink",
         "tab": "809d5550849b871e",
         "order": 6,
         "disp": true,
@@ -742,7 +734,7 @@
     {
         "id": "809d5550849b871e",
         "type": "ui_tab",
-        "name": "TTN-clock synch",
+        "name": "Clock synchronization ",
         "icon": "dashboard",
         "order": 5,
         "disabled": false,

@@ -1,17 +1,17 @@
 [
     {
-        "id": "bb32b3705303fb88",
+        "id": "b3733736db06bf09",
         "type": "tab",
-        "label": "Multicast dashboard (TTN)",
+        "label": "Multicast dashboard",
         "disabled": false,
         "info": "",
         "env": []
     },
     {
-        "id": "3d3b3a64d691f635",
+        "id": "7fbe5c3a9ce0d312",
         "type": "ui_text",
-        "z": "bb32b3705303fb88",
-        "group": "f48663973273d0a3",
+        "z": "b3733736db06bf09",
+        "group": "87ee573668ee2369",
         "order": 4,
         "width": 0,
         "height": 0,
@@ -25,10 +25,10 @@
         "wires": []
     },
     {
-        "id": "597acb4b84e08548",
+        "id": "9478f3ec4eb613e4",
         "type": "ui_text",
-        "z": "bb32b3705303fb88",
-        "group": "f48663973273d0a3",
+        "z": "b3733736db06bf09",
+        "group": "87ee573668ee2369",
         "order": 5,
         "width": 0,
         "height": 0,
@@ -42,10 +42,10 @@
         "wires": []
     },
     {
-        "id": "ec568f5ea7b1d1cf",
+        "id": "f550a874eb91994d",
         "type": "ui_text",
-        "z": "bb32b3705303fb88",
-        "group": "f48663973273d0a3",
+        "z": "b3733736db06bf09",
+        "group": "87ee573668ee2369",
         "order": 6,
         "width": 0,
         "height": 0,
@@ -59,9 +59,9 @@
         "wires": []
     },
     {
-        "id": "615a66b1ac8fce55",
+        "id": "6714b4df274dfb50",
         "type": "function",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "name": "Key derivation",
         "func": "/*\n* Title:    McKey_encrypted generator + McAddr_Generator\n* Autor:    Antoine AUGAGNEUR\n* Date:     march, 2022\n* Sources:  > randHex function from https://codepen.io/code_monk/pen/kaWvPL\n*\n*/\n\n//  random hex string generator\nvar randHex = function(len) {\n  var maxlen = 8,\n      min = Math.pow(16,Math.min(len,maxlen)-1) \n      max = Math.pow(16,Math.min(len,maxlen)) - 1,\n      n   = Math.floor( Math.random() * (max-min+1) ) + min,\n      r   = n.toString(16);\n  while ( r.length < len ) {\n     r = r + randHex( len - maxlen );\n  }\n  return r;\n};\n\n// randomly generated bigendian McKey_encrypted\nvar McKey_encrypted  = randHex(32);\n\n// randomly generated bigendian McAddr\nvar McAddr_be = randHex(8);\n\n// McAddr little endian conversion\nvar McAddr_le = McAddr_be[6]                            \n                    + McAddr_be[7]\n                    + McAddr_be[4]\n                    + McAddr_be[5]\n                    + McAddr_be[2]\n                    + McAddr_be[3]\n                    + McAddr_be[0]\n                    + McAddr_be[1];\n                    \n// ###############################################################################################################################################################\n\n/*\n* Title:    Keys derivation for LoRaWAN multicast session\n* Autor:    Antoine AUGAGNEUR\n* Date:     march, 2022\n* Sources:  > LoRaWAN Remote Multicast Setup Specification v1.0.0 (Lora Alliance)\n*           > Deciphering an EU868 LoRaWAN 1.0 OTAA Join Accept [online], available on:\n*             https://runkit.com/avbentem/deciphering-a-lorawan-otaa-join-accept           \n* \n* ## Definitions\n* Device has:   GenAppKey               ( = AppKey, according to LoRaWAN 1.1)\n* It receives:  McKey_encrypted         ( via McGroupSetupReq MAC command)\n*               McAddr                  ( via McGroupSetupReq MAC command)\n* Then,\n* McRootKey = aes128_encrypt(GenAppKey, 0x00 | pad16)\n* McKEKey = aes128_encrypt(McRootKey, 0x00 | pad16)\n* McKey = aes128_decrypt(McKey_encrypted,McKEKey)\n* And then,\n* McAppSKey = aes128_encrypt(McKey, 0x01 | McAddr | pad16)\n* McNetSKey = aes128_encrypt(McKey, 0x02 | McAddr | pad16)\n*\n* To be noted:\n* The octet order over the air for all multi-octet fields is little endian (Least significant byte is \n* sent first). As a consequence, send data used for crypto operations are in little endian too.\n* Howerver, logs device diplay them correctly.\n*\n*\n* Information:\n*           - inputs:   GenAppKey           (from node)                    \n*                       McAddr              (from node, it has to be in little endian)   \n*                       McKey_encrypted     (from node)\n*           - outputs:  McRootKey\n*                       McKEKey\n*                       McKey\n*                       McAppSKey         \n*                       McNetSKey         \n*                       \n*\n*/\n\n// Initialization vector is always zero\nvar LORA_IV = CryptoJS.enc.Hex.parse('00000000000000000000000000000000');\n\n// Encrypts the given buffer, returning another buffer.\nfunction encrypt(buffer, key) {\n    var ciphertext = CryptoJS.AES.encrypt(\n        CryptoJS.lib.WordArray.create(buffer),\n        CryptoJS.lib.WordArray.create(key),\n        {\n            mode: CryptoJS.mode.ECB,\n            iv: LORA_IV,\n            padding: CryptoJS.pad.NoPadding\n        }\n    ).ciphertext.toString(CryptoJS.enc.Hex);\n    return new Buffer(ciphertext, 'hex');\n}\n\n// ## Known data (set or generated) #########################################\n// GenAppKey (or AppKey) programmed in the device\n// var GenAppKey = 'F255B7748A00FF7C22344C3402F6356F';\nvar GenAppKey = msg.payload;\nGenAppKey = Buffer.from(GenAppKey.toString(16), 'hex');\n\n// McKey_encrypted\n// var McKey_encrypted = '6B46B8386CB3B7697B2674526E98209B';\nMcKey_encrypted = Buffer.from(McKey_encrypted.toString(16), 'hex');\n\n// McAdrr\n// var McAddr = 'F03D292B';\nMcAddr_le = Buffer.from(McAddr_le.toString(16), 'hex'); // normal address:F03D2928 --> little endian:28293DF0\n                                             \n// ## Key derivation to have McRootKey ######################################\n// McRootKey = aes128_encrypt(GenAppKey, 0x00 | pad16)\nvar sKey_root = Buffer.from('000000000000000000000000000000', 'hex');\nvar McRootKey = encrypt(Buffer.concat([Buffer.from('00','hex'),sKey_root]),GenAppKey);\n\n// ## Key derivation to have McKEKey\n// McKEKey = aes128_encrypt(McRootKey, 0x00 | pad16)\nvar sKey_ke = Buffer.from('000000000000000000000000000000', 'hex');\nvar McKEKey = encrypt(Buffer.concat([Buffer.from('00','hex'),sKey_ke]),McRootKey);\n\n// ## Key decryption to have McKey ##########################################\n// McKey = aes128_decrypt(McKey_encrypted,McKEKey)\nvar McKey = encrypt(McKey_encrypted,McKEKey);\n\n\n// ## Key derivation to have McAppsKey and McNetSKey ########################\n// McAppSKey = aes128_encrypt(McKey, 0x01 | McAddr | pad16)\nvar sKey_apps = Buffer.concat([\n                        McAddr_le,\n                        Buffer.from('00000000000000000000000', 'hex')\n                        ]);\nvar McAppSKey = encrypt(Buffer.concat([Buffer.from('01','hex'),sKey_apps]),McKey);\n\n// McNetSKey = aes128_encrypt(McKey, 0x02 | McAddr | pad16)\nvar sKey_nets = Buffer.concat([\n                        McAddr_le,\n                        Buffer.from('00000000000000000000000', 'hex')\n                        ]);\nvar McNetSKey = encrypt(Buffer.concat([Buffer.from('02','hex'),sKey_nets]),McKey);\n\n\n\n// output\n\nif (msg.payload.length == 32){\n    \n    msg.McAddrLE=McAddr_le.toString('hex');                // McAddr little endian\n    msg.McAddrBE=McAddr_be;                             // McAddr big endian\n    msg.McKey_ENC=McKey_encrypted.toString('hex');         // McKey_encrypted\n    msg.McRootKEY=McRootKey.toString('hex');               // McRootKey\n    msg.McKEKEY=McKEKey.toString('hex');                   // McKEKey\n    msg.McKEY=McKey.toString('hex');                   // McKey\n    msg.McAppSKEY=McAppSKey.toString('hex');               // McAppSKey\n    msg.McNetSKEY=McNetSKey.toString('hex');               // McNetSKey\n    \n    msg.state = \"1\";\n    \n    return msg;\n}\nelse\n{\n    msg.McAddrLE=McAddr_le.toString('hex');                // McAddr little endian\n    msg.McAddrBE=McAddr_be.toString('hex');                             // McAddr big endian\n    msg.McKey_ENC=McKey_encrypted.toString('hex');         // McKey_encrypted\n    msg.McRootKEY=\"Error. Check the GenAppKey length\";                              // McRootKey\n    msg.McKEKEY=\"Error. Check the GenAppKey length\";                                // McKEKey\n    msg.McKEY=\"Error. Check the GenAppKey length\";                   // McKey\n    msg.McAppSKEY=\"Error. Check the GenAppKey length\";                              // McAppSKey\n    msg.McNetSKEY=\"Error. Check the GenAppKey length\";                              // McNetSKey\n    msg.state = \"0\";\n    return msg;\n}",
         "outputs": 1,
@@ -86,23 +86,23 @@
         "y": 140,
         "wires": [
             [
-                "e4766db5f814c4da",
-                "3d3b3a64d691f635",
-                "597acb4b84e08548",
-                "ec568f5ea7b1d1cf",
-                "62fa1ca49a55f1f5",
-                "d8af8ab212bf847a",
-                "baf59db38d118de2",
-                "7fb563b3586ed30b",
-                "0a087ad359f8a73e",
-                "a3613d7fcda16c70"
+                "79ebcb11d9d542cc",
+                "7fbe5c3a9ce0d312",
+                "9478f3ec4eb613e4",
+                "f550a874eb91994d",
+                "280c8073fa00bb80",
+                "85db35f79b2e2f14",
+                "9e876f4e13076d01",
+                "17b020efe49f4899",
+                "0bc5258602328aaf",
+                "361ecef1011a6a88"
             ]
         ]
     },
     {
-        "id": "e4766db5f814c4da",
+        "id": "79ebcb11d9d542cc",
         "type": "debug",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "name": "",
         "active": false,
         "tosidebar": true,
@@ -117,10 +117,10 @@
         "wires": []
     },
     {
-        "id": "62fa1ca49a55f1f5",
+        "id": "280c8073fa00bb80",
         "type": "ui_text",
-        "z": "bb32b3705303fb88",
-        "group": "f48663973273d0a3",
+        "z": "b3733736db06bf09",
+        "group": "87ee573668ee2369",
         "order": 8,
         "width": 0,
         "height": 0,
@@ -134,9 +134,9 @@
         "wires": []
     },
     {
-        "id": "1bf3fca03ebd390d",
+        "id": "b95b3e0afcbea571",
         "type": "inject",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "name": "Init, empty string",
         "props": [
             {
@@ -158,18 +158,18 @@
         "y": 140,
         "wires": [
             [
-                "dfad66844710b2e1"
+                "b3022fdad8cb48c3"
             ]
         ]
     },
     {
-        "id": "dfad66844710b2e1",
+        "id": "b3022fdad8cb48c3",
         "type": "ui_text_input",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "name": "",
         "label": "GenAppKey",
         "tooltip": "",
-        "group": "f48663973273d0a3",
+        "group": "87ee573668ee2369",
         "order": 1,
         "width": 10,
         "height": 2,
@@ -184,16 +184,16 @@
         "y": 140,
         "wires": [
             [
-                "055f6b1fc5d7114e"
+                "522ee72c952a026d"
             ]
         ]
     },
     {
-        "id": "4e2dee66079049d9",
+        "id": "b6f844a8739dd174",
         "type": "ui_button",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "name": "",
-        "group": "f48663973273d0a3",
+        "group": "87ee573668ee2369",
         "order": 2,
         "width": 0,
         "height": 0,
@@ -212,14 +212,14 @@
         "y": 140,
         "wires": [
             [
-                "615a66b1ac8fce55"
+                "6714b4df274dfb50"
             ]
         ]
     },
     {
-        "id": "055f6b1fc5d7114e",
+        "id": "522ee72c952a026d",
         "type": "change",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "name": "",
         "rules": [
             {
@@ -239,15 +239,15 @@
         "y": 140,
         "wires": [
             [
-                "4e2dee66079049d9"
+                "b6f844a8739dd174"
             ]
         ]
     },
     {
-        "id": "d8af8ab212bf847a",
+        "id": "85db35f79b2e2f14",
         "type": "ui_text",
-        "z": "bb32b3705303fb88",
-        "group": "f48663973273d0a3",
+        "z": "b3733736db06bf09",
+        "group": "87ee573668ee2369",
         "order": 9,
         "width": 0,
         "height": 0,
@@ -261,10 +261,10 @@
         "wires": []
     },
     {
-        "id": "baf59db38d118de2",
+        "id": "9e876f4e13076d01",
         "type": "ui_text",
-        "z": "bb32b3705303fb88",
-        "group": "f48663973273d0a3",
+        "z": "b3733736db06bf09",
+        "group": "87ee573668ee2369",
         "order": 11,
         "width": 0,
         "height": 0,
@@ -278,10 +278,10 @@
         "wires": []
     },
     {
-        "id": "7fb563b3586ed30b",
+        "id": "17b020efe49f4899",
         "type": "ui_text",
-        "z": "bb32b3705303fb88",
-        "group": "f48663973273d0a3",
+        "z": "b3733736db06bf09",
+        "group": "87ee573668ee2369",
         "order": 13,
         "width": 0,
         "height": 0,
@@ -295,10 +295,10 @@
         "wires": []
     },
     {
-        "id": "0a087ad359f8a73e",
+        "id": "0bc5258602328aaf",
         "type": "ui_text",
-        "z": "bb32b3705303fb88",
-        "group": "f48663973273d0a3",
+        "z": "b3733736db06bf09",
+        "group": "87ee573668ee2369",
         "order": 14,
         "width": 0,
         "height": 0,
@@ -312,10 +312,10 @@
         "wires": []
     },
     {
-        "id": "03dca163acc7d1ed",
+        "id": "8c46152b4ac526e7",
         "type": "ui_text",
-        "z": "bb32b3705303fb88",
-        "group": "f48663973273d0a3",
+        "z": "b3733736db06bf09",
+        "group": "87ee573668ee2369",
         "order": 3,
         "width": 0,
         "height": 0,
@@ -329,9 +329,9 @@
         "wires": []
     },
     {
-        "id": "dd8479ebebbbfa1b",
+        "id": "6c5349afb5820c62",
         "type": "inject",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "name": "GENERATED KEYS ",
         "props": [
             {
@@ -353,15 +353,15 @@
         "y": 300,
         "wires": [
             [
-                "03dca163acc7d1ed"
+                "8c46152b4ac526e7"
             ]
         ]
     },
     {
-        "id": "c84650deedc3a8a2",
+        "id": "5c0c30cb8f4356f8",
         "type": "ui_text",
-        "z": "bb32b3705303fb88",
-        "group": "f48663973273d0a3",
+        "z": "b3733736db06bf09",
+        "group": "87ee573668ee2369",
         "order": 7,
         "width": 0,
         "height": 0,
@@ -375,9 +375,9 @@
         "wires": []
     },
     {
-        "id": "aa1d1b3b6653f1b1",
+        "id": "8d51ea1233ba548e",
         "type": "inject",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "name": "DERIVED KEYS",
         "props": [
             {
@@ -399,15 +399,15 @@
         "y": 340,
         "wires": [
             [
-                "c84650deedc3a8a2"
+                "5c0c30cb8f4356f8"
             ]
         ]
     },
     {
-        "id": "b2039b935ec0e3a0",
+        "id": "ec021787d813fb89",
         "type": "ui_text",
-        "z": "bb32b3705303fb88",
-        "group": "f48663973273d0a3",
+        "z": "b3733736db06bf09",
+        "group": "87ee573668ee2369",
         "order": 10,
         "width": 0,
         "height": 0,
@@ -421,9 +421,9 @@
         "wires": []
     },
     {
-        "id": "c03b80aac320911a",
+        "id": "1d603db70c9c9d62",
         "type": "inject",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "name": "DECRYPTED KEYS",
         "props": [
             {
@@ -445,15 +445,15 @@
         "y": 380,
         "wires": [
             [
-                "b2039b935ec0e3a0"
+                "ec021787d813fb89"
             ]
         ]
     },
     {
-        "id": "fdd254f54f8258ca",
+        "id": "98926c865ef97e6e",
         "type": "ui_text",
-        "z": "bb32b3705303fb88",
-        "group": "f48663973273d0a3",
+        "z": "b3733736db06bf09",
+        "group": "87ee573668ee2369",
         "order": 12,
         "width": 0,
         "height": 0,
@@ -467,9 +467,9 @@
         "wires": []
     },
     {
-        "id": "92dfc92db35adbb6",
+        "id": "bf94da2ce2201ceb",
         "type": "inject",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "name": "MULTICAST SESSION KEYS",
         "props": [
             {
@@ -491,14 +491,14 @@
         "y": 420,
         "wires": [
             [
-                "fdd254f54f8258ca"
+                "98926c865ef97e6e"
             ]
         ]
     },
     {
-        "id": "9a0ce56203764d8d",
+        "id": "2d35c578587c02e4",
         "type": "comment",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "name": "For Dashboard",
         "info": "",
         "x": 120,
@@ -506,9 +506,9 @@
         "wires": []
     },
     {
-        "id": "995d4d7ddf123e77",
+        "id": "ca25bc2583617767",
         "type": "comment",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "name": "Multicast session generator",
         "info": "",
         "x": 150,
@@ -516,9 +516,9 @@
         "wires": []
     },
     {
-        "id": "46a21d7bc927e956",
+        "id": "0b31875545d006d9",
         "type": "comment",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "name": "McGroupSetupReq (0x02)",
         "info": "",
         "x": 150,
@@ -526,12 +526,12 @@
         "wires": []
     },
     {
-        "id": "b55b5e85a5bfa22d",
+        "id": "5e4a21a77a767387",
         "type": "ui_form",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "name": "McGroupSetupReq",
         "label": "",
-        "group": "6981c805a4790f2a",
+        "group": "c031fbdc2f5341a9",
         "order": 1,
         "width": 11,
         "height": 1,
@@ -590,14 +590,14 @@
         "y": 880,
         "wires": [
             [
-                "842929fb3b21c9d2"
+                "58122c82443945bf"
             ]
         ]
     },
     {
-        "id": "842929fb3b21c9d2",
+        "id": "58122c82443945bf",
         "type": "function",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "name": "McGroupSetupReq",
         "func": "/*\n* Title:    Mc LoRaWAN command: McGroupSetupReq\n* Autor:    Antoine AUGAGNEUR\n* Date:     march, 2022\n* Sources:  > LoRaWAN Application Layer Clock Synchronization Specification v1.0.0 (Lora Alliance)\n*           > LoRaWAN Remote Multicast Setup Specification v1.0.0 (Lora Alliance)\n*\n* McGroupSetupReq payload:\n*          | McGroupIDHeader  | McAddr    | McKey_encrypted   | minMcFCount   | maxMcFCount   | \n*          | 1 byte           | 4 bytes   | 16 bytes          | 4 bytes       | 4 bytes       |\n*\n* McGroupSetupReq command CID: 0x02\n*\n* Information:\n*           - inputs:   McGroupID                    \n*                       McAddr              (from node, it has to be in little endian)    \n*                       McKey_encrypted     (from node)\n*                       minMcFCount\n*                       maxMcFCount\n*           - outputs:  McGroupSetupReq\n*                       minMcFCount (dec format)\n*                       maxMcFCount (dec format)\n*                       \n*                                          \n*/\n\n// McGroupIDHeader (1 byte) / 6-bits RFU + 2-bits McGroupID\nvar RFU = '0';\n// var McGroupID = '1'; // 0, 1, 2, or 3\nvar McGroupID = msg.payload.McGroupID;\nvar McGroupIDHeader = Buffer.from(RFU + McGroupID, 'hex');\n\n// McAddr (4 byte)\n// var McAddr = 'F03D292B';\nvar McAddr = msg.payload.McAddr;\nMcAddr = Buffer.from(McAddr, 'hex');\n\n// McKey_encrypted (16 bytes)\n// var McKey_encrypted = '6B46B8386CB3B7697B2674526E98209B';\nvar McKey_encrypted = msg.payload.McKey_encrypted;\nMcKey_encrypted = Buffer.from(McKey_encrypted, 'hex');\n\n// minMcFCount (4 bytes)\n// var minMcFCount = '00000000';\nvar minMcFCount = msg.payload.minMcFCount;\nminMcFCount = minMcFCount.toString(16);\nvar minMcFCount_le = minMcFCount[6]                             // little endian conversion\n                    + minMcFCount[7]\n                    + minMcFCount[4]\n                    + minMcFCount[5]\n                    + minMcFCount[2]\n                    + minMcFCount[3]\n                    + minMcFCount[0]\n                    + minMcFCount[1];\nminMcFCount_le = Buffer.from(minMcFCount_le, 'hex');\nvar minMcFCount_dec = parseInt(minMcFCount,16);                 // passage en decimal\n\n// maxMcFCount (4 bytes)\n// var maxMcFCount = '0000000A'\nvar maxMcFCount = msg.payload.maxMcFCount;\nmaxMcFCount = maxMcFCount.toString(16);\nvar maxMcFCount_le = maxMcFCount[6]                             // little endian conversion\n                    + maxMcFCount[7]\n                    + maxMcFCount[4]\n                    + maxMcFCount[5]\n                    + maxMcFCount[2]\n                    + maxMcFCount[3]\n                    + maxMcFCount[0]\n                    + maxMcFCount[1];\nmaxMcFCount_le = Buffer.from(maxMcFCount_le, 'hex');\nvar maxMcFCount_dec = parseInt(maxMcFCount,16);                 // passage en decimal\n\n\n// McGroupSetupReq\nvar Command_02 = Buffer.from('02', 'hex');\nvar McGroupSetupReq = Buffer.concat([\n                        Command_02,\n                        McGroupIDHeader,\n                        McAddr,\n                        McKey_encrypted,\n                        minMcFCount_le,\n                        maxMcFCount_le                        \n                        ]);\n\n// ############################################################################\n\n\n//msg.mcaddrlittle = McAddr.toString('hex');\n//msg.mckeyencrypted = McKey_encrypted.toString('hex');\nmsg.McGroupSetupReq = McGroupSetupReq.toString('hex');\n\n\n\nreturn msg;",
         "outputs": 1,
@@ -609,15 +609,15 @@
         "y": 880,
         "wires": [
             [
-                "15835c29705d6cd1"
+                "6fbb3f730d5b396e"
             ]
         ]
     },
     {
-        "id": "15835c29705d6cd1",
+        "id": "6fbb3f730d5b396e",
         "type": "ui_text",
-        "z": "bb32b3705303fb88",
-        "group": "6981c805a4790f2a",
+        "z": "b3733736db06bf09",
+        "group": "c031fbdc2f5341a9",
         "order": 2,
         "width": 11,
         "height": 1,
@@ -631,9 +631,9 @@
         "wires": []
     },
     {
-        "id": "a43f2f12145dd71b",
+        "id": "33f52510eb03ea03",
         "type": "comment",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "name": "McClassCSessionReq (0x04)",
         "info": "",
         "x": 160,
@@ -641,12 +641,12 @@
         "wires": []
     },
     {
-        "id": "f45068960799ca69",
+        "id": "2d3ecbcd334753ef",
         "type": "ui_form",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "name": "McClassCSessionReq ",
         "label": "",
-        "group": "8be7a72d5783bb58",
+        "group": "5ddbf59639995318",
         "order": 1,
         "width": 10,
         "height": 1,
@@ -713,14 +713,14 @@
         "y": 1020,
         "wires": [
             [
-                "f7e2c4db026753f9"
+                "38b86ffc9736bfb5"
             ]
         ]
     },
     {
-        "id": "f7e2c4db026753f9",
+        "id": "38b86ffc9736bfb5",
         "type": "function",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "name": "McClassCSessionReq",
         "func": "/*\n* Title:    Mc LoRaWAN command: McClassCSessionReq\n* Autor:    Antoine AUGAGNEUR\n* Date:     march, 2022\n* Sources:  > LoRaWAN Application Layer Clock Synchronization Specification v1.0.0 (Lora Alliance)\n*           > LoRaWAN Remote Multicast Setup Specification v1.0.0 (Lora Alliance)\n*\n* McClassCSessionReq payload:\n*          | McGroupIDHeader  | SessionTime     | SessionTimeOut    | DLFrequ   | DR        | \n*          | 1 byte           | 4 bytes         | 1 byte            | 3 bytes   | 1 byte    |\n*\n* McClassCSessionReq command CID: 0x04\n*\n* Information:\n*           - inputs:   McGroupID           \n*                       SessionTime (Y,M,D,H,M,S)              \n*                       TimeOut\n*                       DLFreq\n*                       DR\n*           - outputs:  McClassCSessionReq\n*                       Session Time (date format)\n*                       SessionTimeOut (date format)\n*                                          \n*/\n\n//  ## Date calculation\n// GPS origin\nvar Origin = new Date('1980-01-06 00:00:00');\n// Desired date\nvar Desired_date = Date.parse(msg.payload.SessionTime_date);        // Y, M, D // \"parse\" turns the date into the number of ms passed since 1970-01-01.\nvar Desired_time = Date.parse(msg.payload.SessionTime_time);        // H, M\n\n// Difference calculation\nvar offset_time = Date.parse('1970-01-01 00:00:00');\nvar Desired = Desired_date + Desired_time - offset_time - Origin;   // time ( = hours and minuts) is set with an offset of 1970-01-01. So, I take the offset away.\nDesired=Desired+7200000;    // 2 hours are added to synch with our time (UTC+01). Added twice because there are a Date(Y,M,D) setup AND a time (H,M) setup.\nvar Diff = Desired/1000;      // difference in seconds\n\n// RFU (multiple use)\nvar RFU = '0';\n\n\n// ## McClassCSessionReq definition -------------------------------------------------------------\n// McGroupIDHeader (1 byte)\nvar McGroupID = msg.payload.McGroupID;                                              // To set ! (0,1,2 or 3)\nvar McGroupIDHeader = Buffer.from(RFU + McGroupID.toString(10), 'hex');\n\n// Session Time (4 bytes)\nvar SessionTime = Diff.toString(16);       // hex to string conversion\nvar SessionTime_le = SessionTime[6]        // little endian conversion\n                    + SessionTime[7]\n                    + SessionTime[4]\n                    + SessionTime[5]\n                    + SessionTime[2]\n                    + SessionTime[3]\n                    + SessionTime[0]\n                    + SessionTime[1];\nSessionTime_le = Buffer.from(SessionTime_le, 'hex');\n\n// SessionTimeOut \nvar TimeOut_r = msg.payload.TimeOut;                                                     // To set ! (0 --> 15)\nvar TimeOut = parseInt(TimeOut_r,10);   \nvar TimeOut_hex = parseInt(TimeOut.toString(16), 16);\nvar TimeOutSec = 2**TimeOut; // 2^TimeOut\nvar SessionTimeOut = Buffer.from(RFU + TimeOut_hex.toString(16), 'hex');\n\n// DLFreq (3 bytes)\nvar freq_r = msg.payload.DLFreq;\nvar freq = parseInt(freq_r,10);                                               // To set ! \nvar freq_hex = parseInt((freq/100).toString(16), 16);       // dec to hex conversion\nvar freq_hex_str = freq_hex.toString(16);                   // hex to string conversion\nvar freq_hex_str_le = freq_hex_str[4]                       // little endian conversion\n                    + freq_hex_str[5]\n                    + freq_hex_str[2]\n                    + freq_hex_str[3]\n                    + freq_hex_str[0]\n                    + freq_hex_str[1];\nfreq_hex_str_le = Buffer.from(freq_hex_str_le, 'hex');\n\n// DR (1 byte)\nvar DR_r = msg.payload.DR;                                                         // To set ! \nvar DR = parseInt(DR_r,10);\nvar DR_hex = parseInt(DR.toString(16), 16);                         // dec to hex conversion\nvar DR_hex_str = Buffer.from('0' + DR_hex.toString(16), 'hex');     // hex to string conversion\nDR_hex_str = Buffer.from(DR_hex_str, 'hex');\n\n// McClassCSessionReq\nvar Command_04 = Buffer.from('04', 'hex');\n// var McClassCSessionReq = Command + McGroupIDHeader + SessionTime_le + SessionTimeOut + freq_hex_str_le + DR_hex_str;\n\nvar McClassCSessionReq = Buffer.concat([\n                        Command_04,\n                        McGroupIDHeader,\n                        SessionTime_le,\n                        SessionTimeOut,\n                        freq_hex_str_le,\n                        DR_hex_str                        \n                        ]);\n                        \n                        \n\n\n\n\nmsg.desiredtime = Diff;\nmsg.McClassCSessionReq_command = McClassCSessionReq.toString('hex');\n\n\nreturn msg;\n\n\n",
         "outputs": 1,
@@ -732,15 +732,15 @@
         "y": 1020,
         "wires": [
             [
-                "e3d318d73537cfa7"
+                "eed3a3edb1bf1169"
             ]
         ]
     },
     {
-        "id": "e3d318d73537cfa7",
+        "id": "eed3a3edb1bf1169",
         "type": "ui_text",
-        "z": "bb32b3705303fb88",
-        "group": "8be7a72d5783bb58",
+        "z": "b3733736db06bf09",
+        "group": "5ddbf59639995318",
         "order": 2,
         "width": 10,
         "height": 1,
@@ -754,10 +754,10 @@
         "wires": []
     },
     {
-        "id": "a3613d7fcda16c70",
+        "id": "361ecef1011a6a88",
         "type": "ui_text",
-        "z": "bb32b3705303fb88",
-        "group": "f48663973273d0a3",
+        "z": "b3733736db06bf09",
+        "group": "87ee573668ee2369",
         "order": 15,
         "width": 0,
         "height": 0,
@@ -771,9 +771,9 @@
         "wires": []
     },
     {
-        "id": "9aaf131c11fc1412",
+        "id": "d5b4f932dc878da9",
         "type": "mqtt out",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "name": "MQTT Publisher",
         "topic": "",
         "qos": "2",
@@ -783,15 +783,15 @@
         "userProps": "",
         "correl": "",
         "expiry": "",
-        "broker": "d1d930618963f13f",
+        "broker": "6f92933c2c1df033",
         "x": 500,
         "y": 1520,
         "wires": []
     },
     {
-        "id": "deb4fb310f74aec9",
+        "id": "cc60ce25e047f729",
         "type": "function",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "name": "Downlink",
         "func": "\nvar topic_actility = \"mqtt/things/\" + deveui + \"/downlink\";  \n\nvar network = global.get('network');\nvar gateway = global.get('gateway');\nvar application_id_ttn = global.get('application_id_ttn');\nvar device_id_ttn = global.get('device_id_ttn');\nvar topic_ttn_downlink_device = \"v3/\" + application_id_ttn + \"/devices/\" + device_id_ttn + \"/down/replace\";  \nvar topic_ttn_downlink_multicast = \"v3/\" + application_id_ttn + \"/devices/\" + device_id_ttn + \"/down/replace\";\n\n\n\n// McGroupIDHeader (1 byte)\nvar command = hexToBase64(msg.payload.thepayload);   \nvar deveui = msg.payload.deveui;\nvar port = msg.payload.port;\nvar multicast = msg.payload.multicast;\n\n\nfunction hexToBase64(hexString) {\n  // Conversion de la chaîne hexadécimale en un tableau d'octets\n  const bytes = Buffer.from(hexString, 'hex');\n\n  // Conversion des octets en base64\n  const base64String = bytes.toString('base64');\n\n  return base64String;\n}\n\n\n\n\n\n\n\nif (network == \"ttn\"){\n    if (multicast == false){\n       /**** Downlink to a device ***/\n        msg = \n        {\n            topic : topic_ttn_downlink_device,\n            \n            payload : {   \n                'downlinks': [{\n                    \"f_port\": port,\n                \t\"frm_payload\": command,\n                \t\"priority\": \"NORMAL\"\n                }]\n            }\n        }  \n    }\n    else{\n        /**** Downlink to a Multicast a Group ***/\n         msg = \n        {\n            topic : topic_ttn_downlink_multicast,\n            \n            payload : {\n                \"downlinks\": [\n                    {\n                        \"f_port\": port,\n                        \"frm_payload\": command,\n                        \"priority\": \"NORMAL\",\n                        \"class_b_c\": {\n                            \"gateways\": [\n                                {\n                                    \"gateway_ids\": {\n                                        \"gateway_id\": gateway\n                                    }\n                                }\n                            ]\n                        }\n                    }\n                ]\n            }\n        }\n    }\n}\n\nif (network == \"actility\"){\n      msg = \n      {\n        payload : {\n            \"DevEUI_downlink\": {\n     \t\t\"DevEUI\": deveui,\n     \t\t\"FPort\": port,\n     \t\t\"payload_hex\": command,\n    \t\t\"Confirmed\": \"0\", \t\t\n    \t\t\"FlushDownlinkQueue\": \"1\"    \n\t        }\n        }\n      }\n}\n\nreturn msg;\n\n\n\n\n\n\n\n\n\n\n\n\n",
         "outputs": 1,
@@ -803,14 +803,14 @@
         "y": 1520,
         "wires": [
             [
-                "9aaf131c11fc1412"
+                "d5b4f932dc878da9"
             ]
         ]
     },
     {
-        "id": "f62ea5e55023b2a4",
+        "id": "0dadbccb571a7c4e",
         "type": "ui_form",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "name": "Downlink",
         "label": "",
         "group": "5c1b38e3407d4958",
@@ -856,14 +856,15 @@
         "y": 1520,
         "wires": [
             [
-                "deb4fb310f74aec9"
+                "cc60ce25e047f729",
+                "77c54b9f40987cce"
             ]
         ]
     },
     {
-        "id": "d36fc6108f7c2399",
+        "id": "330a875990d59ea1",
         "type": "comment",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "name": "Downlink",
         "info": "",
         "x": 100,
@@ -871,14 +872,14 @@
         "wires": []
     },
     {
-        "id": "77c726c70638ce24",
+        "id": "6c1274b29ffaa5f5",
         "type": "mqtt in",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "name": "MQTT Subscriber",
         "topic": "",
         "qos": "2",
         "datatype": "json",
-        "broker": "d1d930618963f13f",
+        "broker": "6f92933c2c1df033",
         "nl": false,
         "rap": false,
         "inputs": 1,
@@ -886,18 +887,18 @@
         "y": 1160,
         "wires": [
             [
-                "d35cfaf0866116b7",
-                "d1c48b673610b603",
-                "9bd08230a8470556",
-                "36b51d52b403c279",
-                "2933061fc991045c"
+                "c940ef2e1fa58797",
+                "2a00be80658111de",
+                "d533f1a64f383421",
+                "2969ee79f36586ec",
+                "a69e977fb70cd932"
             ]
         ]
     },
     {
-        "id": "a63eebb598d70dee",
+        "id": "9216fd2541332eb3",
         "type": "comment",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "name": "Uplink",
         "info": "",
         "x": 90,
@@ -905,9 +906,9 @@
         "wires": []
     },
     {
-        "id": "d35cfaf0866116b7",
+        "id": "c940ef2e1fa58797",
         "type": "function",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "name": "Uplink analyser",
         "func": "/*\n* Title:    Multicast - Uplink analyzer\n* Autor:    Antoine AUGAGNEUR\n* Date:     march, 2022\n*\n*/\n\n\nfunction base64ToHex(base64String) {\n  // Conversion de la chaîne Base64 en un objet Buffer\n  const buffer = Buffer.from(base64String, 'base64');\n\n  // Conversion du buffer en une chaîne hexadécimale\n  const hexString = buffer.toString('hex');\n\n  return hexString;\n}\n\n\nvar upport = msg.payload.uplink_message.f_port;                     \nvar message = base64ToHex(msg.payload.uplink_message.frm_payload);              \nmsg.payload.uplink_message.frm_payload = base64ToHex(msg.payload.uplink_message.frm_payload);  \n\n\n\n// Multicast command analysis\nif (upport == \"200\"){\n    \n    message = message.toString('hex');\n\n    if (message[1] == \"0\"){\n        msg.commandtype = \"PackageVersionAns \";\n        msg.analysis = \"Pack.ID: \" + message[2] + message[3] + \" / \" + \"Pack.Ver: \" + message[4] + message[5];\n    }\n    else if(message[1] == \"1\"){\n        msg.commandtype = \"McGroupStatusAns\";\n        var buf = \"--\";\n        if (message.length > 4){buf = message[3];}\n        if (message.length > 15){buf += \"-\" + message[15];}\n        if (message.length > 27){buf += \"-\" + message[27];}\n        if (message.length > 38){buf += \"-\" + message[38];}\n        msg.analysis = \"Nb.Group: \" + message[2] + \" / \" + \"Group defined: \" + buf;\n    }\n    else if(message[1] == \"2\"){\n        msg.commandtype = \"McGroupSetupAns \";\n        var grp = parseInt(message[3].toString(16),16);\n        if (grp>3){ // bit IDerror == 1\n            msg.analysis = \"Setup group \" + grp-4 + \" aborted\";\n        }\n        else{\n            msg.analysis = \"Setup group \" + grp + \" successful\";\n        }\n    }\n    else if(message[1] == \"3\"){\n        msg.commandtype = \"McGroupDeleteAns \";\n        var grpb = parseInt(message[3].toString(16),16);\n        if (grpb>3){ // bit IDerror == 1\n            msg.analysis = \"Delete group \" + grpb-4 + \" failed\";\n        }\n        else{\n            msg.analysis = \"Delete group \" + grpb + \" successful\";\n        }\n    }\n    else if(message[1] == \"4\"){\n        msg.commandtype = \"McClassCSessionAns \";\n        var grpc = parseInt(message[3].toString(16),16);\n        if(grpc>10){\n            msg.analysis = \"Request aborted\";\n        }\n        else{\n            //var tps = message[8]+message[9]+message[6]+message[7]+message[4]+message[5];\n            //var tps_dec =  parseInt(message[1].toString(16),16); // sec\n            msg.analysis = \"C session setup group \" +  message[3];\n        }\n    }\n\n    else{\n        msg.commandtype = \"...\";\n        msg.analysis = \"...\";\n    }\n    \n}\nelse{\n    msg.commandtype = \"...\";\n    msg.analysis = \"...\";\n}\n\n\nreturn msg;\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
         "outputs": 1,
@@ -919,17 +920,17 @@
         "y": 1340,
         "wires": [
             [
-                "866bc869c85cfbbf",
-                "6cc214a59230888c",
-                "36b51d52b403c279"
+                "975e580141320057",
+                "10fde859b125a5b7",
+                "2969ee79f36586ec"
             ]
         ]
     },
     {
-        "id": "d1c48b673610b603",
+        "id": "2a00be80658111de",
         "type": "ui_text",
-        "z": "bb32b3705303fb88",
-        "group": "ce10c98edc29ac62",
+        "z": "b3733736db06bf09",
+        "group": "4eea49ec384dea02",
         "order": 4,
         "width": 6,
         "height": 1,
@@ -943,10 +944,10 @@
         "wires": []
     },
     {
-        "id": "9bd08230a8470556",
+        "id": "d533f1a64f383421",
         "type": "ui_text",
-        "z": "bb32b3705303fb88",
-        "group": "ce10c98edc29ac62",
+        "z": "b3733736db06bf09",
+        "group": "4eea49ec384dea02",
         "order": 3,
         "width": 6,
         "height": 1,
@@ -960,10 +961,10 @@
         "wires": []
     },
     {
-        "id": "866bc869c85cfbbf",
+        "id": "975e580141320057",
         "type": "ui_text",
-        "z": "bb32b3705303fb88",
-        "group": "ce10c98edc29ac62",
+        "z": "b3733736db06bf09",
+        "group": "4eea49ec384dea02",
         "order": 2,
         "width": 7,
         "height": 2,
@@ -977,10 +978,10 @@
         "wires": []
     },
     {
-        "id": "6cc214a59230888c",
+        "id": "10fde859b125a5b7",
         "type": "ui_text",
-        "z": "bb32b3705303fb88",
-        "group": "ce10c98edc29ac62",
+        "z": "b3733736db06bf09",
+        "group": "4eea49ec384dea02",
         "order": 5,
         "width": 7,
         "height": 2,
@@ -994,10 +995,10 @@
         "wires": []
     },
     {
-        "id": "36b51d52b403c279",
+        "id": "2969ee79f36586ec",
         "type": "ui_text",
-        "z": "bb32b3705303fb88",
-        "group": "ce10c98edc29ac62",
+        "z": "b3733736db06bf09",
+        "group": "4eea49ec384dea02",
         "order": 6,
         "width": 6,
         "height": 1,
@@ -1011,9 +1012,9 @@
         "wires": []
     },
     {
-        "id": "9686a692b857a8df",
+        "id": "d0e5d5d4339ef4b1",
         "type": "comment",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "name": "PackageVersionReq  command (0x00)",
         "info": "",
         "x": 190,
@@ -1021,11 +1022,11 @@
         "wires": []
     },
     {
-        "id": "0a8c4ae09c4e28ca",
+        "id": "8b9cf68acf3f6c06",
         "type": "ui_text",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "d": true,
-        "group": "1f5263f560ceadfe",
+        "group": "470ded09e55a0e90",
         "order": 2,
         "width": 0,
         "height": 0,
@@ -1039,11 +1040,11 @@
         "wires": []
     },
     {
-        "id": "a20f1480d3e6b8ed",
+        "id": "717f2b8d4c93b8e5",
         "type": "ui_template",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "d": true,
-        "group": "1f5263f560ceadfe",
+        "group": "470ded09e55a0e90",
         "name": "Info",
         "order": 1,
         "width": 0,
@@ -1061,9 +1062,9 @@
         ]
     },
     {
-        "id": "bc4aa44e863fcbea",
+        "id": "491623a8d75ddfd1",
         "type": "inject",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "name": "00",
         "props": [
             {
@@ -1081,14 +1082,14 @@
         "y": 560,
         "wires": [
             [
-                "0a8c4ae09c4e28ca"
+                "8b9cf68acf3f6c06"
             ]
         ]
     },
     {
-        "id": "3fadc044612357eb",
+        "id": "0b136e41783f7325",
         "type": "comment",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "name": "McGroupStatusReq  command (0x01)",
         "info": "",
         "x": 190,
@@ -1096,11 +1097,11 @@
         "wires": []
     },
     {
-        "id": "86e700f641c64695",
+        "id": "b1c0b511c09155e1",
         "type": "ui_text",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "d": true,
-        "group": "f3fc4dc65da12719",
+        "group": "a06271e5d40eb8a7",
         "order": 2,
         "width": 0,
         "height": 0,
@@ -1114,9 +1115,9 @@
         "wires": []
     },
     {
-        "id": "99637a6971ac7997",
+        "id": "fcc874e275d1b421",
         "type": "comment",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "name": "McGroupDeleteReq command (0x03)",
         "info": "",
         "x": 190,
@@ -1124,11 +1125,11 @@
         "wires": []
     },
     {
-        "id": "4581df807be40ef1",
+        "id": "2fc310a7b7cb1950",
         "type": "ui_text",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "d": true,
-        "group": "773407c9ade4eb7e",
+        "group": "3c51a677b2a33fac",
         "order": 2,
         "width": 0,
         "height": 0,
@@ -1142,15 +1143,15 @@
         "wires": []
     },
     {
-        "id": "b1c5bfd0557524dd",
+        "id": "88ae63b5978d6213",
         "type": "ui_dropdown",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "d": true,
         "name": "",
         "label": "Group",
         "tooltip": "",
         "place": "Select option",
-        "group": "f3fc4dc65da12719",
+        "group": "a06271e5d40eb8a7",
         "order": 1,
         "width": 0,
         "height": 0,
@@ -1241,20 +1242,20 @@
         "y": 660,
         "wires": [
             [
-                "86e700f641c64695"
+                "b1c0b511c09155e1"
             ]
         ]
     },
     {
-        "id": "ecfeea7171b4fcad",
+        "id": "d3c0d9ad86d88078",
         "type": "ui_dropdown",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "d": true,
         "name": "",
         "label": "Group",
         "tooltip": "",
         "place": "Select option",
-        "group": "773407c9ade4eb7e",
+        "group": "3c51a677b2a33fac",
         "order": 1,
         "width": 0,
         "height": 0,
@@ -1290,14 +1291,14 @@
         "y": 760,
         "wires": [
             [
-                "4581df807be40ef1"
+                "2fc310a7b7cb1950"
             ]
         ]
     },
     {
-        "id": "e3f80a285a1a1f18",
+        "id": "ccf82310fc068f5a",
         "type": "inject",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "name": "RAZ",
         "props": [
             {
@@ -1319,23 +1320,23 @@
         "y": 280,
         "wires": [
             [
-                "3d3b3a64d691f635",
-                "597acb4b84e08548",
-                "ec568f5ea7b1d1cf",
-                "62fa1ca49a55f1f5",
-                "baf59db38d118de2",
-                "a3613d7fcda16c70",
-                "d8af8ab212bf847a",
-                "7fb563b3586ed30b",
-                "0a087ad359f8a73e"
+                "7fbe5c3a9ce0d312",
+                "9478f3ec4eb613e4",
+                "f550a874eb91994d",
+                "280c8073fa00bb80",
+                "9e876f4e13076d01",
+                "361ecef1011a6a88",
+                "85db35f79b2e2f14",
+                "17b020efe49f4899",
+                "0bc5258602328aaf"
             ]
         ]
     },
     {
-        "id": "2933061fc991045c",
+        "id": "a69e977fb70cd932",
         "type": "ui_text",
-        "z": "bb32b3705303fb88",
-        "group": "ce10c98edc29ac62",
+        "z": "b3733736db06bf09",
+        "group": "4eea49ec384dea02",
         "order": 1,
         "width": 6,
         "height": 1,
@@ -1349,9 +1350,9 @@
         "wires": []
     },
     {
-        "id": "58182744df5a6dbf",
+        "id": "10d605dda8f8739c",
         "type": "inject",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "name": "RAZ",
         "props": [
             {
@@ -1373,18 +1374,18 @@
         "y": 1240,
         "wires": [
             [
-                "d1c48b673610b603",
-                "9bd08230a8470556",
-                "866bc869c85cfbbf",
-                "6cc214a59230888c",
-                "2933061fc991045c"
+                "2a00be80658111de",
+                "d533f1a64f383421",
+                "975e580141320057",
+                "10fde859b125a5b7",
+                "a69e977fb70cd932"
             ]
         ]
     },
     {
-        "id": "e5b6a799c722988d",
+        "id": "068c965ef4592d66",
         "type": "link in",
-        "z": "bb32b3705303fb88",
+        "z": "b3733736db06bf09",
         "name": "MQTT configuration in",
         "links": [
             "728e4479a2eccdd2"
@@ -1393,12 +1394,31 @@
         "y": 1160,
         "wires": [
             [
-                "77c726c70638ce24"
+                "6c1274b29ffaa5f5"
             ]
         ]
     },
     {
-        "id": "f48663973273d0a3",
+        "id": "77c54b9f40987cce",
+        "type": "function",
+        "z": "b3733736db06bf09",
+        "name": "Persistance",
+        "func": "return msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 110,
+        "y": 1560,
+        "wires": [
+            [
+                "0dadbccb571a7c4e"
+            ]
+        ]
+    },
+    {
+        "id": "87ee573668ee2369",
         "type": "ui_group",
         "name": "Multicast Session Generator",
         "tab": "121f9e88659f1b47",
@@ -1409,7 +1429,7 @@
         "className": ""
     },
     {
-        "id": "6981c805a4790f2a",
+        "id": "c031fbdc2f5341a9",
         "type": "ui_group",
         "name": "McGroupSetupReq",
         "tab": "121f9e88659f1b47",
@@ -1420,7 +1440,7 @@
         "className": ""
     },
     {
-        "id": "8be7a72d5783bb58",
+        "id": "5ddbf59639995318",
         "type": "ui_group",
         "name": "McClassCSessionReq",
         "tab": "121f9e88659f1b47",
@@ -1431,7 +1451,7 @@
         "className": ""
     },
     {
-        "id": "d1d930618963f13f",
+        "id": "6f92933c2c1df033",
         "type": "mqtt-broker",
         "name": "Broker",
         "broker": "",
@@ -1468,7 +1488,7 @@
         "className": ""
     },
     {
-        "id": "ce10c98edc29ac62",
+        "id": "4eea49ec384dea02",
         "type": "ui_group",
         "name": "Last Uplink",
         "tab": "121f9e88659f1b47",
@@ -1479,7 +1499,7 @@
         "className": ""
     },
     {
-        "id": "1f5263f560ceadfe",
+        "id": "470ded09e55a0e90",
         "type": "ui_group",
         "name": "PackageVersionReq",
         "tab": "121f9e88659f1b47",
@@ -1490,7 +1510,7 @@
         "className": ""
     },
     {
-        "id": "f3fc4dc65da12719",
+        "id": "a06271e5d40eb8a7",
         "type": "ui_group",
         "name": "McGroupStatusReq",
         "tab": "121f9e88659f1b47",
@@ -1501,7 +1521,7 @@
         "className": ""
     },
     {
-        "id": "773407c9ade4eb7e",
+        "id": "3c51a677b2a33fac",
         "type": "ui_group",
         "name": "McGroupDeleteReq",
         "tab": "121f9e88659f1b47",
