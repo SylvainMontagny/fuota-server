@@ -1,0 +1,751 @@
+[
+    {
+        "id": "e6da9eeacc410150",
+        "type": "tab",
+        "label": "Clock Synchronisation Dashboard (TTN)",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "56c31739f397e6ed",
+        "type": "comment",
+        "z": "e6da9eeacc410150",
+        "name": "ForceDeviceResyncReq command (0x0301)",
+        "info": "",
+        "x": 270,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "640ebb681b47e89f",
+        "type": "ui_template",
+        "z": "e6da9eeacc410150",
+        "group": "55a4fad94780cc60",
+        "name": "Info",
+        "order": 1,
+        "width": 10,
+        "height": "14",
+        "format": "<!DOCTYPE html>\n<html>\n<!--<head>-->\n<!--\t<title>Hello</title>-->\n\n<!--\t<h1>Hello World</h1>-->\n<!--</head>-->\n<body>\n\n<p><strong>CLOCK SYNCHRONIZATION OBJECTIVES</strong></p>\n<p>The main goal is to synchronize the real-time clock of an end-device to the network&rsquo;s GPS clock with second accuracy.</p>\n<p>&nbsp;</p>\n\n<p><strong>DASHBOARD PRESENTATION</strong></p>\n<p>This dashboard proposes different commands from the LoRaWAN Application Layer Clock Synchronization. Explanation and commands are from:</p>\n<p><a href=\"https://resources.lora-alliance.org/technical-specifications/lorawan-application-layer-clock-synchronization-specification-v1-0-0\">LoRaWAN&reg; Application Layer Clock Synchronization Specification v1.0.0 (lora-alliance.org)</a></p>\n\n<p>This dashboard offers different commands:</p>\n\n<ul>\n<li><u>PackageVersionReq</u> (CID: 0x00)</li>\n</ul>\n<p>Used by the AS to request the package version implemented by the end-device</p>\n<ul>\n<li><u>DeviceAppTimePeriodicityReq</u> (CID: 0x02)</li>\n</ul>\n<p>Used by the application server for 2 purposes: Set the periodicity at which the end[1]device shall transmit AppTimeReq messages and request an immediate transmission of end-device time.</p>\n<ul>\n<li><u>ForceDeviceResyncReq</u> (CID: 0x03)</li>\n</ul>\n<p>Used by the application server to the end-device to trigger a clock resynchronization.</p>\n<p>&nbsp;</p>\n<p><strong>USMB DOCUMENTATION</strong></p>\n<p>For more information about the Clock Synchronization feature, check:</p>\n<p><a href=\"https://www.univ-smb.fr/lorawan/en/free-book/\">USMB Documentation</a></p>\n\n\n\n</body>\n</html>\n",
+        "storeOutMessages": false,
+        "fwdInMessages": false,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "className": "",
+        "x": 530,
+        "y": 60,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "16ebeb6c20b9bff3",
+        "type": "comment",
+        "z": "e6da9eeacc410150",
+        "name": "PackageVersionReq  command (0x00)",
+        "info": "",
+        "x": 250,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "d5878b4b59479c88",
+        "type": "comment",
+        "z": "e6da9eeacc410150",
+        "name": "DeviceAppTimePeriodicityReq  command (0x02..)",
+        "info": "",
+        "x": 280,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "8e7dbd6b84ad6819",
+        "type": "mqtt out",
+        "z": "e6da9eeacc410150",
+        "name": "Publisher",
+        "topic": "",
+        "qos": "2",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "d1d930618963f13f",
+        "x": 620,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "a0c0f7d674da2c69",
+        "type": "function",
+        "z": "e6da9eeacc410150",
+        "name": "JSON downlink setup",
+        "func": "/*\n* Title:    Clock Synchronization - Downlink Setup\n* Autor:    Anthony Biard\n* Date:     may, 2023\n* Sources:  --\n*\n*/\n\nvar topic_actility = \"mqtt/things/\" + deveui + \"/downlink\";\n\nvar network = global.get('network');\nvar gateway = global.get('gateway');\nvar application_id_ttn = global.get('application_id_ttn');\nvar device_id_ttn = global.get('device_id_ttn');\nvar topic_ttn_downlink_device = \"v3/\" + application_id_ttn + \"/devices/\" + device_id_ttn + \"/down/replace\";\nvar topic_ttn_downlink_multicast = \"v3/\" + application_id_ttn + \"/devices/\" + device_id_ttn + \"/down/replace\";\n\n\n// Get values of the form\nvar command = hexToBase64(msg.payload.thepayload);                           \nvar deveui = msg.payload.deveui;                                \nvar port = msg.payload.port;                                 \n\nfunction hexToBase64(hexString) {\n    // Conversion de la chaîne hexadécimale en un tableau d'octets\n    const bytes = Buffer.from(hexString, 'hex');\n\n    // Conversion des octets en base64\n    const base64String = bytes.toString('base64');\n\n    return base64String;\n}\n\nif (network == \"ttn\") {\n        /**** Downlink to a device ***/\n        msg =\n        {\n            topic: topic_ttn_downlink_device,\n\n            payload: {\n                'downlinks': [{\n                    \"f_port\": port,\n                    \"frm_payload\": command,\n                    \"priority\": \"NORMAL\"\n                }]\n            }\n        }\n}\n\n\nif (network == \"actility\") {\n    msg =\n    {\n        payload: {\n            \"DevEUI_downlink\": {\n                \"DevEUI\": deveui,\n                \"FPort\": port,\n                \"payload_hex\": command,\n                \"Confirmed\": \"0\",\n                \"FlushDownlinkQueue\": \"1\"\n            }\n        }\n    }\n}\n\nreturn msg;\n\n\n\n\n\n\n\n\n\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 420,
+        "y": 540,
+        "wires": [
+            [
+                "8e7dbd6b84ad6819"
+            ]
+        ]
+    },
+    {
+        "id": "42992fbc3f57edca",
+        "type": "ui_form",
+        "z": "e6da9eeacc410150",
+        "name": "Downlink",
+        "label": "",
+        "group": "04058b639f2e0be9",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "Port",
+                "value": "port",
+                "type": "text",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Payload",
+                "value": "thepayload",
+                "type": "text",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "port": "",
+            "thepayload": ""
+        },
+        "payload": "",
+        "submit": "SEND",
+        "cancel": "cancel",
+        "topic": "topic",
+        "topicType": "msg",
+        "splitLayout": "",
+        "className": "",
+        "x": 160,
+        "y": 540,
+        "wires": [
+            [
+                "a0c0f7d674da2c69",
+                "9b086ff38048ce3d"
+            ]
+        ]
+    },
+    {
+        "id": "b3fa3e8a6ca6b60b",
+        "type": "comment",
+        "z": "e6da9eeacc410150",
+        "name": "Downlink",
+        "info": "",
+        "x": 160,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "0936bc689ff96175",
+        "type": "ui_text",
+        "z": "e6da9eeacc410150",
+        "group": "8587c176f0ea610c",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Command",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 510,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "cbff501057d3e126",
+        "type": "ui_text",
+        "z": "e6da9eeacc410150",
+        "group": "e5cf4e76627e4f2c",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Command",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 510,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "21eaa20c8956f13f",
+        "type": "ui_dropdown",
+        "z": "e6da9eeacc410150",
+        "name": "",
+        "label": "Period",
+        "tooltip": "",
+        "place": "Select option",
+        "group": "54aa349efca64ade",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "multiple": false,
+        "options": [
+            {
+                "label": "2 min",
+                "value": "0200",
+                "type": "str"
+            },
+            {
+                "label": "4 min",
+                "value": "0201",
+                "type": "str"
+            },
+            {
+                "label": "8 min",
+                "value": "0202",
+                "type": "str"
+            },
+            {
+                "label": "17 min",
+                "value": "0203",
+                "type": "str"
+            },
+            {
+                "label": "34 min",
+                "value": "0204",
+                "type": "str"
+            },
+            {
+                "label": "1 hour",
+                "value": "0205",
+                "type": "str"
+            },
+            {
+                "label": "2 hours",
+                "value": "0206",
+                "type": "str"
+            },
+            {
+                "label": "4 hours",
+                "value": "0207",
+                "type": "str"
+            },
+            {
+                "label": "9 hours",
+                "value": "0208",
+                "type": "str"
+            },
+            {
+                "label": "18 hours",
+                "value": "0209",
+                "type": "str"
+            },
+            {
+                "label": "1 day",
+                "value": "020A",
+                "type": "str"
+            },
+            {
+                "label": "3 days",
+                "value": "020B",
+                "type": "str"
+            },
+            {
+                "label": "6 days",
+                "value": "020C",
+                "type": "str"
+            },
+            {
+                "label": "12 days",
+                "value": "020D",
+                "type": "str"
+            },
+            {
+                "label": "24 days",
+                "value": "020E",
+                "type": "str"
+            },
+            {
+                "label": "48 days",
+                "value": "020F",
+                "type": "str"
+            }
+        ],
+        "payload": "",
+        "topic": "topic",
+        "topicType": "msg",
+        "className": "",
+        "x": 150,
+        "y": 300,
+        "wires": [
+            [
+                "a24c97122327ab5b"
+            ]
+        ]
+    },
+    {
+        "id": "a24c97122327ab5b",
+        "type": "ui_text",
+        "z": "e6da9eeacc410150",
+        "group": "54aa349efca64ade",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Command",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 410,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "3d712d6a650f9343",
+        "type": "ui_template",
+        "z": "e6da9eeacc410150",
+        "group": "8587c176f0ea610c",
+        "name": "Info",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "format": "<!DOCTYPE html>\n<html>\n<!--<head>-->\n<!--\t<title>Hello</title>-->\n\n<!--\t<h1>Hello World</h1>-->\n<!--</head>-->\n<body>\n    \n<p><em>Payload is fixed</em></p>\n\n</body>\n</html>\n",
+        "storeOutMessages": false,
+        "fwdInMessages": false,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "className": "",
+        "x": 150,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4922a26f562068a6",
+        "type": "inject",
+        "z": "e6da9eeacc410150",
+        "name": "00",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "00",
+        "payloadType": "str",
+        "x": 310,
+        "y": 180,
+        "wires": [
+            [
+                "0936bc689ff96175"
+            ]
+        ]
+    },
+    {
+        "id": "ee04e00be055a034",
+        "type": "ui_template",
+        "z": "e6da9eeacc410150",
+        "group": "e5cf4e76627e4f2c",
+        "name": "Info",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "format": "<!DOCTYPE html>\n<html>\n<!--<head>-->\n<!--\t<title>Hello</title>-->\n\n<!--\t<h1>Hello World</h1>-->\n<!--</head>-->\n<body>\n    \n<p><em>Payload is fixed</em></p>\n\n</body>\n</html>\n",
+        "storeOutMessages": false,
+        "fwdInMessages": false,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "className": "",
+        "x": 150,
+        "y": 420,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5f96e65910963637",
+        "type": "inject",
+        "z": "e6da9eeacc410150",
+        "name": "0301",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "0301",
+        "payloadType": "str",
+        "x": 310,
+        "y": 420,
+        "wires": [
+            [
+                "cbff501057d3e126"
+            ]
+        ]
+    },
+    {
+        "id": "70325e6185bb61d9",
+        "type": "mqtt in",
+        "z": "e6da9eeacc410150",
+        "name": "Subscriber",
+        "topic": "",
+        "qos": "2",
+        "datatype": "json",
+        "broker": "d1d930618963f13f",
+        "nl": false,
+        "rap": false,
+        "inputs": 1,
+        "x": 240,
+        "y": 760,
+        "wires": [
+            [
+                "d92728c54cd1cfc6"
+            ]
+        ]
+    },
+    {
+        "id": "4f97884e66670c56",
+        "type": "comment",
+        "z": "e6da9eeacc410150",
+        "name": "Uplink listening",
+        "info": "",
+        "x": 180,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "d92728c54cd1cfc6",
+        "type": "function",
+        "z": "e6da9eeacc410150",
+        "name": "Uplink study",
+        "func": "\n\nfunction base64ToHex(base64String) {\n    // Conversion de la chaîne Base64 en un objet Buffer\n    const buffer = Buffer.from(base64String, 'base64');\n\n    // Conversion du buffer en une chaîne hexadécimale\n    const hexString = buffer.toString('hex');\n\n    return hexString;\n}\n\n\nvar upport = msg.payload.uplink_message.f_port;\nvar message = base64ToHex(msg.payload.uplink_message.frm_payload);\nmsg.payload.uplink_message.frm_payload = base64ToHex(msg.payload.uplink_message.frm_payload);\n\n\nif (upport == \"202\") {\n\n    message = message.toString('hex');\n\n    if (message[1] == \"0\") {\n        msg.commandtype = \"PackageVersionAns \";\n        msg.analysis = \"Pack.ID: \" + message[2] + message[3] + \" / \" + \"Pack.Ver: \" + message[4] + message[5];\n    }\n    else if (message[1] == \"2\") {\n        msg.commandtype = \"DeviceAppTimePeriodicityAns \";\n        var thedate2 = SecToDate_2(message);\n        msg.analysis = thedate2;\n    }\n    else if (message[1] == \"1\") {\n        msg.commandtype = \"AppTimeReq\";\n        var thedate1 = SecToDate_1(message);\n        msg.analysis = thedate1;\n    }\n    else {\n        msg.commandtype = \"...\";\n        msg.analysis = \"...\";\n    }\n\n}\nelse {\n    msg.commandtype = \"...\";\n    msg.analysis = \"...\";\n}\n\nreturn msg;\n\n\n// Get time and convert it into date format\nfunction SecToDate_1(message) {\n\n\n    var DeviceTime = message[8]\n        + message[9]\n        + message[6]\n        + message[7]\n        + message[4]\n        + message[5]\n        + message[2]\n        + message[3];\n    var DeviceTime_hex = DeviceTime.toString('hex');\n    var DeviceTime_dec = parseInt(DeviceTime_hex, 16);  // sec passed since 06-janv-1980\n    var DeviceTime_date = new Date(1980, 0, 6);                        // Epoch\n    DeviceTime_date.setSeconds(DeviceTime_dec);\n    let DeviceTime_date_format = DeviceTime_date.toLocaleString('fr-FR', {\n        weekday: 'long',\n        year: 'numeric',\n        month: 'long',\n        day: 'numeric',\n        hour: 'numeric',\n        minute: 'numeric',\n        second: 'numeric'\n    });\n\n    DeviceTime_date_format += \" (UTC+0)\";\n\n    return DeviceTime_date_format;\n\n}\n\n// Get time and convert it into date format\nfunction SecToDate_2(message) {\n\n\n    var DeviceTime = message[10]\n        + message[11]\n        + message[8]\n        + message[9]\n        + message[6]\n        + message[7]\n        + message[4]\n        + message[5];\n    var DeviceTime_hex = DeviceTime.toString('hex');\n    var DeviceTime_dec = parseInt(DeviceTime_hex, 16);  // sec passed since 06-janv-1980\n    var DeviceTime_date = new Date(1980, 0, 6);                        // Epoch\n    DeviceTime_date.setSeconds(DeviceTime_dec);\n    let DeviceTime_date_format = DeviceTime_date.toLocaleString('fr-FR', {\n        weekday: 'long',\n        year: 'numeric',\n        month: 'long',\n        day: 'numeric',\n        hour: 'numeric',\n        minute: 'numeric',\n        second: 'numeric'\n    });\n\n    DeviceTime_date_format += \" (UTC+0)\";\n\n    return DeviceTime_date_format;\n\n}",
+        "outputs": 1,
+        "noerr": 4,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 760,
+        "wires": [
+            [
+                "874ade2c35688980",
+                "4077d8c5358f11d0",
+                "e8bb77747ba14ec9",
+                "687b84fe432d0ae8",
+                "9f4da13373b28552",
+                "6759b948a2b6b34b"
+            ]
+        ]
+    },
+    {
+        "id": "687b84fe432d0ae8",
+        "type": "ui_text",
+        "z": "e6da9eeacc410150",
+        "group": "bc771ac0b0681610",
+        "order": 1,
+        "width": "4",
+        "height": "2",
+        "name": "",
+        "label": "Device ID",
+        "format": "{{payload.end_device_ids.device_id}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 700,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "9f4da13373b28552",
+        "type": "ui_text",
+        "z": "e6da9eeacc410150",
+        "group": "bc771ac0b0681610",
+        "order": 4,
+        "width": "4",
+        "height": "2",
+        "name": "",
+        "label": "Port",
+        "format": "{{msg.payload.uplink_message.f_port}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 710,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "6759b948a2b6b34b",
+        "type": "ui_text",
+        "z": "e6da9eeacc410150",
+        "group": "bc771ac0b0681610",
+        "order": 3,
+        "width": "4",
+        "height": "2",
+        "name": "",
+        "label": "Fcnt",
+        "format": "{{msg.payload.uplink_message.f_cnt}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 730,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "874ade2c35688980",
+        "type": "ui_text",
+        "z": "e6da9eeacc410150",
+        "group": "bc771ac0b0681610",
+        "order": 2,
+        "width": "4",
+        "height": 2,
+        "name": "",
+        "label": "Command type",
+        "format": "{{msg.commandtype}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 800,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "4077d8c5358f11d0",
+        "type": "ui_text",
+        "z": "e6da9eeacc410150",
+        "group": "bc771ac0b0681610",
+        "order": 5,
+        "width": "4",
+        "height": 2,
+        "name": "",
+        "label": "Command analysis",
+        "format": "{{msg.analysis}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 830,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "e8bb77747ba14ec9",
+        "type": "ui_text",
+        "z": "e6da9eeacc410150",
+        "group": "bc771ac0b0681610",
+        "order": 6,
+        "width": "4",
+        "height": "2",
+        "name": "",
+        "label": "Payload",
+        "format": "{{msg.payload.uplink_message.frm_payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 760,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "8083ba4fad0e293e",
+        "type": "inject",
+        "z": "e6da9eeacc410150",
+        "name": "RAZ",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "str",
+        "x": 550,
+        "y": 860,
+        "wires": [
+            [
+                "687b84fe432d0ae8",
+                "9f4da13373b28552",
+                "6759b948a2b6b34b",
+                "874ade2c35688980",
+                "4077d8c5358f11d0",
+                "e8bb77747ba14ec9"
+            ]
+        ]
+    },
+    {
+        "id": "176b47534630f608",
+        "type": "comment",
+        "z": "e6da9eeacc410150",
+        "name": "!!! READ ME BEFORE USE !!!",
+        "info": "There is nothing to configure in this tab, because all the configuration is done in the \"Dashaboard Configuration\" file. ",
+        "x": 820,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "1b551610ef76bdb5",
+        "type": "comment",
+        "z": "e6da9eeacc410150",
+        "name": "Clock Synchronization management tool - USMB",
+        "info": "",
+        "x": 280,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "64821fe57569535b",
+        "type": "link in",
+        "z": "e6da9eeacc410150",
+        "name": "MQTT configuration in",
+        "links": [
+            "728e4479a2eccdd2",
+            "f079866a52cf1df9"
+        ],
+        "x": 115,
+        "y": 760,
+        "wires": [
+            [
+                "70325e6185bb61d9"
+            ]
+        ]
+    },
+    {
+        "id": "9b086ff38048ce3d",
+        "type": "function",
+        "z": "e6da9eeacc410150",
+        "name": "function 1",
+        "func": "return msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 160,
+        "y": 600,
+        "wires": [
+            [
+                "42992fbc3f57edca"
+            ]
+        ]
+    },
+    {
+        "id": "55a4fad94780cc60",
+        "type": "ui_group",
+        "name": "Application Layer Clock Synchronization",
+        "tab": "809d5550849b871e",
+        "order": 1,
+        "disp": true,
+        "width": "10",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "d1d930618963f13f",
+        "type": "mqtt-broker",
+        "name": "Broker",
+        "broker": "",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": false,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    },
+    {
+        "id": "04058b639f2e0be9",
+        "type": "ui_group",
+        "name": "Downlink(port 202)",
+        "tab": "809d5550849b871e",
+        "order": 5,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "8587c176f0ea610c",
+        "type": "ui_group",
+        "name": "PackageVersionReq",
+        "tab": "809d5550849b871e",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "e5cf4e76627e4f2c",
+        "type": "ui_group",
+        "name": "ForceDeviceResyncReq",
+        "tab": "809d5550849b871e",
+        "order": 4,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "54aa349efca64ade",
+        "type": "ui_group",
+        "name": "DeviceAppTimePeriodicityReq ",
+        "tab": "809d5550849b871e",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "bc771ac0b0681610",
+        "type": "ui_group",
+        "name": "Uplink",
+        "tab": "809d5550849b871e",
+        "order": 6,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "809d5550849b871e",
+        "type": "ui_tab",
+        "name": "TTN-clock synch",
+        "icon": "dashboard",
+        "order": 5,
+        "disabled": false,
+        "hidden": false
+    }
+]
